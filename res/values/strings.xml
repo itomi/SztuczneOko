@@ -2,4 +2,6 @@
 
     <string name="app_name">BaseApplication</string>
 
+    <string name="crazybutton">CrazyButton</string>
+
 </resources>
