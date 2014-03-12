@@ -4,8 +4,6 @@
  * 
  */
 package pl.pwr.sztuczneoko.entrypoint;
-
-import pl.pwr.sztuczneoko.baseapplication.R;
 import android.app.Activity;
 
 /**
