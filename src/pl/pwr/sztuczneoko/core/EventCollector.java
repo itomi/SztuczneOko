@@ -1,4 +1,6 @@
 package pl.pwr.sztuczneoko.core;
+import pl.pwr.sztuczneoko.ui.CameraActivity;
+import android.content.Context;
 import android.content.Intent;
 import android.provider.MediaStore;
 
@@ -10,9 +12,9 @@ public class EventCollector implements EventCollectorInterface{
 		return new EnrtyMenuEvents(){
 
 			@Override
-			public Intent runPhotoActivity() {
+			public Intent runPhotoActivity(Context c) {
 				// TODO Auto-generated method stub
-				return new Intent(MediaStore.ACTION_IMAGE_CAPTURE);				
+				return new Intent(c,CameraActivity.class);				
 			}
 
 			@Override

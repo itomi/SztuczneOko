@@ -49,7 +49,7 @@ public class EntryPointActivity extends soActivity implements OnItemClickListene
 		switch(position){
 		
 			case 0:
-				startActivity(core.getEntryMenuEvents().runPhotoActivity()); 
+				startActivity(core.getEntryMenuEvents().runPhotoActivity(this)); 
 				break;				
 			case 1:
 				core.getEntryMenuEvents().runPreferenceActivity();				
