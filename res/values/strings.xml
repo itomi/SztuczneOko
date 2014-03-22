@@ -3,5 +3,17 @@
     <string name="app_name">BaseApplication</string>
 
     <string name="crazybutton">CrazyButton</string>
-
+	
+	<color name="Black">#000000</color>
+	
+    <string-array name="entryListMenuArray">
+        <item>zrób zdjęcie</item>
+        <item>ustawiena</item>
+        <item>przeglądaj zdjęcia</item>       
+    </string-array>
+    <string-array name="entryListMenuContentDesc">
+        <item>test</item>
+        <item>test</item>
+        <item>test</item>
+    </string-array>
 </resources>
