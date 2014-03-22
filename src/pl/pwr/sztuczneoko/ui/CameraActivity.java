@@ -1,13 +1,6 @@
 package pl.pwr.sztuczneoko.ui;
 
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
 import pl.pwr.sztuczneoko.camera.CameraPreview;
-import android.R.id;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -15,14 +8,9 @@ import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.os.Build;
 
 public class CameraActivity extends Activity {
 
