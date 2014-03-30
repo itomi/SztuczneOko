@@ -68,9 +68,6 @@ public class CameraActivity extends soActivity {
         captureButton.setEnabled(false);
 	}
 	public void filterPhotoClick(View view){
-		/*
-		 * tu sie zrobi przejscie do nastepnej aktywnosci przez core z przeslaniem gdzies 
-		 * zdjecia dalej
-		 */
+		core.sendPhoto();
 	}
 }

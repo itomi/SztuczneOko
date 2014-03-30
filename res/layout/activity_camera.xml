@@ -26,7 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="0.5"
-                android:text="Filter and send photo" 
+                android:text="@+string/sendPhoto" 
                 android:onClick="filterPhotoClick"/>
 
             <Button
@@ -34,7 +34,7 @@
                 android:layout_width="match_parent"
 		        android:layout_height="0dp"
 		        android:layout_weight="0.5"              
-                android:text="Capture" 
+                android:text="@+string/capture" 
                 android:onClick="captureClick"/>
 
             <Button
@@ -42,7 +42,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="0.5"
-                android:text="Take photo again" 
+                android:text="@+string/nextPhoto" 
                 android:onClick="againPhotoClick"/>
 
         </LinearLayout>

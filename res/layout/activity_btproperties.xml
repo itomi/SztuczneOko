@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20sp"
-        android:text="znajdź urządzenia" 
+        android:text="@+string/findDevice" 
         android:onClick="findDevice"/>
 
     <ListView

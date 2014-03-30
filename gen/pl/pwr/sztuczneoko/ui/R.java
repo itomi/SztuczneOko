@@ -61,20 +61,23 @@ public final class R {
         public static final int row_with_desc=0x7f030007;
     }
     public static final class string {
-        public static final int action_settings=0x7f05000a;
         public static final int app_name=0x7f050000;
         public static final int autoFilter=0x7f050007;
         public static final int camResolution=0x7f050006;
+        public static final int capture=0x7f050008;
         public static final int faceDetect=0x7f050001;
         public static final int filterResolution=0x7f050005;
+        public static final int findDevice=0x7f05000b;
         public static final int flash=0x7f050004;
-        public static final int hello_world=0x7f050009;
+        public static final int hello_world=0x7f05000d;
+        public static final int nextPhoto=0x7f050009;
         public static final int realTime=0x7f050003;
-        public static final int title_activity_btproperties=0x7f05000c;
-        public static final int title_activity_cam_properties=0x7f05000d;
-        public static final int title_activity_camera=0x7f050008;
-        public static final int title_activity_filter_properties=0x7f05000e;
-        public static final int title_activity_properties=0x7f05000b;
+        public static final int sendPhoto=0x7f05000a;
+        public static final int title_activity_btproperties=0x7f05000f;
+        public static final int title_activity_cam_properties=0x7f050010;
+        public static final int title_activity_camera=0x7f05000c;
+        public static final int title_activity_filter_properties=0x7f050011;
+        public static final int title_activity_properties=0x7f05000e;
         public static final int voiceDescription=0x7f050002;
     }
     public static final class style {

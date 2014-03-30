@@ -106,4 +106,9 @@ public class EventCollector implements EventCollectorInterface{
 	public void switchProp(Property property) {
 		property.setState((property.isState()?false:true));
 	}
+	@Override
+	public void sendPhoto() {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -11,4 +11,5 @@ public interface EventCollectorInterface {
 	public void connectToDevice(ExternDevice ed);
 	public void setCurrentImg(byte[] data);
 	public void switchProp(Property property); 
+	public void sendPhoto();
 }
