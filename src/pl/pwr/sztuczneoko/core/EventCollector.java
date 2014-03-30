@@ -1,4 +1,9 @@
 package pl.pwr.sztuczneoko.core;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -8,7 +13,9 @@ import pl.pwr.sztuczneoko.imageProcessor.ImageProcessor;
 import pl.pwr.sztuczneoko.ui.*;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.widget.Toast;
 
 public class EventCollector implements EventCollectorInterface{
@@ -18,10 +25,10 @@ public class EventCollector implements EventCollectorInterface{
 	private ArrayList<ExternDevice> edList;
 	private ArrayList<Property> camPropList = new ArrayList<Property>();
 	private ArrayList<Property> filterPropList = new ArrayList<Property>();
-	
+	private byte[] img;
 	@Override
 	public void setCurrentImg(byte[] data) {
-		// TODO Auto-generated method stub		
+		img = data;
 	}
 
 	public EventCollector() {
@@ -108,7 +115,34 @@ public class EventCollector implements EventCollectorInterface{
 	}
 	@Override
 	public void sendPhoto() {
-		// TODO Auto-generated method stub
-		
+		saveImg(img, "test.jpeg");
+	}
+	
+	private boolean saveImg(byte[] data, String file) {
+		String savePath = Environment.getExternalStorageDirectory() + "/soAppDir/myImages/";
+		File sdSaveDir = new File(savePath);
+
+		sdSaveDir.mkdirs();
+
+		try {
+			String filePath = sdSaveDir.toString() +"/"+ file;
+			FileOutputStream fileOutputStream = new FileOutputStream(filePath);
+
+			BufferedOutputStream bos = new BufferedOutputStream(fileOutputStream);
+
+			bos.write(data);
+
+			bos.flush();
+			bos.close();
+
+		} catch (FileNotFoundException e) {
+			Log.d("save", "Problem with: "+e.getMessage());
+			return false;
+		} catch (IOException e) {
+			Log.d("save", "Problem with: "+e.getMessage());
+			return false;
+		}
+
+		return true;
 	}
 }
