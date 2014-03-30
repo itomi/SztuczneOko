@@ -1,6 +1,14 @@
 package pl.pwr.sztuczneoko.core;
 
+import java.util.ArrayList;
+
 public interface EventCollectorInterface {
 	public EnrtyMenuEvents getEntryMenuEvents();
-	public void setCurrentImg(byte[] data); 
+	public PropertiesMenuEvents getPropertiesMenuEvents();
+	public ArrayList<ExternDevice> getEnableDevices();
+	public ArrayList<Property> getFilterProperties();
+	public ArrayList<Property> getCamProperties();
+	public void connectToDevice(ExternDevice ed);
+	public void setCurrentImg(byte[] data);
+	public void switchProp(Property property); 
 }

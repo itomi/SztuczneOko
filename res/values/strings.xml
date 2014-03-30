@@ -2,8 +2,14 @@
 <resources>
 
     <string name="app_name">BaseApplication</string>
-    <string name="crazybutton">CrazyButton</string>
-
+    <string name="faceDetect">wykrywanie twarzy</string>
+    <string name="voiceDescription">słowny opis zdjęcia</string>
+    <string name="realTime">przetwarzanie w czasie rzeczywistym</string>
+    <string name="flash">lampa</string>
+    <string name="filterResolution">docelowa rozdzielczosc</string>
+    <string name="camResolution">rozdzielczosc</string>
+    <string name="autoFilter">dynamiczne wybieranie filtra</string>
+    
     <color name="Black">#000000</color>
 
     <string-array name="entryListMenuArray">
@@ -16,9 +22,25 @@
         <item>test</item>
         <item>test</item>
     </string-array>
+    <string-array name="propertiesListMenuArray">
+        <item>Filtracja</item>
+        <item>Połączenia</item>
+        <item>Kamera</item>
+        <item>O aplikacji</item>
+    </string-array>
+    <string-array name="propertiesListMenuContentDesc">
+        <item>filtrecja</item>
+        <item>połączenia</item>
+        <item>kamera</item>
+        <item>O aplikacji</item>
+    </string-array>
 
     <string name="title_activity_camera">CameraActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_properties">PropertiesActivity</string>
+    <string name="title_activity_btproperties">BTPropertiesActivity</string>
+    <string name="title_activity_cam_properties">CamPropertiesActivity</string>
+    <string name="title_activity_filter_properties">FilterPropertiesActivity</string>
 
 </resources>

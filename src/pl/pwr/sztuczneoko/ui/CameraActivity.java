@@ -58,12 +58,14 @@ public class CameraActivity extends soActivity {
 	public void againPhotoClick(View view){
 		filterButton.setEnabled(false);
         againPhotoButton.setEnabled(false);
+        captureButton.setEnabled(true);
         mCamera.startPreview();
 	}
 	public void captureClick(View view){
 		mCamera.takePicture(null, null, mPicture);
 		filterButton.setEnabled(true);
         againPhotoButton.setEnabled(true);
+        captureButton.setEnabled(false);
 	}
 	public void filterPhotoClick(View view){
 		/*
