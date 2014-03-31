@@ -18,8 +18,9 @@ public final class R {
     }
     public static final class color {
         public static final int Black=0x7f060000;
-        public static final int BluleHighlight=0x7f060001;
-        public static final int White=0x7f060002;
+        public static final int Blue=0x7f060001;
+        public static final int BlueHighlight=0x7f060002;
+        public static final int White=0x7f060003;
     }
     public static final class dimen {
         /**  Default screen margins, per the Android Design guidelines. 

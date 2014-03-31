@@ -11,7 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="turnOnOff"
+        android:background="@color/Blue"
         android:text="włącz bluetooth"
+        android:padding="15dp"
         android:textSize="20sp" />
 
     <Button
@@ -19,6 +21,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20sp"
+        android:padding="15dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/Blue"
         android:text="@+string/findDevice" 
         android:onClick="findDevice"/>
 
