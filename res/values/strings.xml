@@ -13,7 +13,7 @@
     <string name="nextPhoto">spróbuj ponownie</string>
     <string name="sendPhoto">filtruj i wyślij zdjęcie</string>
     <string name="findDevice">znajdź urządzenie</string>
-    
+
     <color name="Black">#000000</color>
 
     <string-array name="entryListMenuArray">
@@ -40,10 +40,12 @@
     </string-array>
 
     <string name="title_activity_camera">Kamera</string>
-    <string name="hello_world">Hello world!</string>    
+    <string name="hello_world">Hello world!</string>
     <string name="title_activity_properties">Ustawienia</string>
     <string name="title_activity_btproperties">Ustawienia bluetooth</string>
     <string name="title_activity_cam_properties">Ustawienia kamery</string>
     <string name="title_activity_filter_properties">Ustawienia filtracji</string>
+    <string name="title_activity_gallery">GalleryActivity</string>
+    <string name="action_settings">Settings</string>
 
 </resources>

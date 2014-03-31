@@ -55,7 +55,7 @@ public class EntryPointActivity extends soActivity implements OnItemClickListene
 				startActivity(core.getEntryMenuEvents().runPropertiesActivity(this));				
 				break;
 			case 2:
-				core.getEntryMenuEvents().runBrowsePhotoActivity(this);
+				startActivity(core.getEntryMenuEvents().runBrowsePhotoActivity(this));
 				break;				
 		}
 		

@@ -35,7 +35,5 @@ public class CamPropertiesActivity extends soActivity{
 				    ((PropertiesListAdapter)listView.getAdapter()).notifyDataSetChanged(); 
 			}
 		});	
-	}
-	
-
+	}	
 }

@@ -1,5 +1,6 @@
 package pl.pwr.sztuczneoko.core;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -16,6 +17,7 @@ import pl.pwr.sztuczneoko.imageProcessor.ImageProcessor;
 import pl.pwr.sztuczneoko.ui.*;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -29,9 +31,19 @@ public class EventCollector implements EventCollectorInterface{
 	private ArrayList<Property> camPropList = new ArrayList<Property>();
 	private ArrayList<Property> filterPropList = new ArrayList<Property>();
 	private byte[] img;
+	private String imgName;
 	@Override
 	public void setCurrentImg(byte[] data) {
 		img = data;
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+		Date date = new Date();
+		imgName = dateFormat.format(date) + ".jpeg";
+	}
+	public void setCurrentImg(ImageItem data) {		
+		ByteArrayOutputStream stream = new ByteArrayOutputStream();
+		data.getImage().compress(Bitmap.CompressFormat.JPEG, 100, stream);
+		img = stream.toByteArray();
+		imgName = data.getTitle();
 	}
 
 	public EventCollector() {
@@ -53,9 +65,8 @@ public class EventCollector implements EventCollectorInterface{
 			}
 
 			@Override
-			public Intent runBrowsePhotoActivity(Context c) {
-				return null;
-				//return new Intent(c,FilterPropActivity.class);				
+			public Intent runBrowsePhotoActivity(Context c) {				
+				return new Intent(c,GalleryActivity.class);				
 			}
 
 			@Override
@@ -117,20 +128,30 @@ public class EventCollector implements EventCollectorInterface{
 		property.setState((property.isState()?false:true));
 	}
 	@Override
-	public void sendPhoto() {
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
-		Date date = new Date();
-		saveImg(img, dateFormat.format(date)+".jpeg");
+	public void sendPhoto() {		
+		saveImg(img);
+		Log.d("send", "send image " + imgName);
+		/*
+		 * TODO send to ImageProcessor and after it to external device
+		 */
 	}
+	/*
+	 * test saving on sdCard
+	 */
 	
-	private boolean saveImg(byte[] data, String file) {
+	private boolean saveImg(byte[] data) {
+		
 		String savePath = Environment.getExternalStorageDirectory() + "/soAppDir/myImages/";
 		File sdSaveDir = new File(savePath);
 
 		sdSaveDir.mkdirs();
 
 		try {
-			String filePath = sdSaveDir.toString() +"/"+ file;
+			String filePath = sdSaveDir.toString() +"/"+ imgName;
+			if(new File(filePath).exists()){
+				Log.d("save", "file is already exist");
+				return true;
+			}
 			FileOutputStream fileOutputStream = new FileOutputStream(filePath);
 
 			BufferedOutputStream bos = new BufferedOutputStream(fileOutputStream);
