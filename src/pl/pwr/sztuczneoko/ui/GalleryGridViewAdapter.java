@@ -53,11 +53,12 @@ public class GalleryGridViewAdapter extends ArrayAdapter {
         holder.image.setImageBitmap(item.getImage());
         row.setId(position);
         row.setOnClickListener(new OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 Log.d("select", item.getTitle());
-                ((GalleryActivity)context).setSelectedImg(item);
+                ((GalleryActivity)context).setSelectedImg(item,v);
+                //v.setBackgroundColor(context.getResources().getColor(R.color.Black));                
+                v.setSelected(true);                
             }
         });
         return row;

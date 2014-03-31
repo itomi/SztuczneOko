@@ -40,7 +40,8 @@ public class GalleryActivity extends soActivity {
 	private GridView gridView;
 	private GalleryGridViewAdapter GridAdapter;
 	private ArrayList imageItems = new ArrayList(); 
-	private ImageItem selectedImg; 
+	private ImageItem selectedImg;
+	private View lastView;
 	public static final int PLEASE_WAIT_DIALOG = 1;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,9 +57,12 @@ public class GalleryActivity extends soActivity {
 	public void sendButtonClick(View view){
 		core.sendPhoto();
 	}
-	public void setSelectedImg(ImageItem selectedImg) {
+	public void setSelectedImg(ImageItem selectedImg,View v) {
+		if(lastView!=null)lastView.setSelected(false);
 		this.selectedImg = selectedImg;
 		((EventCollector)core).setCurrentImg(selectedImg);		
+		lastView = v;
+		
 	}
 	
 	public Dialog onCreateDialog(int dialogId) {

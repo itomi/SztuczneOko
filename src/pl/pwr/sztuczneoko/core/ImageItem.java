@@ -2,7 +2,7 @@ package pl.pwr.sztuczneoko.core;
 
 import android.graphics.Bitmap;
 
-public class ImageItem {
+public class ImageItem{
     private Bitmap image;
     private String title;
  

@@ -33,7 +33,7 @@ public class EventCollector implements EventCollectorInterface{
 	private byte[] img;
 	private String imgName;
 	@Override
-	public void setCurrentImg(byte[] data) {
+	public void setCurrentImg(byte[] data) {		
 		img = data;
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
 		Date date = new Date();

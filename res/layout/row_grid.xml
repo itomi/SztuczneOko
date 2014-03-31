@@ -5,9 +5,10 @@
     android:layout_marginTop="5dp"
     android:orientation="vertical"
     android:padding="5dp"
-    android:clickable="true"
-    android:background="#ffeeeeee"
-    android:focusable="true">
+    android:clickable="true"    
+    android:focusable="true"   
+    android:background="@drawable/grid_selector"
+    >
  
     <ImageView
         android:id="@+id/image"
