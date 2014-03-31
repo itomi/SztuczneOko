@@ -4,9 +4,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 
 import pl.pwr.sztuczneoko.communication.Communication;
 import pl.pwr.sztuczneoko.imageProcessor.ImageProcessor;
@@ -115,7 +118,9 @@ public class EventCollector implements EventCollectorInterface{
 	}
 	@Override
 	public void sendPhoto() {
-		saveImg(img, "test.jpeg");
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+		Date date = new Date();
+		saveImg(img, dateFormat.format(date)+".jpeg");
 	}
 	
 	private boolean saveImg(byte[] data, String file) {
