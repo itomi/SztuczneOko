@@ -15,9 +15,11 @@ import java.util.Date;
 import pl.pwr.sztuczneoko.communication.Communication;
 import pl.pwr.sztuczneoko.imageProcessor.ImageProcessor;
 import pl.pwr.sztuczneoko.ui.*;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -53,7 +55,35 @@ public class EventCollector implements EventCollectorInterface{
 		filterPropList.add(new Property("autoFilter", true));
 		camPropList.add(new Property("flash",false));
 	}
-	
+    class send extends AsyncTask<Void, Void, Void> {
+   	 
+        Activity activity;
+     
+        public send(Activity activity) {
+            this.activity = activity;
+        }
+     
+        @Override
+        protected void onPreExecute() {
+           activity.showDialog(1);
+        }
+     
+        @Override
+        protected Void doInBackground(Void... arg0) {
+        	try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+            return null;
+        }
+     
+        @Override
+        protected void onPostExecute(Void result) {
+            activity.removeDialog(1);            
+        }
+     
+    }
 	@Override
 	public EnrtyMenuEvents getEntryMenuEvents() {		
 			
@@ -128,7 +158,8 @@ public class EventCollector implements EventCollectorInterface{
 		property.setState((property.isState()?false:true));
 	}
 	@Override
-	public void sendPhoto() {		
+	public void sendPhoto(Activity a) {		
+		new send(a).execute();
 		saveImg(img);
 		Log.d("send", "send image " + imgName);
 		/*

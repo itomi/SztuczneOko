@@ -2,6 +2,7 @@ package pl.pwr.sztuczneoko.core;
 
 import java.util.ArrayList;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 
 public interface EventCollectorInterface {
@@ -13,5 +14,5 @@ public interface EventCollectorInterface {
 	public void connectToDevice(ExternDevice ed);
 	public void setCurrentImg(byte[] data);
 	public void switchProp(Property property); 
-	public void sendPhoto();
+	public void sendPhoto(Activity a);
 }

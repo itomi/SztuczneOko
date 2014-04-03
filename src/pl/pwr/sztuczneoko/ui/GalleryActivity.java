@@ -55,7 +55,10 @@ public class GalleryActivity extends soActivity {
         
     }	
 	public void sendButtonClick(View view){
-		core.sendPhoto();
+		core.sendPhoto(this);
+		/*
+		 * TODO add different dialog to activity  
+		 */
 	}
 	public void setSelectedImg(ImageItem selectedImg,View v) {
 		if(lastView!=null)lastView.setSelected(false);
