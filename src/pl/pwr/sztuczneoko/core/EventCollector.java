@@ -18,6 +18,7 @@ import pl.pwr.sztuczneoko.ui.*;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Environment;
@@ -26,7 +27,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 public class EventCollector implements EventCollectorInterface{
-
+	private Activity activity;
 	private Communication comm;
 	private ImageProcessor imgProc;
 	private ArrayList<ExternDevice> edList;
@@ -34,6 +35,8 @@ public class EventCollector implements EventCollectorInterface{
 	private ArrayList<Property> filterPropList = new ArrayList<Property>();
 	private byte[] img;
 	private String imgName;
+	protected static final String PREFERENCES_NAME = "preferences";
+	protected SharedPreferences preferences;
 	@Override
 	public void setCurrentImg(byte[] data) {		
 		img = data;
@@ -47,13 +50,16 @@ public class EventCollector implements EventCollectorInterface{
 		img = stream.toByteArray();
 		imgName = data.getTitle();
 	}
-
 	public EventCollector() {
 		camPropList.add(new Property("faceDetect", false));
 		camPropList.add(new Property("voiceDescription", false));
 		camPropList.add(new Property("realTime", false));
 		filterPropList.add(new Property("autoFilter", true));
 		camPropList.add(new Property("flash",false));
+	}
+	public EventCollector(Activity a) {
+		this();
+		this.activity = a;
 	}
     class send extends AsyncTask<Void, Void, Void> {
    	 
@@ -156,6 +162,7 @@ public class EventCollector implements EventCollectorInterface{
 	@Override
 	public void switchProp(Property property) {
 		property.setState((property.isState()?false:true));
+		savePreferences(property);
 	}
 	@Override
 	public void sendPhoto(Activity a) {		
@@ -201,5 +208,20 @@ public class EventCollector implements EventCollectorInterface{
 		}
 
 		return true;
+	}
+	
+	private void savePreferences(Property prop){
+		preferences = activity.getSharedPreferences(PREFERENCES_NAME, Activity.MODE_PRIVATE);
+	    SharedPreferences.Editor preferencesEditor = preferences.edit();
+	    preferencesEditor.putInt(prop.getName(), prop.isState() ? 1 : 0);
+	    preferencesEditor.commit();	
+	}
+	
+	public void restorePreferences(ArrayList<Property> propList){
+		preferences = activity.getSharedPreferences(PREFERENCES_NAME, Activity.MODE_PRIVATE);
+		for(Property prop : propList){
+			 int property = preferences.getInt(prop.getName(), 0);
+			 prop.setState(property);
+		}		
 	}
 }

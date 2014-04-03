@@ -135,8 +135,7 @@ public class GalleryActivity extends soActivity {
 	                && (halfWidth / inSampleSize) > reqWidth) {
 	            inSampleSize *= 2;
 	        }
-	    }
-	
+	    }	
 	    return inSampleSize;
     }
     public static Bitmap decodeBitmapFromFile(String file, 

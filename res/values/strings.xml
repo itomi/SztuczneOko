@@ -41,7 +41,7 @@
         <item>kamera</item>
         <item>O aplikacji</item>
     </string-array>
-
+    
     <string name="title_activity_camera">Kamera</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_properties">Ustawienia</string>
