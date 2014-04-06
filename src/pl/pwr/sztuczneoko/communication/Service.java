@@ -1,7 +1,9 @@
 package pl.pwr.sztuczneoko.communication;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public enum Service {
@@ -48,9 +50,12 @@ public enum Service {
 	// PANU(new UUID(0x0,0x1115), "Personal Area Networking User"),
 	PANP(new UUID(0x0,0x1117), "Personal Area Networking Profile"),
 	HSP(new UUID(0x0, 0x1131), "HeadSet Profile"),
-	AEYE(new UUID(0x6666,0x6666),"Sztuczne Oko");
+	AEYE(new UUID(0x6666,0x6666),"Sztuczne Oko"),
+	UNKNOWN(new UUID(0xFFFF, 0xFFFF), "Unknown Service");
 
 	private static final UUID[] allServices;
+	
+	public static final Map<UUID, Service> mapUuidToService;
 
 	private final UUID serviceUUID;
 
@@ -73,10 +78,17 @@ public enum Service {
 		return this.serviceUUID;
 	}
 
+	public static Service getServiceByUUID(final UUID uuid) {
+		return mapUuidToService.get(uuid);
+	}
+	
 	static {
 		List<UUID> listOfUUIDs = new ArrayList<UUID>();
+		mapUuidToService = new HashMap<UUID, Service>();
+		
 		for (final Service service : Service.values()) {
 			listOfUUIDs.add(service.serviceUUID);
+			mapUuidToService.put(service.UUID(), service);
 		}
 
 		allServices = new UUID[listOfUUIDs.size()];

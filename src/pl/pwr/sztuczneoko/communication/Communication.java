@@ -14,8 +14,9 @@ public interface Communication {
 	/**
 	 * Method that ignores cached values and performs even long running inquiry, searching for devices.
 	 * @return set of {@link pl.pwr.sztuczneoko..communication.Device}
+	 * @throws Exception 
 	 */
-	Set<Device> getDevicesByInquiry();
+	Set<Device> getDevicesByInquiry() throws Exception;
 	
 	/**
 	 * Method that checks whether {@link Device} is able to communicate with specific Service protocol.

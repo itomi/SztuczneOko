@@ -4,13 +4,18 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
 
-import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
+import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+
 import com.google.common.collect.ImmutableSet;
 
-import android.bluetooth.BluetoothAdapter;
+public class BluetoothCommunication extends Activity implements Communication{
 
-public class BluetoothCommunication implements Communication{
+	private static final int RESULT_CODE = 0xDEADBEEF;
 
 	private static final String PRECONDITION = "Bluetooth adapted preconditions are not checked.";
 
@@ -18,7 +23,21 @@ public class BluetoothCommunication implements Communication{
 	
 	private Set<Device> cachedDevices = new ConcurrentSkipListSet<Device>();
 	
-	private BluetoothCommunication() {}
+	private BroadcastReceiver discoveryReceiver;
+	
+	private BluetoothCommunication() {
+		discoveryReceiver = new BroadcastReceiver() {
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				String action = intent.getAction();
+				
+				if(BluetoothDevice.ACTION_FOUND.equals(action)) {
+					BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+					cachedDevices.add(new Device(device));
+				}
+			}
+		};
+	}
 	
 	@Override
 	public Set<Device> getCachedDevices() {
@@ -26,11 +45,21 @@ public class BluetoothCommunication implements Communication{
 	}
 
 	@Override
-	public Set<Device> getDevicesByInquiry() {
-		Set<Device> discoveredByInquiry = new HashSet<Device>();
-		
-		
-		return ImmutableSet.copyOf(cachedDevices);
+	public Set<Device> getDevicesByInquiry() throws Exception {
+		if(!ADAPTER.isDiscovering()) {
+			beginDiscovery();
+		} else {
+			ADAPTER.cancelDiscovery();
+			beginDiscovery();
+		}
+			
+		return this.cachedDevices;
+	}
+
+	private void beginDiscovery() throws Exception {
+		if(!ADAPTER.startDiscovery()) {
+			throw new Exception("Couldn't start discovery!");
+		}
 	}
 
 	@Override
@@ -42,6 +71,10 @@ public class BluetoothCommunication implements Communication{
 
 	@Override
 	public void prepareCommunicationBundle() {
+	    if (!ADAPTER.isEnabled()){
+	        Intent enableBT = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+	        startActivityForResult(enableBT, RESULT_CODE);
+	    }
 		
 	}
 
@@ -63,6 +96,10 @@ public class BluetoothCommunication implements Communication{
 			//more options here in the future
 		}
 		return preconditions;
+	}
+	
+	static BluetoothAdapter getAdapter() {
+		return ADAPTER;
 	}
 	
 }
