@@ -2,7 +2,6 @@ package pl.pwr.sztuczneoko.ui;
 
 import java.util.ArrayList;
 
-import pl.pwr.sztuczneoko.core.EventCollector;
 import pl.pwr.sztuczneoko.core.ExternDevice;
 import pl.pwr.sztuczneoko.core.Property;
 import android.os.Bundle;
@@ -27,8 +26,7 @@ public class CamPropertiesActivity extends soActivity{
 		setContentView(R.layout.activity_cam_properties);
 		propList = core.getCamProperties();
 		listView = (ListView) findViewById(R.id.camPropList);
-		listView.setAdapter(new PropertiesListAdapter(this,propList));
-		((EventCollector)core).restorePreferences(propList);
+		listView.setAdapter(new PropertiesListAdapter(this,propList));	    
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,

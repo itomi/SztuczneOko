@@ -18,18 +18,6 @@ public class Property{
 	public void setState(boolean state) {
 		this.state = state;
 	}
-	public void setState(int state) {
-		switch (state) {
-		case 1:
-			this.state = true;
-			break;
-		case 0: 
-			this.state = false;
-			break;
-		default:
-			break;
-		}
-	}
 	public void setName(String name) {
 		this.name = name;
 	}

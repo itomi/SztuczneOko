@@ -1,20 +1,9 @@
 package pl.pwr.sztuczneoko.ui;
 
-import java.io.File;
-import java.io.FileFilter;
-import java.util.regex.Pattern;
-
 import pl.pwr.sztuczneoko.camera.CameraPreview;
-import pl.pwr.sztuczneoko.core.ImageItem;
-import android.app.Activity;
-import android.app.Dialog;
-import android.app.ProgressDialog;
-import android.graphics.Bitmap;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -78,16 +67,7 @@ public class CameraActivity extends soActivity {
         againPhotoButton.setEnabled(true);
         captureButton.setEnabled(false);
 	}
-	public void filterPhotoClick(View view){		
-		core.sendPhoto(this);
+	public void filterPhotoClick(View view){
+		core.sendPhoto();
 	}
-	public Dialog onCreateDialog(int dialogId) {
-        ProgressDialog dialog = new ProgressDialog(this);
-        dialog.setTitle("przetwarznie i wysyłanie zdjęcia");
-        dialog.setMessage("Proszę czekać....");
-        dialog.setCancelable(true);
-        return dialog;
-    }
- 
-
 }

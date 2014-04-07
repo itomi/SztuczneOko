@@ -2,7 +2,6 @@ package pl.pwr.sztuczneoko.ui;
 
 import java.util.ArrayList;
 
-import pl.pwr.sztuczneoko.core.EventCollector;
 import pl.pwr.sztuczneoko.core.Property;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -26,8 +25,6 @@ public class FilterPropertiesActivity extends soActivity{
 		propList = core.getFilterProperties();
 		listView = (ListView) findViewById(R.id.filterPropList);
 		listView.setAdapter(new PropertiesListAdapter(this,propList));	    
-		((EventCollector)core).restorePreferences(propList);
-		((PropertiesListAdapter)listView.getAdapter()).notifyDataSetChanged();
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
@@ -36,7 +33,7 @@ public class FilterPropertiesActivity extends soActivity{
 				    ((PropertiesListAdapter)listView.getAdapter()).notifyDataSetChanged(); 
 			}
 		});	
-	}	
+	}
 	
 
 }

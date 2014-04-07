@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffeeeeee"
-    android:gravity="bottom|center"
+    android:gravity="center"
     android:orientation="vertical" >
 
     <Button
@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:onClick="turnOnOff"
         android:background="@color/Blue"
-        android:text="@string/w_cz_bluetooth"
+        android:text="włącz bluetooth"
         android:padding="15dp"
         android:textSize="20sp" />
 
@@ -26,13 +26,6 @@
         android:background="@color/Blue"
         android:text="@+string/findDevice" 
         android:onClick="findDevice"/>
-
-    <ProgressBar
-        android:id="@+id/progressBar1"
-        style="?android:attr/progressBarStyleSmall"
-        android:layout_width="31dp"
-        android:layout_height="31dp" 
-        android:visibility="invisible"/>
 
     <ListView
         android:id="@+id/BTDeviceList"

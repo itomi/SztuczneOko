@@ -55,10 +55,7 @@ public class GalleryActivity extends soActivity {
         
     }	
 	public void sendButtonClick(View view){
-		core.sendPhoto(this);
-		/*
-		 * TODO add different dialog to activity  
-		 */
+		core.sendPhoto();
 	}
 	public void setSelectedImg(ImageItem selectedImg,View v) {
 		if(lastView!=null)lastView.setSelected(false);
@@ -135,7 +132,8 @@ public class GalleryActivity extends soActivity {
 	                && (halfWidth / inSampleSize) > reqWidth) {
 	            inSampleSize *= 2;
 	        }
-	    }	
+	    }
+	
 	    return inSampleSize;
     }
     public static Bitmap decodeBitmapFromFile(String file, 
