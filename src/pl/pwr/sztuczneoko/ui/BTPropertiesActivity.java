@@ -31,7 +31,7 @@ public class BTPropertiesActivity extends soActivity{
 	
 	public void findDevice(View v){
 		
-		devices = core.getEnableDevices(this);
+		devices = core.getEnableDevices();
 		
 		listView = (ListView) findViewById(R.id.BTDeviceList);
 		
@@ -51,5 +51,5 @@ public class BTPropertiesActivity extends soActivity{
 	public void turnOnOff(View view){
 		// TODO switch bt status
 	}
-
+	
 }

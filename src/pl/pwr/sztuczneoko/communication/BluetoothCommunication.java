@@ -4,20 +4,16 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
 
-import junit.framework.Assert;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.Bundle;
-import android.util.Log;
 
 import com.google.common.collect.ImmutableSet;
 
-public class BluetoothCommunication implements Communication{
+public class BluetoothCommunication extends Activity implements Communication{
 
 	private static final int RESULT_CODE = 0xDEADBEEF;
 
@@ -27,41 +23,36 @@ public class BluetoothCommunication implements Communication{
 	
 	private Set<Device> cachedDevices = new ConcurrentSkipListSet<Device>();
 	
-	BroadcastReceiver discoveryReceiver = new BroadcastReceiver() {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			String action = intent.getAction();
-			
-			if(BluetoothDevice.ACTION_FOUND.equals(action)) {
-				BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-				cachedDevices.add(new Device(device));
-			}
-		}
-	};
-	
-	IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+	private BroadcastReceiver discoveryReceiver;
 	
 	private BluetoothCommunication() {
-		super();
-
+		discoveryReceiver = new BroadcastReceiver() {
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				String action = intent.getAction();
+				
+				if(BluetoothDevice.ACTION_FOUND.equals(action)) {
+					BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+					cachedDevices.add(new Device(device));
+				}
+			}
+		};
 	}
 	
 	@Override
 	public Set<Device> getCachedDevices() {
 		return ImmutableSet.copyOf(cachedDevices);
 	}
-	
+
 	@Override
-	public Set<Device> getDevicesByInquiry(Activity activity) throws Exception {
-		activity.registerReceiver(discoveryReceiver, filter);
-		
+	public Set<Device> getDevicesByInquiry() throws Exception {
 		if(!ADAPTER.isDiscovering()) {
 			beginDiscovery();
 		} else {
 			ADAPTER.cancelDiscovery();
 			beginDiscovery();
 		}
-		
+			
 		return this.cachedDevices;
 	}
 
@@ -74,13 +65,17 @@ public class BluetoothCommunication implements Communication{
 	@Override
 	public boolean isDeviceAbleToCommunicateUsingService(Device device,
 			Service service) {
-		Set<Service> deviceKnownServices = device.getDeviceServices();
-		return deviceKnownServices.contains(service);
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	@Override
-	public void prepareCommunicationBundle() throws Exception {
-		checkPreconditions();
+	public void prepareCommunicationBundle() {
+	    if (!ADAPTER.isEnabled()){
+	        Intent enableBT = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+	        startActivityForResult(enableBT, RESULT_CODE);
+	    }
+		
 	}
 
 	private void checkPreconditions() throws Exception {
@@ -106,10 +101,5 @@ public class BluetoothCommunication implements Communication{
 	static BluetoothAdapter getAdapter() {
 		return ADAPTER;
 	}
-
-	@Override
-	public boolean isBusy() {
-		Assert.assertNotNull(ADAPTER);
-		return ADAPTER.isDiscovering();
-	}
+	
 }
