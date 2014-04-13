@@ -5,17 +5,28 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
+import com.google.common.collect.ImmutableSet;
+
+import pl.pwr.sztuczneoko.communication.BluetoothCommunication;
 import pl.pwr.sztuczneoko.communication.Communication;
+import pl.pwr.sztuczneoko.communication.CommunicationProvider;
+import pl.pwr.sztuczneoko.communication.CommunicationType;
+import pl.pwr.sztuczneoko.communication.Device;
 import pl.pwr.sztuczneoko.imageProcessor.ImageProcessor;
 import pl.pwr.sztuczneoko.ui.*;
 import android.app.Activity;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,19 +35,30 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.View;
+import android.widget.Adapter;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 public class EventCollector implements EventCollectorInterface{
+	private static final int CHECK_TIME = 500;
+	
 	private Activity activity;
 	private Communication comm;
 	private ImageProcessor imgProc;
+	
 	private ArrayList<ExternDevice> edList;
 	private ArrayList<Property> camPropList = new ArrayList<Property>();
 	private ArrayList<Property> filterPropList = new ArrayList<Property>();
+	
 	private byte[] img;
 	private String imgName;
+	
 	protected static final String PREFERENCES_NAME = "preferences";
 	protected SharedPreferences preferences;
+	
 	@Override
 	public void setCurrentImg(byte[] data) {		
 		img = data;

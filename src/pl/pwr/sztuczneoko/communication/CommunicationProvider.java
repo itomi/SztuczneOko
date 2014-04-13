@@ -11,23 +11,24 @@ public class CommunicationProvider {
 	 * 			chosen type of communication, can be found {@link CommunicationType}
 	 * @return
 	 * 			returns instance of <code>Communication</code> implementation, chosen by developer
-	 * @throws InstantiationException
-	 * @throws IllegalAccessException
-	 * @throws IllegalArgumentException
-	 * @throws InvocationTargetException
+	 * @throws Exception 
+	 * 			when bundle preparation failed to properly initialize module
 	 */
-	public static Communication provideCommunication(CommunicationType type) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	public static Communication provideCommunication(CommunicationType type) throws Exception {
 		Class communicationClassType = type.getCommunicationType();
-		Constructor[] ctors = communicationClassType.getConstructors();
+		Constructor[] ctors = communicationClassType.getDeclaredConstructors();
 		Constructor ctor = null;
 		
 		for( int i = 0 ; i < ctors.length; i++ ) {
 			ctor = ctors[i];
-			if( ctor.getGenericExceptionTypes().length == 0)
+			if( ctor.getParameterTypes().length == 0) {
+				ctor.setAccessible(true);
 				break;
+			}
 		}
 	
-		Communication comm = (Communication) ctor.newInstance();	
+		Communication comm = (Communication) ctor.newInstance();
+		ctor.setAccessible(false);
 		comm.prepareCommunicationBundle();
 		return comm;
 		

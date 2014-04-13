@@ -2,9 +2,11 @@ package pl.pwr.sztuczneoko.communication;
 
 import java.util.Set;
 
+import android.app.Activity;
+
 public interface Communication {
 	/**
-	 * Method that is gogin to return cached devices, after the first inquiry ,
+	 * Method that is going to return cached devices, after the first inquiry ,
 	 * when called as a first time in application will return paired devices only.
 	 * 
 	 * @return set of {@link pl.pwr.sztuczneoko..communication.Device}
@@ -26,7 +28,17 @@ public interface Communication {
 	 */
 	boolean isDeviceAbleToCommunicateUsingService(Device device, Service service);
 	
-	abstract void prepareCommunicationBundle();
+	/**
+	 * Method checks if the Communication module is busy.
+	 * 
+	 * @return
+	 * 		true if busy, false otherwise
+	 */
+	boolean isBusy();
+	
+	
+	
+	abstract void prepareCommunicationBundle() throws Exception;
 
 	void registerBTReceiver(Activity btPropertiesActivity);
 

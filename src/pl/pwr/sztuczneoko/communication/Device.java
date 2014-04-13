@@ -3,7 +3,6 @@ package pl.pwr.sztuczneoko.communication;
 import java.util.Set;
 import java.util.UUID;
 
-import android.bluetooth.BluetoothClass;
 import android.bluetooth.BluetoothDevice;
 import android.os.ParcelUuid;
 
@@ -19,6 +18,18 @@ public class Device {
 		this.device = device;
 	}
 
+	public String getName() {
+		return device.getName();
+	}
+	
+	public String getAddress() {
+		return device.getAddress();
+	}
+	
+	public String getDescription() {
+		return device.getName() + " " + device.getAddress() + " " + device.getBluetoothClass();
+	}
+	
 	void addService(Service service) {
 		this.services.add(service);
 	}
@@ -33,8 +44,11 @@ public class Device {
 			for( ParcelUuid parceledUuid : services ) {
 				UUID uuid = parceledUuid.getUuid();
 				Service foundService = Service.getServiceByUUID(uuid);
-				
-				this.services.add(foundService);
+				if( foundService == null ) {
+					this.services.add(Service.UNKNOWN);
+				} else {
+					this.services.add(foundService);
+				}
 			}
 		}
 		return services;
