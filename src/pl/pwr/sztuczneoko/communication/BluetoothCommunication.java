@@ -21,7 +21,7 @@ public class BluetoothCommunication extends Activity implements Communication{
 
 	private static BluetoothAdapter ADAPTER = BluetoothAdapter.getDefaultAdapter();
 	
-	private Set<Device> cachedDevices = new ConcurrentSkipListSet<Device>();
+	private Set<Device> cachedDevices = new HashSet<Device>();
 	
 	private BroadcastReceiver discoveryReceiver;
 	
@@ -45,15 +45,14 @@ public class BluetoothCommunication extends Activity implements Communication{
 	}
 
 	@Override
-	public Set<Device> getDevicesByInquiry() throws Exception {
+	public void getDevicesByInquiry() throws Exception {
+				
 		if(!ADAPTER.isDiscovering()) {
 			beginDiscovery();
 		} else {
 			ADAPTER.cancelDiscovery();
 			beginDiscovery();
 		}
-			
-		return this.cachedDevices;
 	}
 
 	private void beginDiscovery() throws Exception {
@@ -70,18 +69,18 @@ public class BluetoothCommunication extends Activity implements Communication{
 	}
 
 	@Override
-	public void prepareCommunicationBundle() {
-	    if (!ADAPTER.isEnabled()){
-	        Intent enableBT = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-	        startActivityForResult(enableBT, RESULT_CODE);
-	    }
-		
+	public void prepareCommunicationBundle() throws Exception {
+		checkPreconditions();
 	}
 
 	private void checkPreconditions() throws Exception {
 		Set<String> preconditions = gatherPreconditions();
 		if(!preconditions.isEmpty()) {
-			throw new Exception(PRECONDITION);
+			StringBuilder builder = new StringBuilder();
+			for( final String string : preconditions){
+				builder.append("["+string+"]");
+			}
+			throw new Exception(PRECONDITION + ":" + builder.toString());
 		}
 	}
 
@@ -101,5 +100,20 @@ public class BluetoothCommunication extends Activity implements Communication{
 	static BluetoothAdapter getAdapter() {
 		return ADAPTER;
 	}
-	
+
+	@Override
+	public boolean isBusy() {
+		Assert.assertNotNull(ADAPTER);
+		return ADAPTER.isDiscovering();
+	}
+
+	@Override
+	public void registerBTReceiver(Activity btPropertiesActivity) {
+		btPropertiesActivity.registerReceiver(discoveryReceiver, filter);
+	}
+
+	@Override
+	public void unregisterBTReceiver(Activity btPropertiesActivity) {
+		btPropertiesActivity.unregisterReceiver(discoveryReceiver);		
+	}
 }

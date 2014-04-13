@@ -16,7 +16,7 @@ public interface Communication {
 	 * @return set of {@link pl.pwr.sztuczneoko..communication.Device}
 	 * @throws Exception 
 	 */
-	Set<Device> getDevicesByInquiry() throws Exception;
+	void getDevicesByInquiry() throws Exception;
 	
 	/**
 	 * Method that checks whether {@link Device} is able to communicate with specific Service protocol.
@@ -27,4 +27,8 @@ public interface Communication {
 	boolean isDeviceAbleToCommunicateUsingService(Device device, Service service);
 	
 	abstract void prepareCommunicationBundle();
+
+	void registerBTReceiver(Activity btPropertiesActivity);
+
+	void unregisterBTReceiver(Activity btPropertiesActivity);
 }

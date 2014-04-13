@@ -15,4 +15,6 @@ public interface EventCollectorInterface {
 	public void setCurrentImg(byte[] data);
 	public void switchProp(Property property); 
 	public void sendPhoto(Activity a);
+	public void registerBTActivity(Activity btPropertiesActivity);
+	public void unregisterBTActivity(Activity btPropertiesActivity);
 }

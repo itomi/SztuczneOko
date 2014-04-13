@@ -56,6 +56,24 @@ public class EventCollector implements EventCollectorInterface{
 		camPropList.add(new Property("realTime", false));
 		filterPropList.add(new Property("autoFilter", true));
 		camPropList.add(new Property("flash",false));
+		try {
+			comm = CommunicationProvider.provideCommunication(CommunicationType.BLUETOOTH);
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	public EventCollector(Activity a) {
 		this();
@@ -139,9 +157,32 @@ public class EventCollector implements EventCollectorInterface{
 	}
 	@Override
 	public ArrayList<ExternDevice> getEnableDevices() {
-		edList = new ArrayList<ExternDevice>(Arrays.asList(
-				new ExternDevice("test",false,"cos"),
-				new ExternDevice("test1",false,"cos"))); 
+		//TODO: asynchronous device discovery, needs to be repaired i think, we need refreshing the view
+		
+		edList = new ArrayList<ExternDevice>();
+		
+		Set<Device> devices = ImmutableSet.of();
+		try {
+			comm.getDevicesByInquiry();
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		while(comm.isBusy()) {
+			try {
+				Thread.sleep(CHECK_TIME);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		devices = comm.getCachedDevices();
+		
+		for( final Device device : devices ) {
+			edList.add(new ExternDevice(device));
+		}				
+
 		return edList;
 	}
 	@Override
@@ -223,5 +264,14 @@ public class EventCollector implements EventCollectorInterface{
 			 int property = preferences.getInt(prop.getName(), 0);
 			 prop.setState(property);
 		}		
+	}
+	@Override
+	public void registerBTActivity(Activity btPropertiesActivity) {
+		comm.registerBTReceiver(btPropertiesActivity);
+	}
+	
+	@Override
+	public void unregisterBTActivity(Activity btPropertiesActivity) {
+		comm.unregisterBTReceiver(btPropertiesActivity);
 	}
 }
