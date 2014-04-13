@@ -32,13 +32,27 @@ public class BTPropertiesActivity extends soActivity{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_btproperties);
-		core.newBtActivity(this);
+		//core.registerBTActivity(this);
 	}
+	
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        core.destroyBtActivity();
+      //  core.unregisterBTActivity(this);
     }
+    
+    @Override
+    protected void onResume() {
+    	super.onResume();
+    	core.registerBTActivity(this);
+    }
+    
+    @Override
+    protected void onPause() {
+    	super.onPause();
+    	core.unregisterBTActivity(this);
+    }
+    
 	public void findDevice(View v){
 		
 		devices = core.getEnableDevices();
@@ -62,10 +76,4 @@ public class BTPropertiesActivity extends soActivity{
 	public void turnOnOff(View view){
 		// TODO switch bt status
 	}
-	 private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
-	        @Override
-	        public void onReceive(Context context, Intent intent) {
-	        	core.sendBTonRecieve(intent);
-	        }
-	    };
 }

@@ -178,14 +178,14 @@ public class EventCollector implements EventCollectorInterface{
 		};
 	}
 	@Override
-	public ArrayList<ExternDevice> getEnableDevices(final Activity activity) {
+	public ArrayList<ExternDevice> getEnableDevices() {
 		//TODO: asynchronous device discovery, needs to be repaired i think, we need refreshing the view
 		
 		edList = new ArrayList<ExternDevice>();
 		
 		Set<Device> devices = ImmutableSet.of();
 		try {
-			devices = comm.getDevicesByInquiry(activity);
+			comm.getDevicesByInquiry();
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -286,5 +286,14 @@ public class EventCollector implements EventCollectorInterface{
 			 int property = preferences.getInt(prop.getName(), 0);
 			 prop.setState(property);
 		}		
+	}
+	@Override
+	public void registerBTActivity(Activity btPropertiesActivity) {
+		comm.registerBTReceiver(btPropertiesActivity);
+	}
+	
+	@Override
+	public void unregisterBTActivity(Activity btPropertiesActivity) {
+		comm.unregisterBTReceiver(btPropertiesActivity);
 	}
 }
