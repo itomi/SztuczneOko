@@ -5,34 +5,60 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
+import com.google.common.collect.ImmutableSet;
 
+import pl.pwr.sztuczneoko.communication.BluetoothCommunication;
 import pl.pwr.sztuczneoko.communication.Communication;
+import pl.pwr.sztuczneoko.communication.CommunicationProvider;
+import pl.pwr.sztuczneoko.communication.CommunicationType;
+import pl.pwr.sztuczneoko.communication.Device;
 import pl.pwr.sztuczneoko.imageProcessor.ImageProcessor;
 import pl.pwr.sztuczneoko.ui.*;
+import android.app.Activity;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.View;
+import android.widget.Adapter;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 public class EventCollector implements EventCollectorInterface{
-
+	private static final int CHECK_TIME = 500;
+	
+	private Activity activity;
 	private Communication comm;
 	private ImageProcessor imgProc;
+	
 	private ArrayList<ExternDevice> edList;
 	private ArrayList<Property> camPropList = new ArrayList<Property>();
 	private ArrayList<Property> filterPropList = new ArrayList<Property>();
+	
 	private byte[] img;
 	private String imgName;
+	
+	protected static final String PREFERENCES_NAME = "preferences";
+	protected SharedPreferences preferences;
+	
 	@Override
 	public void setCurrentImg(byte[] data) {		
 		img = data;
@@ -46,15 +72,64 @@ public class EventCollector implements EventCollectorInterface{
 		img = stream.toByteArray();
 		imgName = data.getTitle();
 	}
-
 	public EventCollector() {
 		camPropList.add(new Property("faceDetect", false));
 		camPropList.add(new Property("voiceDescription", false));
 		camPropList.add(new Property("realTime", false));
 		filterPropList.add(new Property("autoFilter", true));
 		camPropList.add(new Property("flash",false));
+		try {
+			comm = CommunicationProvider.provideCommunication(CommunicationType.BLUETOOTH);
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
-	
+	public EventCollector(Activity a) {
+		this();
+		this.activity = a;
+	}
+    class send extends AsyncTask<Void, Void, Void> {
+   	 
+        Activity activity;
+     
+        public send(Activity activity) {
+            this.activity = activity;
+        }
+     
+        @Override
+        protected void onPreExecute() {
+           activity.showDialog(1);
+        }
+     
+        @Override
+        protected Void doInBackground(Void... arg0) {
+        	try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+            return null;
+        }
+     
+        @Override
+        protected void onPostExecute(Void result) {
+            activity.removeDialog(1);            
+        }
+     
+    }
 	@Override
 	public EnrtyMenuEvents getEntryMenuEvents() {		
 			
@@ -103,10 +178,33 @@ public class EventCollector implements EventCollectorInterface{
 		};
 	}
 	@Override
-	public ArrayList<ExternDevice> getEnableDevices() {
-		edList = new ArrayList<ExternDevice>(Arrays.asList(
-				new ExternDevice("test",false,"cos"),
-				new ExternDevice("test1",false,"cos"))); 
+	public ArrayList<ExternDevice> getEnableDevices(final Activity activity) {
+		//TODO: asynchronous device discovery, needs to be repaired i think, we need refreshing the view
+		
+		edList = new ArrayList<ExternDevice>();
+		
+		Set<Device> devices = ImmutableSet.of();
+		try {
+			devices = comm.getDevicesByInquiry(activity);
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		while(comm.isBusy()) {
+			try {
+				Thread.sleep(CHECK_TIME);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		devices = comm.getCachedDevices();
+		
+		for( final Device device : devices ) {
+			edList.add(new ExternDevice(device));
+		}				
+
 		return edList;
 	}
 	@Override
@@ -127,11 +225,11 @@ public class EventCollector implements EventCollectorInterface{
 	@Override
 	public void switchProp(Property property) {
 		property.setState((property.isState()?false:true));
-		
-		//set property TRUE
+		savePreferences(property);
 	}
 	@Override
-	public void sendPhoto() {		
+	public void sendPhoto(Activity a) {		
+		new send(a).execute();
 		saveImg(img);
 		Log.d("send", "send image " + imgName);
 		/*
@@ -141,8 +239,6 @@ public class EventCollector implements EventCollectorInterface{
 	/*
 	 * test saving on sdCard
 	 */
-	
-	
 	
 	private boolean saveImg(byte[] data) {
 		
@@ -177,5 +273,18 @@ public class EventCollector implements EventCollectorInterface{
 		return true;
 	}
 	
+	private void savePreferences(Property prop){
+		preferences = activity.getSharedPreferences(PREFERENCES_NAME, Activity.MODE_PRIVATE);
+	    SharedPreferences.Editor preferencesEditor = preferences.edit();
+	    preferencesEditor.putInt(prop.getName(), prop.isState() ? 1 : 0);
+	    preferencesEditor.commit();	
+	}
 	
+	public void restorePreferences(ArrayList<Property> propList){
+		preferences = activity.getSharedPreferences(PREFERENCES_NAME, Activity.MODE_PRIVATE);
+		for(Property prop : propList){
+			 int property = preferences.getInt(prop.getName(), 0);
+			 prop.setState(property);
+		}		
+	}
 }
