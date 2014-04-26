@@ -190,6 +190,7 @@ public class EventCollector implements EventCollectorInterface{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		if(comm == null) return edList;
 		
 		while(comm.isBusy()) {
 			try {
