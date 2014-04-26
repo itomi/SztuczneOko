@@ -289,11 +289,20 @@ public class EventCollector implements EventCollectorInterface{
 	}
 	@Override
 	public void registerBTActivity(Activity btPropertiesActivity) {
-		comm.registerBTReceiver(btPropertiesActivity);
+		try{
+			comm.registerBTReceiver(btPropertiesActivity);
+		}catch(NullPointerException ex){
+			Log.e("bt exception", "null pointer when bt service is off when unregister receeiver");
+		}
+		
 	}
 	
 	@Override
 	public void unregisterBTActivity(Activity btPropertiesActivity) {
-		comm.unregisterBTReceiver(btPropertiesActivity);
+		try{
+			comm.unregisterBTReceiver(btPropertiesActivity);
+		}catch(NullPointerException ex){
+			Log.e("bt exception", "null pointer when bt service is off when unregister receeiver");
+		}
 	}
 }

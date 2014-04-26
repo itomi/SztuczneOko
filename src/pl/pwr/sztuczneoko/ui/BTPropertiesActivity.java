@@ -75,5 +75,9 @@ public class BTPropertiesActivity extends soActivity{
 	
 	public void turnOnOff(View view){
 		// TODO switch bt status
+		if (!BluetoothAdapter.getDefaultAdapter().isEnabled()) {
+		    Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+		    startActivityForResult(enableBtIntent, 1);
+		}
 	}
 }
