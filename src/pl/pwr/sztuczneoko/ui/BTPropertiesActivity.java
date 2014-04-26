@@ -4,6 +4,12 @@ import java.util.ArrayList;
 
 import pl.pwr.sztuczneoko.core.ExternDevice;
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,12 +32,30 @@ public class BTPropertiesActivity extends soActivity{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_btproperties);
-	
+		//core.registerBTActivity(this);
 	}
 	
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+      //  core.unregisterBTActivity(this);
+    }
+    
+    @Override
+    protected void onResume() {
+    	super.onResume();
+    	core.registerBTActivity(this);
+    }
+    
+    @Override
+    protected void onPause() {
+    	super.onPause();
+    	core.unregisterBTActivity(this);
+    }
+    
 	public void findDevice(View v){
 		
-		devices = core.getEnableDevices(this);
+		devices = core.getEnableDevices();
 		
 		listView = (ListView) findViewById(R.id.BTDeviceList);
 		
@@ -48,8 +72,12 @@ public class BTPropertiesActivity extends soActivity{
 		
 	}
 	
+	
 	public void turnOnOff(View view){
 		// TODO switch bt status
+		if (!BluetoothAdapter.getDefaultAdapter().isEnabled()) {
+		    Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+		    startActivityForResult(enableBtIntent, 1);
+		}
 	}
-
 }
