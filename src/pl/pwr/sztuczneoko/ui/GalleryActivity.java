@@ -41,16 +41,17 @@ public class GalleryActivity extends soActivity {
 	private GalleryGridViewAdapter GridAdapter;
 	private ArrayList imageItems = new ArrayList(); 
 	private ImageItem selectedImg;
+	private int imgCounter;
 	private View lastView;
 	public static final int PLEASE_WAIT_DIALOG = 1;
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState) {		
 		super.onCreate(savedInstanceState);
+		imgCounter = 0;
 		setContentView(R.layout.activity_gallery);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-		new getData(this).execute();
 		gridView = (GridView) findViewById(R.id.gridView);		
-        GridAdapter = new GalleryGridViewAdapter(this, R.layout.row_grid, imageItems);
+        GridAdapter = new GalleryGridViewAdapter(this, R.layout.row_grid, imageItems,Environment.getExternalStorageDirectory().getAbsolutePath()+"/soAppDir/myImages/");
         gridView.setAdapter(GridAdapter);
         
     }	
@@ -70,87 +71,9 @@ public class GalleryActivity extends soActivity {
 	
 	public Dialog onCreateDialog(int dialogId) {
         ProgressDialog dialog = new ProgressDialog(this);
-        dialog.setTitle("Wczytywanie galerii");
+        dialog.setTitle("filtracja i wysyłanie zdjęcia");
         dialog.setMessage("Proszę czekać....");
         dialog.setCancelable(true);
         return dialog;
-    }
- 
-    class getData extends AsyncTask<Void, Void, Void> {
-    	 
-        Activity activity;
-     
-        public getData(Activity activity) {
-            this.activity = activity;
-        }
-     
-        @Override
-        protected void onPreExecute() {
-           activity.showDialog(GalleryActivity.PLEASE_WAIT_DIALOG);
-        }
-     
-        @Override
-        protected Void doInBackground(Void... arg0) {
-        	final Pattern p = Pattern.compile(".*\\.jpeg");
-
-            File soDir = new File(Environment
-                    .getExternalStorageDirectory()
-                    .getAbsolutePath()+"/soAppDir/myImages/");
-            
-            final File[] files = soDir.listFiles(new FileFilter(){
-                @Override
-                public boolean accept(File file) {
-                    return p.matcher(file.getName()).matches();
-                }
-            });
-            for (File file : files) {
-            	Bitmap bitmap = decodeBitmapFromFile(file.getAbsolutePath(), 100, 100);
-    		    imageItems.add(new ImageItem(bitmap, file.getName()));    		    
-    		}   
-            return null;
-        }
-     
-        @Override
-        protected void onPostExecute(Void result) {
-            activity.removeDialog(GalleryActivity.PLEASE_WAIT_DIALOG);            
-            ((GalleryGridViewAdapter)gridView.getAdapter()).notifyDataSetChanged();
-        }
-     
-    }
-    public static int calculateInSampleSize(
-    		BitmapFactory.Options options, int reqWidth, int reqHeight) {
-	    // Raw height and width of image
-	    final int height = options.outHeight;
-	    final int width = options.outWidth;
-	    int inSampleSize = 1;
-	
-	    if (height > reqHeight || width > reqWidth) {
-	
-	        final int halfHeight = height / 2;
-	        final int halfWidth = width / 2;
-	
-	        // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-	        // height and width larger than the requested height and width.
-	        while ((halfHeight / inSampleSize) > reqHeight
-	                && (halfWidth / inSampleSize) > reqWidth) {
-	            inSampleSize *= 2;
-	        }
-	    }	
-	    return inSampleSize;
-    }
-    public static Bitmap decodeBitmapFromFile(String file, 
-    		int reqWidth, int reqHeight) {
-
-        // First decode with inJustDecodeBounds=true to check dimensions
-        final BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(file, options);
-
-        // Calculate inSampleSize
-        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
-
-        // Decode bitmap with inSampleSize set
-        options.inJustDecodeBounds = false;
-        return BitmapFactory.decodeFile(file, options);
     }
 }

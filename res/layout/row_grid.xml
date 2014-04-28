@@ -10,12 +10,12 @@
     android:background="@drawable/grid_selector"
     >
  
-    <ImageView
+    <ViewSwitcher
         android:id="@+id/image"
         android:layout_width="100dp"
         android:layout_height="100dp" >
 
-    </ImageView>
+    </ViewSwitcher>
  
     <TextView
         android:id="@+id/text"
