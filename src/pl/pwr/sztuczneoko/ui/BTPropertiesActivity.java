@@ -1,16 +1,26 @@
 package pl.pwr.sztuczneoko.ui;
 
+import java.io.File;
+import java.io.FileFilter;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 import pl.pwr.sztuczneoko.core.ExternDevice;
+import pl.pwr.sztuczneoko.core.ImageItem;
 
+import android.app.Activity;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -53,25 +63,9 @@ public class BTPropertiesActivity extends soActivity{
     	core.unregisterBTActivity(this);
     }
     
-	public void findDevice(View v){
-		
-		devices = core.getEnableDevices();
-		
-		listView = (ListView) findViewById(R.id.BTDeviceList);
-		
-		listView.setAdapter(new DeviceListAdapter(this,devices));	   
-		listView.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-				     int position, long id) {					
-				    core.connectToDevice(devices.get(position));
-				    Log.d("conn", "polaczono z " + devices.get(position));
-				    ((DeviceListAdapter)listView.getAdapter()).notifyDataSetChanged(); 
-			}
-		});
-		
+	public void findDevice(View v){		
+		new EnableDevice(this).execute();
 	}
-	
 	
 	public void turnOnOff(View view){
 		// TODO switch bt status
@@ -80,4 +74,51 @@ public class BTPropertiesActivity extends soActivity{
 		    startActivityForResult(enableBtIntent, 1);
 		}
 	}
+	
+	private class EnableDevice extends AsyncTask<Void, Void, Void> {
+	   	 
+        Activity activity;
+     
+        public EnableDevice(Activity activity) {
+            this.activity = activity;
+        }
+     
+        @Override
+        protected void onPreExecute() {
+           activity.showDialog(GalleryActivity.PLEASE_WAIT_DIALOG);
+        }
+     
+        @Override
+        protected Void doInBackground(Void... arg0) {
+        	devices = core.getEnableDevices();        	
+        	return null;
+        	
+        }
+     
+        @Override
+        protected void onPostExecute(Void result) {
+            activity.removeDialog(GalleryActivity.PLEASE_WAIT_DIALOG);
+            listView = (ListView) findViewById(R.id.BTDeviceList);
+    		
+    		listView.setAdapter(new DeviceListAdapter(activity,devices));	   
+    		listView.setOnItemClickListener(new OnItemClickListener() {
+    			@Override
+    			public void onItemClick(AdapterView<?> parent, View view,
+    				     int position, long id) {					
+    				    core.connectToDevice(devices.get(position));
+    				    Log.d("conn", "polaczono z " + devices.get(position));
+    				    ((DeviceListAdapter)listView.getAdapter()).notifyDataSetChanged(); 
+    			}
+    		});
+        }
+     
+    }
+	
+	public Dialog onCreateDialog(int dialogId) {
+        ProgressDialog dialog = new ProgressDialog(this);
+        dialog.setTitle("szukanie urządzeń bluethoot");
+        dialog.setMessage("Proszę czekać....");
+        dialog.setCancelable(true);
+        return dialog;
+    }
 }
