@@ -5,6 +5,7 @@
  */
 package pl.pwr.sztuczneoko.ui;
 import pl.pwr.sztuczneoko.ui.R;
+import android.content.Intent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -56,7 +57,8 @@ public class EntryPointActivity extends soActivity implements OnItemClickListene
 				break;
 			case 2:
 				startActivity(core.getEntryMenuEvents().runBrowsePhotoActivity(this));
-				break;				
+				break;	
+			
 		}
 		
 		/*String selectedValue = listView.getAdapter().getItem(position).toString();

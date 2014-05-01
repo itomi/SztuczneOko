@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <string name="menu_toggle_tile_numbers">Show/hide tile numbers</string>
+    <string name="menu_start_new_game">Start new game</string>
+    
     <string name="app_name">BaseApplication</string>
     <string name="faceDetect">wykrywanie twarzy</string>
     <string name="voiceDescription">słowny opis zdjęcia</string>

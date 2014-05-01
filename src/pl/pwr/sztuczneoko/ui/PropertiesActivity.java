@@ -1,4 +1,6 @@
 package pl.pwr.sztuczneoko.ui;
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -42,6 +44,9 @@ public class PropertiesActivity extends soActivity implements OnItemClickListene
 				break;
 			case 3:
 				//startActivity(core.getPropertiesMenuEvents().runAboutActivity(this));
+				//test opencv lib
+				startActivity(new Intent((Context)this,Puzzle15Activity.class));
+				
 				break;
 		}
 	}
