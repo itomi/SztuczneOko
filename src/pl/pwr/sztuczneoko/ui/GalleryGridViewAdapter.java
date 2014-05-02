@@ -36,6 +36,7 @@ public class GalleryGridViewAdapter extends ArrayAdapter implements ImageLoadLis
     private Context context;
     private int layoutResourceId;
     private ArrayList data = new ArrayList();
+    private ArrayList<String> fileNames = new ArrayList<String>();
     private HashSet imgSet;
     private static final int IMAGEVIEWINDEX = 1;
     private static final int PROGRESSBARINDEX = 0;
@@ -90,7 +91,8 @@ public class GalleryGridViewAdapter extends ArrayAdapter implements ImageLoadLis
 		}
 		if (holder == null || 
 			!holder.imageTitle.equals(lPath)) {	
-			holder.imageTitle.setText(new File(lPath).getName());   
+			holder.imageTitle.setText(new File(lPath).getName());
+			if(!fileNames.contains(lPath))fileNames.add(lPath);
 			ImageView lImageView = (ImageView) holder.switcher.getChildAt(1);
 			holder.switcher.setDisplayedChild(PROGRESSBARINDEX);
 			if(data.size()<position+1){
@@ -103,9 +105,20 @@ public class GalleryGridViewAdapter extends ArrayAdapter implements ImageLoadLis
 		row.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("select",((ImageItem)data.get(id)).getTitle() + " at row : "+ id );
-                ((GalleryActivity)context).setSelectedImg((ImageItem)data.get(id),v);       
-                v.setSelected(true);                
+            	if(id>data.size()-1){
+            		Collections.sort(fileNames);
+                    Log.d("select", fileNames.get(id)+ " at row : "+ id );
+                    Bitmap lBitmap = ImageLoader.decodeBitmapFromFile(fileNames.get(id), 100, 100);
+
+                    ((GalleryActivity)context).setSelectedImg(
+                    		new ImageItem(lBitmap,new File(fileNames.get(id)).getName()),v);       
+                    v.setSelected(true);            		
+            	}
+            	else{
+	                Log.d("select",((ImageItem)data.get(id)).getTitle() + " at row : "+ id );
+	                ((GalleryActivity)context).setSelectedImg((ImageItem)data.get(id),v);       
+	                v.setSelected(true);
+            	}
             }
         });	
 		return row;
@@ -130,7 +143,7 @@ public class GalleryGridViewAdapter extends ArrayAdapter implements ImageLoadLis
 
 				aImageView.setImageBitmap(imageItem.getImage());
 				aViewSwitcher.setDisplayedChild(IMAGEVIEWINDEX);	
-				
+				((GalleryActivity)context).loadLastView();
 			}
 		});
 

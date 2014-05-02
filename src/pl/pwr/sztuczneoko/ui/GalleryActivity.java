@@ -76,4 +76,8 @@ public class GalleryActivity extends soActivity {
         dialog.setCancelable(true);
         return dialog;
     }
+	public void loadLastView() {
+		if(lastView!=null)
+			lastView.setSelected(true);
+	}
 }
