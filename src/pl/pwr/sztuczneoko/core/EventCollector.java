@@ -22,6 +22,7 @@ import pl.pwr.sztuczneoko.communication.Communication;
 import pl.pwr.sztuczneoko.communication.CommunicationProvider;
 import pl.pwr.sztuczneoko.communication.CommunicationType;
 import pl.pwr.sztuczneoko.communication.Device;
+import pl.pwr.sztuczneoko.imageProcessor.ImageFilter;
 import pl.pwr.sztuczneoko.imageProcessor.ImageProcessor;
 import pl.pwr.sztuczneoko.ui.*;
 import android.app.Activity;
@@ -31,6 +32,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -231,8 +233,16 @@ public class EventCollector implements EventCollectorInterface{
 	@Override
 	public void sendPhoto(Activity a) {		
 		new send(a).execute();
-		saveImg(img);
+		saveImg(img,imgName,"/soAppDir/myImages/");
 		Log.d("send", "send image " + imgName);
+		
+		ByteArrayOutputStream stream = new ByteArrayOutputStream();
+		//Bitmap bm = BitmapFactory.decodeByteArray(img , 0, img.length);
+		BitmapFactory.Options options = new BitmapFactory.Options();
+		Bitmap bitmap = BitmapFactory.decodeByteArray(img, 0, img.length, options);
+		new ImageFilter(bitmap).grayFilter(bitmap).compress(Bitmap.CompressFormat.PNG, 100, stream);
+		
+		saveImg(stream.toByteArray(),"filtered-"+imgName,"/soAppDir/myFilterImages/");
 		/*
 		 * TODO send to ImageProcessor and after it to external device
 		 */
@@ -241,15 +251,15 @@ public class EventCollector implements EventCollectorInterface{
 	 * test saving on sdCard
 	 */
 	
-	private boolean saveImg(byte[] data) {
+	private boolean saveImg(byte[] data,String name,String location) {
 		
-		String savePath = Environment.getExternalStorageDirectory() + "/soAppDir/myImages/";
+		String savePath = Environment.getExternalStorageDirectory() + location;
 		File sdSaveDir = new File(savePath);
 
 		sdSaveDir.mkdirs();
 
 		try {
-			String filePath = sdSaveDir.toString() +"/"+ imgName;
+			String filePath = sdSaveDir.toString() +"/"+ name;
 			if(new File(filePath).exists()){
 				Log.d("save", "file is already exist");
 				return true;
@@ -273,6 +283,7 @@ public class EventCollector implements EventCollectorInterface{
 
 		return true;
 	}
+	
 	
 	private void savePreferences(Property prop){
 		preferences = activity.getSharedPreferences(PREFERENCES_NAME, Activity.MODE_PRIVATE);
