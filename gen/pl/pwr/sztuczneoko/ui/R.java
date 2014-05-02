@@ -65,7 +65,7 @@ containing a value of this type.
     }
     public static final class id {
         public static final int BTDeviceList=0x7f040006;
-        public static final int RelativeLayout1=0x7f040011;
+        public static final int RelativeLayout1=0x7f040013;
         public static final int any=0x7f040000;
         public static final int back=0x7f040001;
         public static final int button_capture=0x7f04000a;
@@ -73,20 +73,22 @@ containing a value of this type.
         public static final int button_photo_again=0x7f04000b;
         public static final int camPropList=0x7f040007;
         public static final int camera_preview=0x7f040008;
-        public static final int container=0x7f04000f;
-        public static final int entryListMenu=0x7f040012;
-        public static final int filterPropList=0x7f04000c;
+        public static final int coloreffect=0x7f04000d;
+        public static final int container=0x7f040011;
+        public static final int entryListMenu=0x7f040014;
+        public static final int filterPropList=0x7f04000e;
         public static final int findDevices=0x7f040004;
         public static final int front=0x7f040002;
-        public static final int gridView=0x7f04000d;
-        public static final int image=0x7f040014;
-        public static final int label=0x7f040013;
-        public static final int label2=0x7f040016;
+        public static final int gridView=0x7f04000f;
+        public static final int image=0x7f040016;
+        public static final int label=0x7f040015;
+        public static final int label2=0x7f040018;
         public static final int progressBar1=0x7f040005;
-        public static final int propertiesListMenu=0x7f040010;
-        public static final int sendButton=0x7f04000e;
-        public static final int text=0x7f040015;
+        public static final int propertiesListMenu=0x7f040012;
+        public static final int sendButton=0x7f040010;
+        public static final int text=0x7f040017;
         public static final int turnOnOff=0x7f040003;
+        public static final int whitebalance=0x7f04000c;
     }
     public static final class layout {
         public static final int activity_btproperties=0x7f030000;

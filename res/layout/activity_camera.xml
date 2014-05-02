@@ -25,7 +25,7 @@
                 android:id="@+id/button_filter_photo"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.5"
+                android:layout_weight="0.2"
                 android:text="@+string/sendPhoto" 
                 android:onClick="filterPhotoClick"/>
 
@@ -33,7 +33,7 @@
                 android:id="@+id/button_capture"
                 android:layout_width="match_parent"
 		        android:layout_height="0dp"
-		        android:layout_weight="0.5"              
+		        android:layout_weight="0.2"              
                 android:text="@+string/capture" 
                 android:onClick="captureClick"/>
 
@@ -41,9 +41,23 @@
                 android:id="@+id/button_photo_again"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.5"
+                android:layout_weight="0.2"
                 android:text="@+string/nextPhoto" 
                 android:onClick="againPhotoClick"/>
+            <Button
+                android:id="@+id/whitebalance"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.2"
+                android:text="balans bieli" 
+                android:onClick="displayWhiteBalanceDialog"/>
+            <Button
+                android:id="@+id/coloreffect"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.2"
+                android:text="efekt kolorow" 
+                android:onClick="displayColorEffectDialog"/>
 
         </LinearLayout>
 
