@@ -76,8 +76,8 @@
             android:name="pl.pwr.sztuczneoko.ui.Puzzle15Activity"
             android:label="@string/app_name"
             android:screenOrientation="landscape"
-            android:configChanges="keyboardHidden|orientation" >
-
+            android:configChanges="keyboardHidden|orientation" 
+			android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
