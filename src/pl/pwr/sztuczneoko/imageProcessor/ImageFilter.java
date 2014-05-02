@@ -16,23 +16,16 @@ public class ImageFilter {
 	private Mat mGaussian;
 	private Mat mThreshold;
 	private Mat mIntermediateMat;
-	private Mat mTake;
-	private Mat image;
 	
-	public Mat takePicture(){
-			//Mat image;
-			
-			return mTake;
-	}
-    public Mat rgbFilter() {
+    public Mat rgbFilter(/*take Picture but what type*/) {
             // input frame has RGBA scale format
-        	mRgba = takePicture();
+        	//mRgba = takePicture();
             return mRgba;
     }
     
     public Mat grayFilter() {
             // input frame has Gray format
-        	//mRgba = takePistre();
+        	//mRgba = takePicture();
         	Imgproc.cvtColor(mRgba, mGray, Imgproc.COLOR_GRAY2RGBA, 4);
         	return mGray;
     }
