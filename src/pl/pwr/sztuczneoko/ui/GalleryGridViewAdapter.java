@@ -64,7 +64,7 @@ public class GalleryGridViewAdapter extends ArrayAdapter implements ImageLoadLis
     public View getView(int position, View convertView, ViewGroup parent) {
         row = convertView;
         holder = null;
-       
+        if(mDirectory.listFiles().length==0)Log.d("gallery", "empty gallery");
 		String lPath = (String)getItem(position);
 
 		if (row == null) {			

@@ -62,7 +62,7 @@ public class EventCollector implements EventCollectorInterface{
 	protected SharedPreferences preferences;
 	
 	@Override
-	public void setCurrentImg(byte[] data) {		
+	public void setCurrentImg(byte[] data) {				
 		img = data;
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
 		Date date = new Date();
@@ -232,6 +232,7 @@ public class EventCollector implements EventCollectorInterface{
 	}
 	@Override
 	public void sendPhoto(Activity a) {		
+		if (img==null) return;
 		new send(a).execute();
 		saveImg(img,imgName,"/soAppDir/myImages/");
 		Log.d("send", "send image " + imgName);

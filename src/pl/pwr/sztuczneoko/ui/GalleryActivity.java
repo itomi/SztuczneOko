@@ -69,6 +69,7 @@ public class GalleryActivity extends soActivity {
 		core.sendPhoto(this);
 	}
 	public void setSelectedImg(ImageItem selectedImg,View v) {
+		if(selectedImg.getImage()== null)return;
 		if(lastView!=null)lastView.setSelected(false);
 		this.selectedImg = selectedImg;
 		((EventCollector)core).setCurrentImg(selectedImg);		
