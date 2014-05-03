@@ -5,6 +5,10 @@ import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
+import org.opencv.android.BaseLoaderCallback;
+import org.opencv.android.LoaderCallbackInterface;
+import org.opencv.android.OpenCVLoader;
+
 import pl.pwr.sztuczneoko.core.EventCollector;
 import pl.pwr.sztuczneoko.core.ImageItem;
 
@@ -54,8 +58,14 @@ public class GalleryActivity extends soActivity {
         GridAdapter = new GalleryGridViewAdapter(this, R.layout.row_grid, imageItems,Environment.getExternalStorageDirectory().getAbsolutePath()+"/soAppDir/myImages/");
         gridView.setAdapter(GridAdapter);
         
-    }	
+    }
+	@Override
+	public void onResume(){
+        super.onResume();
+        OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_3, this, mLoaderCallback);
+	}
 	public void sendButtonClick(View view){
+		
 		core.sendPhoto(this);
 	}
 	public void setSelectedImg(ImageItem selectedImg,View v) {
@@ -77,4 +87,24 @@ public class GalleryActivity extends soActivity {
 		if(lastView!=null)
 			lastView.setSelected(true);
 	}
+	
+    private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
+
+        @Override
+        public void onManagerConnected(int status) {
+            switch (status) {
+                case LoaderCallbackInterface.SUCCESS:
+                {
+                    Log.i("openCV", "OpenCV loaded successfully");
+
+                    /* Now enable camera view to start receiving frames */
+                    
+                } break;
+                default:
+                {
+                    super.onManagerConnected(status);
+                } break;
+            }
+        }
+    };
 }

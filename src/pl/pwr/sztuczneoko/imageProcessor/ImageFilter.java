@@ -1,12 +1,17 @@
 package pl.pwr.sztuczneoko.imageProcessor;
 
+import org.opencv.android.BaseLoaderCallback;
+import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
+import org.opencv.core.Core;
 import org.opencv.core.Size;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Log;
 
 public class ImageFilter {
 	private Mat mRgba;
@@ -19,9 +24,15 @@ public class ImageFilter {
 	private Bitmap mBitmap;
 	private Bitmap mRet;
 	
+	
+
 	public ImageFilter(Bitmap bitmap) {
-		super();
+		super();			
 		mPicture = bitmap;
+		mBitmap = bitmap;
+		mMat = new Mat();
+		mGray = new Mat();
+		//mBitmap = new Bitmap();
 	}
 	
 	public void setImage(Bitmap image) {
@@ -45,9 +56,10 @@ public class ImageFilter {
     }
     
     public Bitmap grayFilter(Bitmap bitmap) {
-        // input frame has Gray format
+        // input frame has Gray forma
+    	//cvtColor(*image, character, CV_BGR2GRAY);t
     	mRgba = convToMat(bitmap);
-        Imgproc.cvtColor(mRgba, mGray, Imgproc.COLOR_GRAY2RGBA, 4);
+        Imgproc.cvtColor(mRgba, mGray, Imgproc.COLOR_RGBA2GRAY, 4);
         mRet = convToBitmap(mGray);
         return mRet;
     }
@@ -71,4 +83,5 @@ public class ImageFilter {
         mRet = convToBitmap(mThreshold);
         return mRet;
     }
+    
 }
