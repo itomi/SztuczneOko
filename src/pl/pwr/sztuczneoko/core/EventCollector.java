@@ -119,15 +119,28 @@ public class EventCollector implements EventCollectorInterface{
         @Override
         protected Void doInBackground(Void... arg0) {
         	try {
+        		String tmpFileName = imgName;
+        		
         		saveImg(img,imgName,"/soAppDir/myImages/");
         		Log.d("send", "send image " + imgName);
         		
         		ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        		BitmapFactory.Options options = new BitmapFactory.Options();
+        		BitmapFactory.Options options = new BitmapFactory.Options();             	
         		Bitmap bitmap = BitmapFactory.decodeByteArray(img, 0, img.length, options);
+        		bitmap = Bitmap.createScaledBitmap(bitmap, 100, 100, false);
         		new ImageFilter(bitmap).grayFilter(bitmap).compress(Bitmap.CompressFormat.PNG, 100, stream);
         		Log.d("send", "filter img " + imgName + " done");
-        		saveImg(stream.toByteArray(),"filtered-"+imgName,"/soAppDir/myFilterImages/");
+        		File f= new File(Environment.getExternalStorageDirectory()+"/soAppDir/myFilterImages/filtered-"+tmpFileName); 
+        		while(f.exists()){
+        			if(tmpFileName.matches(".*\\$\\d.*")){
+        				int counter = Integer.parseInt(tmpFileName.split("(\\$)|(\\.)")[1]);
+        				tmpFileName = tmpFileName.replaceAll("\\$\\d.+","\\$"+(counter+1));        			    
+        			}else {
+						tmpFileName=tmpFileName.replaceAll("\\.","\\$1\\.");//"$1";
+					}
+        			f= new File(Environment.getExternalStorageDirectory()+"/soAppDir/myFilterImages/filtered-"+tmpFileName); 
+        		}
+        		saveImg(stream.toByteArray(),"filtered-"+tmpFileName,"/soAppDir/myFilterImages/");
         		
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -313,5 +326,5 @@ public class EventCollector implements EventCollectorInterface{
 		}catch(NullPointerException ex){
 			Log.e("bt exception", "null pointer when bt service is off when unregister receeiver");
 		}
-	}
+	}	
 }

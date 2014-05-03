@@ -64,8 +64,7 @@ public class GalleryActivity extends soActivity {
         super.onResume();
         OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_3, this, mLoaderCallback);
 	}
-	public void sendButtonClick(View view){
-		
+	public void sendButtonClick(View view){		
 		core.sendPhoto(this);
 	}
 	public void setSelectedImg(ImageItem selectedImg,View v) {
@@ -97,9 +96,6 @@ public class GalleryActivity extends soActivity {
                 case LoaderCallbackInterface.SUCCESS:
                 {
                     Log.i("openCV", "OpenCV loaded successfully");
-
-                    /* Now enable camera view to start receiving frames */
-                    
                 } break;
                 default:
                 {
