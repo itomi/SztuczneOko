@@ -119,8 +119,17 @@ public class EventCollector implements EventCollectorInterface{
         @Override
         protected Void doInBackground(Void... arg0) {
         	try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
+        		saveImg(img,imgName,"/soAppDir/myImages/");
+        		Log.d("send", "send image " + imgName);
+        		
+        		ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        		BitmapFactory.Options options = new BitmapFactory.Options();
+        		Bitmap bitmap = BitmapFactory.decodeByteArray(img, 0, img.length, options);
+        		new ImageFilter(bitmap).grayFilter(bitmap).compress(Bitmap.CompressFormat.PNG, 100, stream);
+        		Log.d("send", "filter img " + imgName + " done");
+        		saveImg(stream.toByteArray(),"filtered-"+imgName,"/soAppDir/myFilterImages/");
+        		
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
             return null;
@@ -234,19 +243,6 @@ public class EventCollector implements EventCollectorInterface{
 	public void sendPhoto(Activity a) {		
 		if (img==null) return;
 		new send(a).execute();
-		saveImg(img,imgName,"/soAppDir/myImages/");
-		Log.d("send", "send image " + imgName);
-		
-		ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		//Bitmap bm = BitmapFactory.decodeByteArray(img , 0, img.length);
-		BitmapFactory.Options options = new BitmapFactory.Options();
-		Bitmap bitmap = BitmapFactory.decodeByteArray(img, 0, img.length, options);
-		new ImageFilter(bitmap).grayFilter(bitmap).compress(Bitmap.CompressFormat.PNG, 100, stream);
-		
-		saveImg(stream.toByteArray(),"filtered-"+imgName,"/soAppDir/myFilterImages/");
-		/*
-		 * TODO send to ImageProcessor and after it to external device
-		 */
 	}
 	/*
 	 * test saving on sdCard

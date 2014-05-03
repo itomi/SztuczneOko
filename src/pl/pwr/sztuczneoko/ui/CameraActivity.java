@@ -5,6 +5,10 @@ import java.io.FileFilter;
 import java.io.FileOutputStream;
 import java.util.regex.Pattern;
 
+import org.opencv.android.BaseLoaderCallback;
+import org.opencv.android.LoaderCallbackInterface;
+import org.opencv.android.OpenCVLoader;
+
 import pl.pwr.sztuczneoko.camera.CameraPreview;
 import pl.pwr.sztuczneoko.camera.CameraSurface;
 import pl.pwr.sztuczneoko.core.ImageItem;
@@ -52,6 +56,10 @@ public class CameraActivity extends soActivity implements CameraCallback{
 	protected void onDestroy() {
     //	mCamera.release();
 		super.onDestroy();
+	}
+    public void onResume(){
+        super.onResume();
+        OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_3, this, mLoaderCallback);
 	}
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -194,4 +202,24 @@ public class CameraActivity extends soActivity implements CameraCallback{
     
     builder.show();
     }
+    
+    private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
+
+        @Override
+        public void onManagerConnected(int status) {
+            switch (status) {
+                case LoaderCallbackInterface.SUCCESS:
+                {
+                    Log.i("openCV", "OpenCV loaded successfully");
+
+                    /* Now enable camera view to start receiving frames */
+                    
+                } break;
+                default:
+                {
+                    super.onManagerConnected(status);
+                } break;
+            }
+        }
+    };
 }
