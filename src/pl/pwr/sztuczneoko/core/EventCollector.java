@@ -44,6 +44,10 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+/**
+ * 
+ *  
+ */
 public class EventCollector implements EventCollectorInterface{
 	private static final int CHECK_TIME = 500;
 	
@@ -61,6 +65,10 @@ public class EventCollector implements EventCollectorInterface{
 	protected static final String PREFERENCES_NAME = "preferences";
 	protected SharedPreferences preferences;
 	
+	/**
+	 * set img from param and imgName as current data time    
+	 * @param data image convert to byte array
+	 */
 	@Override
 	public void setCurrentImg(byte[] data) {				
 		img = data;
@@ -68,12 +76,20 @@ public class EventCollector implements EventCollectorInterface{
 		Date date = new Date();
 		imgName = dateFormat.format(date) + ".jpeg";
 	}
+	
+	/**
+	 * set img and imgName from ImageItem object 
+	 * @param data ImageItem object 
+	 */
 	public void setCurrentImg(ImageItem data) {		
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
 		data.getImage().compress(Bitmap.CompressFormat.JPEG, 100, stream);
 		img = stream.toByteArray();
 		imgName = data.getTitle();
 	}
+	/**
+	 * default constructor
+	 */
 	public EventCollector() {
 		camPropList.add(new Property("faceDetect", false));
 		camPropList.add(new Property("voiceDescription", false));
@@ -99,10 +115,23 @@ public class EventCollector implements EventCollectorInterface{
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * constructor with activity object
+	 * @param a
+	 */
 	public EventCollector(Activity a) {
 		this();
 		this.activity = a;
 	}
+	
+	/**
+	 * class extends thread call save img(byte[]) as /soAppDir/myImage/'imgName'
+	 * convert to bitmap and resize, call filter img and call save 
+	 * it as /soAppDir/myFilterImages/filtered-'imgName'$[d]   
+	 * @author mateusz
+	 *
+	 */
     class send extends AsyncTask<Void, Void, Void> {
    	 
         Activity activity;
@@ -154,6 +183,10 @@ public class EventCollector implements EventCollectorInterface{
         }
      
     }
+    
+    /**
+     * runs activities from entry activity
+     */
 	@Override
 	public EnrtyMenuEvents getEntryMenuEvents() {		
 			
@@ -176,6 +209,10 @@ public class EventCollector implements EventCollectorInterface{
 			
 		};
 	}
+	
+	/**
+	 * runs activities from properties menu 
+	 */
 	@Override
 	public PropertiesMenuEvents getPropertiesMenuEvents() {
 		return new PropertiesMenuEvents() {
@@ -201,6 +238,11 @@ public class EventCollector implements EventCollectorInterface{
 			}
 		};
 	}
+	
+	/**
+	 * method get list of devices from bluetooth
+	 * @return ArrayList<ExternDevice>
+	 */
 	@Override
 	public ArrayList<ExternDevice> getEnableDevices() {
 		//TODO: asynchronous device discovery, needs to be repaired i think, we need refreshing the view
@@ -232,6 +274,11 @@ public class EventCollector implements EventCollectorInterface{
 
 		return edList;
 	}
+	
+	/**
+	 * set device connect param as true
+	 * @param ed 
+	 */
 	@Override
 	public void connectToDevice(ExternDevice ed) {
 		for (ExternDevice e : edList) {
@@ -239,28 +286,50 @@ public class EventCollector implements EventCollectorInterface{
 		}
 		ed.setConnected(true);
 	}
+	
+	/**
+	 * get arraylist of camera properties
+	 * @return ArrayList<Property> 
+	 */	
 	@Override
 	public ArrayList<Property> getCamProperties(){		
 		return camPropList;
 	}
+	
+	/**
+	 * get arraylist of filter class properties
+	 * @return ArrayList<Property> 
+	 */	
 	@Override
 	public ArrayList<Property> getFilterProperties(){		
 		return filterPropList;
 	}
+	
+	/**
+	 * switch state of property (t/f) and save in shared preferences
+	 */	
 	@Override
 	public void switchProp(Property property) {
 		property.setState((property.isState()?false:true));
 		savePreferences(property);
 	}
+	
+	/**
+	 * method create asynctask send class and run new thread to save->filter->send img
+	 * @param a calling activity
+	 */
 	@Override
 	public void sendPhoto(Activity a) {		
 		if (img==null) return;
 		new send(a).execute();
 	}
-	/*
-	 * test saving on sdCard
-	 */
 	
+	/**
+	 * saving image on sdCard, doesn't save if file exist
+	 * @param data image convert to byte[]
+	 * @param name name of new file
+	 * @param location parent directory new file 
+	 */	
 	private boolean saveImg(byte[] data,String name,String location) {
 		
 		String savePath = Environment.getExternalStorageDirectory() + location;
@@ -294,7 +363,10 @@ public class EventCollector implements EventCollectorInterface{
 		return true;
 	}
 	
-	
+	/**
+	 * save property in SharedPreferences
+	 * @param prop 
+	 */
 	private void savePreferences(Property prop){
 		preferences = activity.getSharedPreferences(PREFERENCES_NAME, Activity.MODE_PRIVATE);
 	    SharedPreferences.Editor preferencesEditor = preferences.edit();
@@ -302,6 +374,10 @@ public class EventCollector implements EventCollectorInterface{
 	    preferencesEditor.commit();	
 	}
 	
+	/**
+	 * get sharedPrefs and set array<Property> from param to last save state 
+	 * @param propList
+	 */
 	public void restorePreferences(ArrayList<Property> propList){
 		preferences = activity.getSharedPreferences(PREFERENCES_NAME, Activity.MODE_PRIVATE);
 		for(Property prop : propList){
@@ -309,6 +385,10 @@ public class EventCollector implements EventCollectorInterface{
 			 prop.setState(property);
 		}		
 	}
+	
+	/**
+	 * jakies cuda do bt :)
+	 */
 	@Override
 	public void registerBTActivity(Activity btPropertiesActivity) {
 		try{
@@ -319,6 +399,9 @@ public class EventCollector implements EventCollectorInterface{
 		
 	}
 	
+	/**
+	 * jakies cuda do bt :)
+	 */
 	@Override
 	public void unregisterBTActivity(Activity btPropertiesActivity) {
 		try{
