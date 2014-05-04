@@ -158,13 +158,25 @@ public class EventCollector implements EventCollectorInterface{
         		BitmapFactory.Options options = new BitmapFactory.Options();             	
         		Bitmap bitmap = BitmapFactory.decodeByteArray(img, 0, img.length, options);
         		bitmap = Bitmap.createScaledBitmap(bitmap, 100, 100, false);
-        		new ImageFilter(bitmap).grayFilter(bitmap).compress(Bitmap.CompressFormat.PNG, 100, stream);
+        		switch(getPreferences("currentFilter")){
+	        		case "gray":
+	        			new ImageFilter(bitmap).grayFilter(bitmap).compress(Bitmap.CompressFormat.JPEG, 100, stream);
+	        			break;
+	        		case "canny":
+	        			new ImageFilter(bitmap).cannyFilter(bitmap).compress(Bitmap.CompressFormat.JPEG, 100, stream);
+	        			break;
+	        		case "treshold":
+	        			new ImageFilter(bitmap).thresholdFilter(bitmap).compress(Bitmap.CompressFormat.JPEG, 100, stream);
+	        			break;
+	        		default:
+	        			break;
+        		}        		
         		Log.d("send", "filter img " + imgName + " done");
         		File f= new File(Environment.getExternalStorageDirectory()+"/soAppDir/myFilterImages/filtered-"+tmpFileName); 
         		while(f.exists()){
         			if(tmpFileName.matches(".*\\$\\d.*")){
         				int counter = Integer.parseInt(tmpFileName.split("(\\$)|(\\.)")[1]);
-        				tmpFileName = tmpFileName.replaceAll("\\$\\d.+","\\$"+(counter+1));        			    
+        				tmpFileName = tmpFileName.replaceAll("\\$\\d.+","\\$"+(counter+1)+".jpeg");        			    
         			}else {
 						tmpFileName=tmpFileName.replaceAll("\\.","\\$1\\.");//"$1";
 					}
