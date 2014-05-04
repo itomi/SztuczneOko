@@ -40,19 +40,18 @@ public class GalleryGridViewAdapter extends ArrayAdapter implements ImageLoadLis
     private HashSet imgSet;
     private static final int IMAGEVIEWINDEX = 1;
     private static final int PROGRESSBARINDEX = 0;
-	private OnClickListener mItemClickListener;
 	private Handler mHandler;
 	private ImageLoader mImageLoader = null;
 	private File mDirectory;
 	private View row;
     private ViewHolder holder = null;
-
+    private int selectedId;
     public GalleryGridViewAdapter(Context context, int layoutResourceId,
             ArrayList data,String mPath) {
         super(context, layoutResourceId, data);
         this.layoutResourceId = layoutResourceId;
         this.context = context;
-        this.data = data;        
+        this.data = data;
         mDirectory = new File(mPath);
         imgSet = new HashSet<ImageItem>();
 		mImageLoader = new ImageLoader(this);
@@ -61,7 +60,7 @@ public class GalleryGridViewAdapter extends ArrayAdapter implements ImageLoadLis
         
     }
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, final View convertView, ViewGroup parent) {
         row = convertView;
         holder = null;
         if(mDirectory.listFiles().length==0)Log.d("gallery", "empty gallery");
@@ -83,7 +82,6 @@ public class GalleryGridViewAdapter extends ArrayAdapter implements ImageLoadLis
 
 			holder.switcher.addView(lImage);
 			
-			
 	        row.setId(position);
 				
 		} else {
@@ -98,10 +96,12 @@ public class GalleryGridViewAdapter extends ArrayAdapter implements ImageLoadLis
 			if(data.size()<position+1){
 				mImageLoader.queueImageLoad(lPath, lImageView, holder.switcher, data);
 			}
-			else
-				mImageLoader.mListener.handleImageLoaded(holder.switcher, lImageView, (ImageItem) data.get(position));
+			else{
+				mImageLoader.mListener.handleImageLoaded(holder.switcher, lImageView, (ImageItem) data.get(position));				
+			}
 		}
 		final int id = position;
+		
 		row.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,19 +111,20 @@ public class GalleryGridViewAdapter extends ArrayAdapter implements ImageLoadLis
                     Bitmap lBitmap = ImageLoader.decodeBitmapFromFile(fileNames.get(id), 100, 100);
 
                     ((GalleryActivity)context).setSelectedImg(
-                    		new ImageItem(lBitmap,new File(fileNames.get(id)).getName()),v);       
+                    		new ImageItem(lBitmap,new File(fileNames.get(id)).getName()),v,id);       
                     v.setSelected(true);            		
             	}
             	else{
 	                Log.d("select",((ImageItem)data.get(id)).getTitle() + " at row : "+ id );
-	                ((GalleryActivity)context).setSelectedImg((ImageItem)data.get(id),v);       
-	                v.setSelected(true);
+	                ((GalleryActivity)context).setSelectedImg((ImageItem)data.get(id),v,id);       
+	                v.setSelected(true);	                
             	}
             }
         });	
 		return row;
 
     }
+    
     @Override
 	protected void finalize() throws Throwable {
 		super.finalize();

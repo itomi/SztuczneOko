@@ -8,6 +8,7 @@
     android:clickable="true"    
     android:focusable="true"   
     android:background="@drawable/grid_selector"
+    android:choiceMode="singleChoice"
     >
  
     <ViewSwitcher

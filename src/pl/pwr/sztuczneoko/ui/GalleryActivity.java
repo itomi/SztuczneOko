@@ -11,6 +11,8 @@ import org.opencv.android.OpenCVLoader;
 
 import pl.pwr.sztuczneoko.core.EventCollector;
 import pl.pwr.sztuczneoko.core.ImageItem;
+import pl.pwr.sztuczneoko.ui.GalleryGridViewAdapter.ViewHolder;
+import pl.pwr.sztuczneoko.ui.MenuAdapter.ViewSwitch;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -36,28 +38,26 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.Toast;
+import android.widget.ViewSwitcher;
 import android.os.Build;
 
 
 public class GalleryActivity extends soActivity {
 
 	private GridView gridView;
-	private GalleryGridViewAdapter GridAdapter;
+	private GalleryGridViewAdapter gridAdapter;
 	private ArrayList imageItems = new ArrayList(); 
 	private ImageItem selectedImg;
-	private int imgCounter;
 	private View lastView;
 	public static final int PLEASE_WAIT_DIALOG = 1;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {		
 		super.onCreate(savedInstanceState);
-		imgCounter = 0;
 		setContentView(R.layout.activity_gallery);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		gridView = (GridView) findViewById(R.id.gridView);		
-        GridAdapter = new GalleryGridViewAdapter(this, R.layout.row_grid, imageItems,Environment.getExternalStorageDirectory().getAbsolutePath()+"/soAppDir/myImages/");
-        gridView.setAdapter(GridAdapter);
-        
+        gridAdapter = new GalleryGridViewAdapter(this, R.layout.row_grid, imageItems,Environment.getExternalStorageDirectory().getAbsolutePath()+"/soAppDir/myImages/");
+        gridView.setAdapter(gridAdapter);       
     }
 	@Override
 	public void onResume(){
@@ -67,7 +67,7 @@ public class GalleryActivity extends soActivity {
 	public void sendButtonClick(View view){		
 		core.sendPhoto(this);
 	}
-	public void setSelectedImg(ImageItem selectedImg,View v) {
+	public void setSelectedImg(ImageItem selectedImg,View v,int index) {
 		if(selectedImg.getImage()== null)return;
 		if(lastView!=null)lastView.setSelected(false);
 		this.selectedImg = selectedImg;
@@ -84,8 +84,17 @@ public class GalleryActivity extends soActivity {
         return dialog;
     }
 	public void loadLastView() {
-		if(lastView!=null)
+		if(lastView!=null&&(((ViewHolder)lastView.getTag()).imageTitle.getText().equals(selectedImg.getTitle()))){
 			lastView.setSelected(true);
+		}else if(lastView!=null&&gridView.getChildCount()>1){
+			for(int i = 0; i<gridView.getChildCount();i++){
+				View v = gridView.getChildAt(i);
+				if(((ViewHolder)v.getTag()).imageTitle.getText().equals(selectedImg.getTitle())){
+					v.setSelected(true);
+					lastView = v;
+				}
+			}
+		}		
 	}
 	
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
