@@ -68,15 +68,16 @@ containing a value of this type.
         public static final int RelativeLayout1=0x7f040013;
         public static final int any=0x7f040000;
         public static final int back=0x7f040001;
-        public static final int button_capture=0x7f04000a;
-        public static final int button_filter_photo=0x7f040009;
-        public static final int button_photo_again=0x7f04000b;
+        public static final int button_capture=0x7f04000b;
+        public static final int button_filter_photo=0x7f04000a;
+        public static final int button_photo_again=0x7f04000c;
+        public static final int camDialogPropList=0x7f040008;
         public static final int camPropList=0x7f040007;
-        public static final int camera_preview=0x7f040008;
-        public static final int coloreffect=0x7f04000d;
+        public static final int camera_preview=0x7f040009;
         public static final int container=0x7f040011;
         public static final int entryListMenu=0x7f040014;
-        public static final int filterPropList=0x7f04000e;
+        public static final int filterDialogPropList=0x7f04000e;
+        public static final int filterPropList=0x7f04000d;
         public static final int findDevices=0x7f040004;
         public static final int front=0x7f040002;
         public static final int gridView=0x7f04000f;
@@ -88,7 +89,6 @@ containing a value of this type.
         public static final int sendButton=0x7f040010;
         public static final int text=0x7f040017;
         public static final int turnOnOff=0x7f040003;
-        public static final int whitebalance=0x7f04000c;
     }
     public static final class layout {
         public static final int activity_btproperties=0x7f030000;
@@ -103,29 +103,31 @@ containing a value of this type.
         public static final int row_with_desc=0x7f030009;
     }
     public static final class string {
-        public static final int action_settings=0x7f060015;
+        public static final int action_settings=0x7f060017;
         public static final int app_name=0x7f060002;
         public static final int autoFilter=0x7f060009;
         public static final int camResolution=0x7f060008;
         public static final int capture=0x7f06000a;
+        public static final int collorEfect=0x7f06000f;
         public static final int faceDetect=0x7f060003;
         public static final int filterResolution=0x7f060007;
         public static final int findDevice=0x7f06000d;
         public static final int flash=0x7f060006;
-        public static final int hello_world=0x7f06000f;
+        public static final int hello_world=0x7f060011;
         public static final int menu_start_new_game=0x7f060001;
         public static final int menu_toggle_tile_numbers=0x7f060000;
         public static final int nextPhoto=0x7f06000b;
         public static final int realTime=0x7f060005;
         public static final int sendPhoto=0x7f06000c;
-        public static final int title_activity_btproperties=0x7f060011;
-        public static final int title_activity_cam_properties=0x7f060012;
-        public static final int title_activity_camera=0x7f06000e;
-        public static final int title_activity_filter_properties=0x7f060013;
-        public static final int title_activity_gallery=0x7f060014;
-        public static final int title_activity_properties=0x7f060010;
+        public static final int title_activity_btproperties=0x7f060013;
+        public static final int title_activity_cam_properties=0x7f060014;
+        public static final int title_activity_camera=0x7f060010;
+        public static final int title_activity_filter_properties=0x7f060015;
+        public static final int title_activity_gallery=0x7f060016;
+        public static final int title_activity_properties=0x7f060012;
         public static final int voiceDescription=0x7f060004;
-        public static final int w_cz_bluetooth=0x7f060016;
+        public static final int w_cz_bluetooth=0x7f060018;
+        public static final int whiteBalance=0x7f06000e;
     }
     public static final class style {
         /** 

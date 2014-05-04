@@ -3,7 +3,7 @@
     <string name="menu_toggle_tile_numbers">Show/hide tile numbers</string>
     <string name="menu_start_new_game">Start new game</string>
     
-    <string name="app_name">BaseApplication</string>
+    <string name="app_name">Sztuczne oko</string>
     <string name="faceDetect">wykrywanie twarzy</string>
     <string name="voiceDescription">słowny opis zdjęcia</string>
     <string name="realTime">przetwarzanie w czasie rzeczywistym</string>
@@ -43,7 +43,8 @@
         <item>kamera</item>
         <item>O aplikacji</item>
     </string-array>
-    
+    <string name="whiteBalance">Balans bieli</string>
+    <string name="collorEfect">Efekt kolorów</string>
     <string name="title_activity_camera">Kamera</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_properties">Ustawienia</string>

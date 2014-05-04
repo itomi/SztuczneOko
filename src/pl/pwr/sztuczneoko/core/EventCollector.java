@@ -96,6 +96,7 @@ public class EventCollector implements EventCollectorInterface{
 		camPropList.add(new Property("realTime", false));
 		filterPropList.add(new Property("autoFilter", true));
 		camPropList.add(new Property("flash",false));
+		
 		try {
 			comm = CommunicationProvider.provideCommunication(CommunicationType.BLUETOOTH);
 		} catch (InstantiationException e) {
@@ -288,6 +289,35 @@ public class EventCollector implements EventCollectorInterface{
 	}
 	
 	/**
+	 * 
+	 * @return
+	 */
+	@Override
+	public ArrayList<String> getFilterProperiesWithDialog() {		
+		return new ArrayList<String>(Arrays.asList("wybór filtra"));
+	}
+	
+	/**
+	 * @return
+	 */
+	@Override
+	public ArrayList<String> getCamProperiesWithDialog() {
+		return new ArrayList<String>(Arrays.asList("efekt kolorów","balans bieli"));
+	}	
+	
+	/**
+	 * 
+	 * @return
+	 */
+	@Override
+	public ArrayList<String> getEnableFilters() {
+		/*
+		 * TODO implement in imgProc getter for list possible filters
+		 */
+		return new ArrayList<String>(Arrays.asList("gray","canny","treshold"));
+	}
+	
+	/**
 	 * get arraylist of camera properties
 	 * @return ArrayList<Property> 
 	 */	
@@ -375,6 +405,18 @@ public class EventCollector implements EventCollectorInterface{
 	}
 	
 	/**
+	 * save [string][string] in SharedPreferences
+	 * @param name
+	 * @param value
+	 */
+	public void savePreferences(String name,String value){
+		preferences = activity.getSharedPreferences(PREFERENCES_NAME, Activity.MODE_PRIVATE);
+	    SharedPreferences.Editor preferencesEditor = preferences.edit();
+	    preferencesEditor.putString(name, value);
+	    preferencesEditor.commit();	
+	}
+	
+	/**
 	 * get sharedPrefs and set array<Property> from param to last save state 
 	 * @param propList
 	 */
@@ -384,6 +426,16 @@ public class EventCollector implements EventCollectorInterface{
 			 int property = preferences.getInt(prop.getName(), 0);
 			 prop.setState(property);
 		}		
+	}
+	
+	/**
+	 * get string value from sharedPref, if key not exist return value ""
+	 * @param name String key  
+	 * @return String value 
+	 */
+	public String getPreferences(String name){
+		preferences = activity.getSharedPreferences(PREFERENCES_NAME, Activity.MODE_PRIVATE);
+		return preferences.getString(name, "");
 	}
 	
 	/**
@@ -409,5 +461,7 @@ public class EventCollector implements EventCollectorInterface{
 		}catch(NullPointerException ex){
 			Log.e("bt exception", "null pointer when bt service is off when unregister receeiver");
 		}
-	}	
+	}
+
+
 }

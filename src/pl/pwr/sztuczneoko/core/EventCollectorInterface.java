@@ -17,4 +17,9 @@ public interface EventCollectorInterface {
 	public void sendPhoto(Activity a);
 	public void registerBTActivity(Activity btPropertiesActivity);
 	public void unregisterBTActivity(Activity btPropertiesActivity);
+	public ArrayList<String> getEnableFilters();
+	public ArrayList<String> getFilterProperiesWithDialog();
+	public void savePreferences(String name,String value);	
+	public String getPreferences(String name);
+	public ArrayList<String> getCamProperiesWithDialog();
 }

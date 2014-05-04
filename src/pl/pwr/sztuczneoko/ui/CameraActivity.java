@@ -3,13 +3,13 @@ import pl.pwr.sztuczneoko.camera.*;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileOutputStream;
+import java.util.Arrays;
 import java.util.regex.Pattern;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 
-import pl.pwr.sztuczneoko.camera.CameraPreview;
 import pl.pwr.sztuczneoko.camera.CameraSurface;
 import pl.pwr.sztuczneoko.core.ImageItem;
 import android.app.Activity;
@@ -36,27 +36,12 @@ public class CameraActivity extends soActivity implements CameraCallback{
     private FrameLayout cameraholder = null;
     private CameraSurface camerasurface = null;
 
-
     protected static final String MEDIA_TYPE_IMAGE = null;
-	//private Camera mCamera;
-    //private CameraPreview mPreview;
-    /*private PictureCallback mPicture = new PictureCallback() {
-        @Override
-        public void onPictureTaken(byte[] data, Camera camera) {
-        	Log.d("cam", "fotka");
-        	core.setCurrentImg(data);
-        }
-    };*/
 
     Button captureButton;
     Button filterButton;
     Button againPhotoButton;
-    
-    @Override
-	protected void onDestroy() {
-    //	mCamera.release();
-		super.onDestroy();
-	}
+
     public void onResume(){
         super.onResume();
         OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_3, this, mLoaderCallback);
@@ -72,32 +57,19 @@ public class CameraActivity extends soActivity implements CameraCallback{
         filterButton = (Button) findViewById(R.id.button_filter_photo);
         againPhotoButton = (Button) findViewById(R.id.button_photo_again);
         
-        //((ImageButton)findViewById(R.id.coloreffect)).setOnClickListener(onButtonClick);
-        //((ImageButton)findViewById(R.id.whitebalance)).setOnClickListener(onButtonClick);
-        // Create an instance of Camera
-        //mCamera = Camera.open();
-        
         cameraholder = (FrameLayout)findViewById(R.id.camera_preview);
         
         setupPictureMode();
-        
-        // Create our Preview view and set it as the content of our activity.
-        //mPreview = new CameraPreview(this, mCamera);
-        //FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
-        //preview.addView(mPreview);        
         filterButton.setEnabled(false);
         againPhotoButton.setEnabled(false);        
-        
     }
 	public void againPhotoClick(View view){
 		filterButton.setEnabled(false);
         againPhotoButton.setEnabled(false);
         captureButton.setEnabled(true);
-        //mCamera.startPreview();
         camerasurface.startPreview();
 	}
 	public void captureClick(View view){
-		//mCamera.takePicture(null, null, mPicture);
 		camerasurface.startTakePicture();
 		filterButton.setEnabled(true);
         againPhotoButton.setEnabled(true);
@@ -116,7 +88,7 @@ public class CameraActivity extends soActivity implements CameraCallback{
  
 
 	private void setupPictureMode(){
-	    camerasurface = new CameraSurface(this);
+	    camerasurface = new CameraSurface(this,core);
 	    
 	    cameraholder.addView(camerasurface, new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
 	    
@@ -155,52 +127,6 @@ public class CameraActivity extends soActivity implements CameraCallback{
             String filename = String.format("/sdcard/%d.3gp",System.currentTimeMillis());
             
             return filename;
-    }
-    
-    public void displayAboutDialog()
-    {
-	    final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-	
-	    builder.setTitle(getString(R.string.app_name));
-	    builder.setMessage("Sample application to demonstrate the use of Camera in Android\n\nVisit www.krvarma.com for more information.");
-	    
-	    builder.show();
-    }
-    
-    public void displayColorEffectDialog(View view)
-    {
-            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-    builder.setTitle("efekt kolorow");
-    builder.setSingleChoiceItems(camerasurface.getSupportedColorEffects(), 
-                    camerasurface.getCurrentColorEffect(), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                            camerasurface.setColorEffect(which);
-                            
-                            dialog.dismiss();
-                    }
-            });
-    
-    builder.show();
-    }
-    
-    public void displayWhiteBalanceDialog(View view)
-    {
-            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-    builder.setTitle("balans bieli");
-    builder.setSingleChoiceItems(camerasurface.getSupportedWhiteBalances(), 
-                    camerasurface.getCurrentWhiteBalance(), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                            camerasurface.setWhiteBalance(which);
-                            
-                            dialog.dismiss();
-                    }
-            });
-    
-    builder.show();
     }
     
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {

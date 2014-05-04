@@ -1,6 +1,7 @@
 package pl.pwr.sztuczneoko.camera;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import android.content.Context;
@@ -16,6 +17,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.GestureDetector.OnGestureListener;
 import pl.pwr.sztuczneoko.camera.CameraCallback;
+import pl.pwr.sztuczneoko.core.*;
 
 public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback, OnGestureListener{    
         private Camera camera = null;
@@ -29,7 +31,7 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
         private int currentZoom = 0;
         private boolean isZoomIn = true;
         private boolean isStarted = true;
-        
+        private EventCollectorInterface core;
         public CameraSurface(Context context, AttributeSet attrs, int defStyle) {
                 super(context, attrs, defStyle);
                 
@@ -41,7 +43,11 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
                 
                 initialize(context);
         }
-
+        public CameraSurface(Context context,EventCollectorInterface core) {
+            super(context);
+            this.core = core; 
+            initialize(context);
+        }
         public CameraSurface(Context context, AttributeSet attrs) {
                 super(context, attrs);
                 
@@ -153,6 +159,14 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
                         coloreffects.toArray(supportedColorEffects);
                         whiteBalances.toArray(supportedWhiteBalances);
                         
+                        String tmp = core.getPreferences("whiteBalance");                        
+                        setWhiteBalance((tmp!="")?
+                        		Arrays.asList(supportedWhiteBalances).
+                        		indexOf(tmp):0);
+                        tmp = core.getPreferences("collorEfect");
+                        setColorEffect((tmp!="")?
+                        		Arrays.asList(supportedColorEffects).
+                        		indexOf(tmp):0);
                 } catch (IOException e) {
                         e.printStackTrace();
                 }
