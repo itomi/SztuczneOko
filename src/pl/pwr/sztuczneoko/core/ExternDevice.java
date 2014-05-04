@@ -6,7 +6,7 @@ public class ExternDevice {
 	
 	private static int sequence = 0;
 	
-	protected Device deviceHandle;
+	private Device deviceHandle;
 	protected String name;
 	protected boolean connected;
 	protected int id;
@@ -53,4 +53,8 @@ public class ExternDevice {
 	public void setConnected(boolean connected) {
 		this.connected = connected;
 	}
+	Device getDeviceHandle() {
+		return deviceHandle;
+	}
+
 }

@@ -28,6 +28,16 @@ public interface Communication {
 	 */
 	boolean isDeviceAbleToCommunicateUsingService(Device device, Service service);
 	
+	
+	/**
+	 * Method establishes connection to {@link Device} and returns {@link Session} object that can be then used.
+	 * 
+	 * @param device 
+	 * @param renewalPeriod time in miliseconds used to check if device is still reachable
+	 * @return new Session obejct
+	 */
+	Session establishConnectionToDevice(Device device, long renewalPeriod);
+	
 	/**
 	 * Method checks if the Communication module is busy.
 	 * 

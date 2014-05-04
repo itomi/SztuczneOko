@@ -22,6 +22,7 @@ import pl.pwr.sztuczneoko.communication.Communication;
 import pl.pwr.sztuczneoko.communication.CommunicationProvider;
 import pl.pwr.sztuczneoko.communication.CommunicationType;
 import pl.pwr.sztuczneoko.communication.Device;
+import pl.pwr.sztuczneoko.communication.Session;
 import pl.pwr.sztuczneoko.imageProcessor.ImageFilter;
 import pl.pwr.sztuczneoko.imageProcessor.ImageProcessor;
 import pl.pwr.sztuczneoko.ui.*;
@@ -49,11 +50,14 @@ import android.widget.Toast;
  *  
  */
 public class EventCollector implements EventCollectorInterface{
+	private static final long RENEWAL_PERIOD = 1000;
 	private static final int CHECK_TIME = 500;
 	
 	private Activity activity;
 	private Communication comm;
 	private ImageProcessor imgProc;
+	
+	private Session session = null;
 	
 	private ArrayList<ExternDevice> edList;
 	private ArrayList<Property> camPropList = new ArrayList<Property>();
@@ -64,6 +68,7 @@ public class EventCollector implements EventCollectorInterface{
 	
 	protected static final String PREFERENCES_NAME = "preferences";
 	protected SharedPreferences preferences;
+	
 	
 	/**
 	 * set img from param and imgName as current data time    
@@ -297,7 +302,12 @@ public class EventCollector implements EventCollectorInterface{
 		for (ExternDevice e : edList) {
 			e.setConnected(false);
 		}
-		ed.setConnected(true);
+		
+		session = comm.establishConnectionToDevice(ed.getDeviceHandle(), RENEWAL_PERIOD);
+		
+		if(session != null ) {
+			ed.setConnected(true);
+		}
 	}
 	
 	/**

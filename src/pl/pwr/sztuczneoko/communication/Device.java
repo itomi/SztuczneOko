@@ -1,9 +1,11 @@
 package pl.pwr.sztuczneoko.communication;
 
+import java.io.IOException;
 import java.util.Set;
 import java.util.UUID;
 
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
 import android.os.ParcelUuid;
 
 public class Device {
@@ -53,5 +55,9 @@ public class Device {
 		}
 		return services;
 
+	}
+	
+	BluetoothSocket connect(final Service service) throws IOException {
+		return device.createInsecureRfcommSocketToServiceRecord(service.UUID());
 	}
 }

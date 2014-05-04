@@ -1,5 +1,6 @@
 package pl.pwr.sztuczneoko.communication;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
@@ -18,8 +19,6 @@ import android.util.Log;
 import com.google.common.collect.ImmutableSet;
 
 public class BluetoothCommunication implements Communication{
-
-	private static final int RESULT_CODE = 0xDEADBEEF;
 
 	private static final String PRECONDITION = "Bluetooth adapted preconditions are not checked.";
 
@@ -122,5 +121,19 @@ public class BluetoothCommunication implements Communication{
 	@Override
 	public void unregisterBTReceiver(Activity btPropertiesActivity) {
 		btPropertiesActivity.unregisterReceiver(discoveryReceiver);		
+	}
+
+	@Override
+	public Session establishConnectionToDevice(Device device, long renewalPeriod) {
+		Session session = new Session(device, renewalPeriod);
+		
+		try {
+			session.establishConnection(Service.SP);
+		} catch (IOException e) {
+			Log.d(this.getClass().toString(), "Could not establish connection to Device:" + device.getDescription(), e);
+			return null;
+		}
+		
+		return session;
 	}
 }
