@@ -85,7 +85,7 @@ public class BTPropertiesActivity extends soActivity{
      
         @Override
         protected void onPreExecute() {
-           activity.showDialog(GalleryActivity.PLEASE_WAIT_DIALOG);
+           activity.showDialog(1);
         }
      
         @Override
@@ -97,7 +97,7 @@ public class BTPropertiesActivity extends soActivity{
      
         @Override
         protected void onPostExecute(Void result) {
-            activity.removeDialog(GalleryActivity.PLEASE_WAIT_DIALOG);
+            activity.removeDialog(1);
             listView = (ListView) findViewById(R.id.BTDeviceList);
     		
     		listView.setAdapter(new DeviceListAdapter(activity,devices));	   

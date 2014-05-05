@@ -51,14 +51,19 @@ public class GalleryActivity extends soActivity {
 	private ImageItem selectedImg;
 	private View lastView;
 	private ProgressDialog progressDialog;
-	public static final int PLEASE_WAIT_DIALOG = 1;
+    private MenuItem mItemDelete;
+    private MenuItem mItemRename;
+    private MenuItem mItemSwitchDirectory;
+    private String directory;
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {		
 		super.onCreate(savedInstanceState);
+		directory = Environment.getExternalStorageDirectory().getAbsolutePath()+"/soAppDir/myImages/";
 		setContentView(R.layout.activity_gallery);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		gridView = (GridView) findViewById(R.id.gridView);		
-        gridAdapter = new GalleryGridViewAdapter(this, R.layout.row_grid, imageItems,Environment.getExternalStorageDirectory().getAbsolutePath()+"/soAppDir/myImages/");
+        gridAdapter = new GalleryGridViewAdapter(this, R.layout.row_grid, imageItems,directory);
         gridView.setAdapter(gridAdapter);       
     }
 	@Override
@@ -100,6 +105,34 @@ public class GalleryActivity extends soActivity {
 		}		
 	}
 	
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+    	mItemDelete = menu.add("usuń");
+    	mItemRename = menu.add("zmien nazwe");
+    	mItemSwitchDirectory = menu.add("zmien folder");
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(selectedImg!=null){
+	    	if (item == mItemDelete) {
+	    		File file = new File(directory+selectedImg.getTitle());
+	    		file.delete();
+	    		gridAdapter.notifyDataSetChanged();
+	        } else if (item == mItemRename) {
+	        } else if (item == mItemSwitchDirectory) {
+	        	if(directory.matches(".*myImages.*"))
+	        		directory = Environment.getExternalStorageDirectory().getAbsolutePath()+"/soAppDir/myFilterImages/";
+	        	else
+	        		directory = Environment.getExternalStorageDirectory().getAbsolutePath()+"/soAppDir/myImages/";
+	        	gridAdapter = new GalleryGridViewAdapter(this, R.layout.row_grid, imageItems,directory);
+	            gridView.setAdapter(gridAdapter);   
+	        	gridAdapter.notifyDataSetChanged();
+	        }
+        }
+        return true;
+    }
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
 
         @Override
