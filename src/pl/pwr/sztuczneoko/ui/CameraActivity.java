@@ -40,23 +40,12 @@ public class CameraActivity extends soActivity implements CameraCallback{
     private MenuItem mItemRunCamProp;
     private MenuItem mItemRunFilterProp;
     private MenuItem mItemRunBTProp;
+    private ProgressDialog progressDialog;
     protected static final String MEDIA_TYPE_IMAGE = null;
 
     Button captureButton;
     Button filterButton;
     Button againPhotoButton;
-
-    @Override
-    public void onStop() {
-    	super.onStop();
-    	
-	}
-    
-    @Override
-    public void onRestart() {
-    	super.onRestart();
-    	
-	}
     
     @Override
     public void onResume(){
@@ -97,13 +86,13 @@ public class CameraActivity extends soActivity implements CameraCallback{
 	public void filterPhotoClick(View view){		
 		core.sendPhoto(this);
 	}
-	public Dialog onCreateDialog(int dialogId) {
-        ProgressDialog dialog = new ProgressDialog(this);
-        dialog.setTitle("przetwarznie i wysyłanie zdjęcia");
-        dialog.setMessage("Proszę czekać....");
-        dialog.setCancelable(true);
-        return dialog;
-    }
+	public void showProgressDialog(String title,String message) {
+		progressDialog = ProgressDialog.show(this, title, message, true);
+		progressDialog.setCancelable(true);
+	}
+	public void hideProgressDialog(){
+		progressDialog.dismiss();
+	}
  	
 
 	private void setupPictureMode(){
@@ -162,9 +151,6 @@ public class CameraActivity extends soActivity implements CameraCallback{
         } else if (item == mItemRunFilterProp) {
         	startActivity(core.getPropertiesMenuEvents().runFilterPropertiesActivity(this));
         } else if (item == mItemRunBTProp) {
-        	Bundle bundle = new Bundle();
-        	//bundle.put
-        	
         	startActivity(core.getPropertiesMenuEvents().runBTPropertiesActivity(this));
         }
         return true;

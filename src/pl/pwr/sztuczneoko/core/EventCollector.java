@@ -142,7 +142,16 @@ public class EventCollector implements EventCollectorInterface{
      
         @Override
         protected void onPreExecute() {
-           activity.showDialog(1);
+        	Object[] args = {"Proszę czekać....","filtracja i wysyłanie zdjęcia"}; 
+        	try {
+        		Log.d("class", activity.getClass().getName());
+        		Class[] args1 = new Class[2];
+                args1[0] = String.class;
+                args1[1] = String.class;
+				activity.getClass().getMethod("showProgressDialog",args1).invoke(activity, args);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
         }
      
         @Override
@@ -175,7 +184,7 @@ public class EventCollector implements EventCollectorInterface{
         		while(f.exists()){
         			if(tmpFileName.matches(".*\\$\\d.*")){
         				int counter = Integer.parseInt(tmpFileName.split("(\\$)|(\\.)")[1]);
-        				tmpFileName = tmpFileName.replaceAll("\\$\\d.+","\\$"+(counter+1));        			    
+        				tmpFileName = tmpFileName.replaceAll("\\$\\d.+","\\$"+(counter+1)+".jpeg");        			    
         			}else {
 						tmpFileName=tmpFileName.replaceAll("\\.","\\$1\\.");//"$1";
 					}
@@ -189,10 +198,13 @@ public class EventCollector implements EventCollectorInterface{
             return null;
         }
      
-        @SuppressWarnings("deprecation")
 		@Override
         protected void onPostExecute(Void result) {
-            activity.removeDialog(1);            
+			try {
+				activity.getClass().getMethod("hideProgressDialog",null).invoke(activity);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}          
         }
      
     }

@@ -3,6 +3,7 @@ package pl.pwr.sztuczneoko.ui;
 import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import org.opencv.android.BaseLoaderCallback;
@@ -49,6 +50,7 @@ public class GalleryActivity extends soActivity {
 	private ArrayList imageItems = new ArrayList(); 
 	private ImageItem selectedImg;
 	private View lastView;
+	private ProgressDialog progressDialog;
 	public static final int PLEASE_WAIT_DIALOG = 1;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {		
@@ -76,13 +78,14 @@ public class GalleryActivity extends soActivity {
 		
 	}
 	
-	public Dialog onCreateDialog(int dialogId) {
-        ProgressDialog dialog = new ProgressDialog(this);
-        dialog.setTitle("filtracja i wysyłanie zdjęcia");
-        dialog.setMessage("Proszę czekać....");
-        dialog.setCancelable(true);
-        return dialog;
-    }
+	public void showProgressDialog(String title,String message) {
+		progressDialog = ProgressDialog.show(this, title, message, true);
+		progressDialog.setCancelable(true);
+	}
+	public void hideProgressDialog(){
+		progressDialog.dismiss();
+	}
+	
 	public void loadLastView() {
 		if(lastView!=null&&(((ViewHolder)lastView.getTag()).imageTitle.getText().equals(selectedImg.getTitle()))){
 			lastView.setSelected(true);
