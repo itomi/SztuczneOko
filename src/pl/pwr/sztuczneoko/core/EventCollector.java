@@ -157,11 +157,19 @@ public class EventCollector implements EventCollectorInterface{
         		BitmapFactory.Options options = new BitmapFactory.Options();             	
         		Bitmap bitmap = BitmapFactory.decodeByteArray(img, 0, img.length, options);
         		bitmap = Bitmap.createScaledBitmap(bitmap, 100, 100, false);
-<<<<<<< OURS
-        		new ImageFilter(bitmap).grayFilter().compress(Bitmap.CompressFormat.PNG, 100, stream);
-=======
-        		new ImageFilter(bitmap).grayFilter(bitmap).compress(Bitmap.CompressFormat.PNG, 100, stream);
->>>>>>> THEIRS
+        		switch(getPreferences("currentFilter")){
+	        		case "gray":
+	        			new ImageFilter(bitmap).grayFilter().compress(Bitmap.CompressFormat.JPEG, 100, stream);
+	        			break;
+	        		case "canny":
+	        			new ImageFilter(bitmap).cannyFilter().compress(Bitmap.CompressFormat.JPEG, 100, stream);
+	        			break;
+	        		case "treshold":
+	        			new ImageFilter(bitmap).thresholdFilter().compress(Bitmap.CompressFormat.JPEG, 100, stream);
+	        			break;
+	        		default:
+	        			break;
+        		}  
         		Log.d("send", "filter img " + imgName + " done");
         		File f= new File(Environment.getExternalStorageDirectory()+"/soAppDir/myFilterImages/filtered-"+tmpFileName); 
         		while(f.exists()){
@@ -292,6 +300,35 @@ public class EventCollector implements EventCollectorInterface{
 	}
 	
 	/**
+	 * 
+	 * @return
+	 */
+	@Override
+	public ArrayList<String> getFilterProperiesWithDialog() {		
+		return new ArrayList<String>(Arrays.asList("wybór filtra"));
+	}
+	
+	/**
+	 * @return
+	 */
+	@Override
+	public ArrayList<String> getCamProperiesWithDialog() {
+		return new ArrayList<String>(Arrays.asList("efekt kolorów","balans bieli"));
+	}	
+	
+	/**
+	 * 
+	 * @return
+	 */
+	@Override
+	public ArrayList<String> getEnableFilters() {
+		/*
+		 * TODO implement in imgProc getter for list possible filters
+		 */
+		return new ArrayList<String>(Arrays.asList("gray","canny","treshold"));
+	}
+	
+	/**
 	 * get arraylist of camera properties
 	 * @return ArrayList<Property> 
 	 */	
@@ -379,6 +416,18 @@ public class EventCollector implements EventCollectorInterface{
 	}
 	
 	/**
+	 * save [string][string] in SharedPreferences
+	 * @param name
+	 * @param value
+	 */
+	public void savePreferences(String name,String value){
+		preferences = activity.getSharedPreferences(PREFERENCES_NAME, Activity.MODE_PRIVATE);
+	    SharedPreferences.Editor preferencesEditor = preferences.edit();
+	    preferencesEditor.putString(name, value);
+	    preferencesEditor.commit();	
+	}
+	
+	/**
 	 * get sharedPrefs and set array<Property> from param to last save state 
 	 * @param propList
 	 */
@@ -388,6 +437,16 @@ public class EventCollector implements EventCollectorInterface{
 			 int property = preferences.getInt(prop.getName(), 0);
 			 prop.setState(property);
 		}		
+	}
+	
+	/**
+	 * get string value from sharedPref, if key not exist return value ""
+	 * @param name String key  
+	 * @return String value 
+	 */
+	public String getPreferences(String name){
+		preferences = activity.getSharedPreferences(PREFERENCES_NAME, Activity.MODE_PRIVATE);
+		return preferences.getString(name, "");
 	}
 	
 	/**
