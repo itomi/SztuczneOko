@@ -30,8 +30,11 @@ public class CamPropertiesActivity extends soActivity{
 	ListView secListView;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState);		
+		try{
 		cam = Camera.open();
+		}catch(Exception e){
+		}
 		setContentView(R.layout.activity_cam_properties);
 		propList = core.getCamProperties();
 		listView = (ListView) findViewById(R.id.camPropList);
@@ -52,9 +55,10 @@ public class CamPropertiesActivity extends soActivity{
 		secListView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
-				     int position, long id) {					
+				     int position, long id) {	
+				if(cam==null)cam = Camera.open();
 				switch (position) {
-				case 0:
+				case 0:						
 						displayDialog(view,cam.getParameters().getSupportedColorEffects(),"collorEfect");
 					break;
 				case 1:

@@ -189,7 +189,8 @@ public class EventCollector implements EventCollectorInterface{
             return null;
         }
      
-        @Override
+        @SuppressWarnings("deprecation")
+		@Override
         protected void onPostExecute(Void result) {
             activity.removeDialog(1);            
         }

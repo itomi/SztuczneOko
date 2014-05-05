@@ -24,6 +24,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -35,17 +37,34 @@ import android.widget.ImageButton;
 public class CameraActivity extends soActivity implements CameraCallback{
     private FrameLayout cameraholder = null;
     private CameraSurface camerasurface = null;
-
+    private MenuItem mItemRunCamProp;
+    private MenuItem mItemRunFilterProp;
+    private MenuItem mItemRunBTProp;
     protected static final String MEDIA_TYPE_IMAGE = null;
 
     Button captureButton;
     Button filterButton;
     Button againPhotoButton;
 
+    @Override
+    public void onStop() {
+    	super.onStop();
+    	
+	}
+    
+    @Override
+    public void onRestart() {
+    	super.onRestart();
+    	
+	}
+    
+    @Override
     public void onResume(){
         super.onResume();
         OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_3, this, mLoaderCallback);
+        
 	}
+    
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,7 +104,7 @@ public class CameraActivity extends soActivity implements CameraCallback{
         dialog.setCancelable(true);
         return dialog;
     }
- 
+ 	
 
 	private void setupPictureMode(){
 	    camerasurface = new CameraSurface(this,core);
@@ -128,7 +147,28 @@ public class CameraActivity extends soActivity implements CameraCallback{
             
             return filename;
     }
-    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        mItemRunCamProp = menu.add("ustawienia kamery");
+        mItemRunFilterProp = menu.add("ustawienia filtracji");
+        mItemRunBTProp = menu.add("ustawienia bluetooth");
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item == mItemRunCamProp) {
+        	startActivity(core.getPropertiesMenuEvents().runCamPropertiesActivity(this));
+        } else if (item == mItemRunFilterProp) {
+        	startActivity(core.getPropertiesMenuEvents().runFilterPropertiesActivity(this));
+        } else if (item == mItemRunBTProp) {
+        	Bundle bundle = new Bundle();
+        	//bundle.put
+        	
+        	startActivity(core.getPropertiesMenuEvents().runBTPropertiesActivity(this));
+        }
+        return true;
+    }
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
 
         @Override
@@ -138,8 +178,6 @@ public class CameraActivity extends soActivity implements CameraCallback{
                 {
                     Log.i("openCV", "OpenCV loaded successfully");
 
-                    /* Now enable camera view to start receiving frames */
-                    
                 } break;
                 default:
                 {
