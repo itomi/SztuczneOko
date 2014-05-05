@@ -11,6 +11,8 @@
 # generated files
 bin/
 
+# generated javaDoc
+doc/
 
 # Local configuration file (sdk path, etc)
 local.properties
