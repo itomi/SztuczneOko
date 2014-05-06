@@ -16,9 +16,7 @@ import android.util.Log;
 public class ImageFilter {
 	private Mat mRgba;
 	private Mat mGray;
-	private Mat mGaussian;
-	private Mat mThreshold;
-	private Mat mIntermediateMat;
+	private Mat mTmp;
 	private Mat mMat;
 	private Bitmap mPicture;
 	private Bitmap mBitmap;
@@ -68,9 +66,9 @@ public class ImageFilter {
     public Bitmap cannyFilter() {
         // input frame has gray scale format
     	mRgba = convToMat();
-        Imgproc.cvtColor(mRgba, mGray, Imgproc.COLOR_GRAY2RGBA, 4);
-        Imgproc.Canny(mGray, mIntermediateMat, 80, 100);
-        Imgproc.cvtColor(mIntermediateMat, mRgba, Imgproc.COLOR_GRAY2RGBA, 4);
+        Imgproc.cvtColor(mRgba, mGray, Imgproc.COLOR_RGBA2GRAY, 4);
+        Imgproc.Canny(mGray, mTmp, 80, 100);
+        Imgproc.cvtColor(mTmp, mRgba, Imgproc.COLOR_GRAY2RGBA, 4);
         mRet = convToBitmap(mRgba);
         return mRet;
     }
@@ -78,10 +76,10 @@ public class ImageFilter {
     public Bitmap thresholdFilter() {
         // input frame has threshold format
     	mRgba = convToMat();
-        Imgproc.cvtColor(mRgba, mGray, Imgproc.COLOR_GRAY2RGBA, 4);
-        Imgproc.GaussianBlur(mGray, mGaussian, new org.opencv.core.Size(3, 3), 0, 0);
-        Imgproc.adaptiveThreshold(mGaussian, mThreshold, 255, Imgproc.ADAPTIVE_THRESH_MEAN_C, Imgproc.THRESH_BINARY_INV, 5, 4);
-        mRet = convToBitmap(mThreshold);
+        Imgproc.cvtColor(mRgba, mGray, Imgproc.COLOR_RGBA2GRAY, 4);
+        Imgproc.GaussianBlur(mGray, mTmp, new org.opencv.core.Size(3, 3), 0, 0);
+        Imgproc.adaptiveThreshold(mTmp, mRgba, 255, Imgproc.ADAPTIVE_THRESH_MEAN_C, Imgproc.THRESH_BINARY_INV, 5, 4);
+        mRet = convToBitmap(mRgba);
         return mRet;
     }
     
