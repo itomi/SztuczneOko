@@ -30,6 +30,7 @@ public class ImageFilter {
 		mBitmap = bitmap;
 		mMat = new Mat();
 		mGray = new Mat();
+		mTmp = new Mat();
 		//mBitmap = new Bitmap();
 	}
 	

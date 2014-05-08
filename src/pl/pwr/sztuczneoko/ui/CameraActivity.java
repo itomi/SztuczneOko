@@ -84,7 +84,7 @@ public class CameraActivity extends soActivity implements CameraCallback{
         captureButton.setEnabled(false);
 	}
 	public void filterPhotoClick(View view){		
-		core.sendPhoto(this);
+		core.sendPhoto(this,"/soAppDir/myImages/");
 	}
 	public void showProgressDialog(String title,String message) {
 		progressDialog = ProgressDialog.show(this, title, message, true);

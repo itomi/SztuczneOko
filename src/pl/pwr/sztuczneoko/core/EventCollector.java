@@ -135,9 +135,10 @@ public class EventCollector implements EventCollectorInterface{
     class send extends AsyncTask<Void, Void, Void> {
    	 
         Activity activity;
-     
-        public send(Activity activity) {
+        String location;
+        public send(Activity activity,String location) {
             this.activity = activity;
+            this.location = location;
         }
      
         @Override
@@ -159,8 +160,8 @@ public class EventCollector implements EventCollectorInterface{
         	try {
         		String tmpFileName = imgName;
         		
-        		saveImg(img,imgName,"/soAppDir/myImages/");
-        		Log.d("send", "send image " + imgName);
+        		saveImg(img,imgName,location);
+        		Log.d("send", "send image " + imgName );
         		
         		ByteArrayOutputStream stream = new ByteArrayOutputStream();
         		BitmapFactory.Options options = new BitmapFactory.Options();             	
@@ -373,9 +374,9 @@ public class EventCollector implements EventCollectorInterface{
 	 * @param a calling activity
 	 */
 	@Override
-	public void sendPhoto(Activity a) {		
+	public void sendPhoto(Activity a,String location) {		
 		if (img==null) return;
-		new send(a).execute();
+		new send(a,location).execute();
 	}
 	
 	/**
