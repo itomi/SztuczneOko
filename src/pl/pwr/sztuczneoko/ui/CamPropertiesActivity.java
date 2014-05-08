@@ -50,8 +50,13 @@ public class CamPropertiesActivity extends soActivity{
 		});	
 		ArrayList<String> propWithDial = core.getCamProperiesWithDialog();
 		String[] array = propWithDial.toArray(new String[propWithDial.size()]);
+		ArrayList<String> contentDescArrayList = new ArrayList<>(); 
+		for(String item : array)
+			contentDescArrayList.add(item+"Desc");			
+		String[] arrayContentDesc = contentDescArrayList.toArray(new String[contentDescArrayList.size()]);
+		
 		secListView = (ListView) findViewById(R.id.camDialogPropList);
-		secListView.setAdapter(new MenuAdapter(this,array,array,R.layout.row));	    
+		secListView.setAdapter(new MenuAdapter(this,array,arrayContentDesc,R.layout.row));	    
 		secListView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,

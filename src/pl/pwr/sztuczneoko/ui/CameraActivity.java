@@ -59,7 +59,6 @@ public class CameraActivity extends soActivity implements CameraCallback{
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_camera);
         captureButton = (Button) findViewById(R.id.button_capture);
         filterButton = (Button) findViewById(R.id.button_filter_photo);
@@ -138,7 +137,7 @@ public class CameraActivity extends soActivity implements CameraCallback{
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        mItemRunCamProp = menu.add("ustawienia kamery");
+        mItemRunCamProp = menu.add("ustawienia kamery");        
         mItemRunFilterProp = menu.add("ustawienia filtracji");
         mItemRunBTProp = menu.add("ustawienia bluetooth");
         return true;

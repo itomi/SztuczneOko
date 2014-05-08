@@ -59,9 +59,12 @@ public class MenuAdapter extends ArrayAdapter<String>{
     	        
     	        View rowView = inflater.inflate(R.layout.row, parent, false);        
     	        TextView labelView = (TextView) rowView.findViewById(R.id.label);        
-    	        labelView.setText(itemsTexts[position]);        
+    	        labelView.setText(getContext().getResources().getIdentifier(
+    	        		itemsTexts[position], "string", getContext().getPackageName()));        
     	        labelView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 25);
-    	        labelView.setContentDescription(itemsContentDesc[position]);
+    	        labelView.setContentDescription(getContext().getText(
+    	        		getContext().getResources().getIdentifier(
+    	        				itemsContentDesc[position], "string", getContext().getPackageName())));
     	        return rowView;
     	}
     }

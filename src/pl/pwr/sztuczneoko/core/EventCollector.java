@@ -319,7 +319,7 @@ public class EventCollector implements EventCollectorInterface{
 	 */
 	@Override
 	public ArrayList<String> getFilterProperiesWithDialog() {		
-		return new ArrayList<String>(Arrays.asList("wybór filtra"));
+		return new ArrayList<String>(Arrays.asList("chooseFilter"));
 	}
 	
 	/**
@@ -327,7 +327,7 @@ public class EventCollector implements EventCollectorInterface{
 	 */
 	@Override
 	public ArrayList<String> getCamProperiesWithDialog() {
-		return new ArrayList<String>(Arrays.asList("efekt kolorów","balans bieli"));
+		return new ArrayList<String>(Arrays.asList("whiteBalance","collorEfect"));
 	}	
 	
 	/**

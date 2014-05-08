@@ -33,6 +33,7 @@
         android:layout_alignParentRight="true"
         android:background="@color/Blue"
         android:onClick="sendButtonClick"
-        android:text="filtruj i wyślij" />
+        android:text="@+string/sendPhoto" 
+        android:contentDescription="@+string/sendPhoto"/>
  
 </RelativeLayout>

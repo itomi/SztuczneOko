@@ -25,11 +25,13 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
+        android:description="@string/app_nameDesc"
         android:theme="@style/AppTheme" 
 >
         <activity
             android:name="pl.pwr.sztuczneoko.ui.EntryPointActivity"
             android:label="@string/app_name" 
+            android:description="@string/app_nameDesc"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -39,39 +41,48 @@
         </activity>
         <activity
             android:name="pl.pwr.sztuczneoko.ui.CameraActivity"
-            android:label="@string/app_name"
+            android:label="@string/title_activity_camera"
+            android:description="@string/title_activity_cameraDesc"
             android:screenOrientation="landscape" >
         </activity>
         <activity
             android:name="pl.pwr.sztuczneoko.ui.PropertiesActivity"
-            android:label="@string/title_activity_properties" 
+            android:label="@string/title_activity_properties"
+            android:description="@string/title_activity_propertiesDesc" 
             android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="pl.pwr.sztuczneoko.ui.BTPropertiesActivity"
-            android:label="@string/title_activity_btproperties" 
+            android:label="@string/title_activity_btproperties"
+            android:description="@string/title_activity_btpropertiesDesc" 
             android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="pl.pwr.sztuczneoko.ui.CamPropertiesActivity"
-            android:label="@string/title_activity_cam_properties" 
+            android:label="@string/title_activity_cam_properties"
+            android:description="@string/title_activity_cam_propertiesDesc"  
             android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="pl.pwr.sztuczneoko.ui.FilterPropertiesActivity"
-            android:label="@string/title_activity_filter_properties" 
+            android:label="@string/title_activity_filter_properties"
+            android:description="@string/title_activity_filter_propertiesDesc"  
             android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="pl.pwr.sztuczneoko.ui.GalleryActivity"
             android:label="@string/title_activity_gallery" 
+            android:description="@string/title_activity_galleryDesc"
             android:screenOrientation="portrait" >
         </activity>
+        
         <activity 
             android:name="pl.pwr.sztuczneoko.communication.BluetoothCommunication"
+            android:label="@string/title_activity_gallery" 
             android:theme="@android:style/Theme.NoDisplay" 
             android:screenOrientation="portrait" >
         </activity>
+        
         <activity
             android:name="pl.pwr.sztuczneoko.ui.Puzzle15Activity"
             android:label="@string/app_name"
