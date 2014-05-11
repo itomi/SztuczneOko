@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>sztuczneOko</name>
+	<name>OpenCV Library - 2.4.8</name>
 	<comment></comment>
 	<projects>
-		<project>OpenCV Library - 2.4.8</project>
+		<project>sztuczneOko</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
@@ -31,4 +31,10 @@
 		<nature>com.android.ide.eclipse.adt.AndroidNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<variableList>
+		<variable>
+			<name>SZTUCZNEOKO_GEN_LOC</name>
+			<value>$%7BPARENT-1-PROJECT_LOC%7D/gen</value>
+		</variable>
+	</variableList>
 </projectDescription>
