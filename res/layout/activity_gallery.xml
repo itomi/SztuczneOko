@@ -8,13 +8,13 @@
     <GridView
         android:id="@+id/gridView"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:layout_above="@+id/sendButton"
         android:layout_alignParentLeft="true"
         android:layout_margin="5dp"
         android:columnWidth="100dp"
         android:drawSelectorOnTop="true"
-        android:gravity="center"
+        android:gravity="center_vertical"
         android:numColumns="auto_fit"
         android:stretchMode="columnWidth"
         android:verticalSpacing="5dp" 
@@ -33,6 +33,7 @@
         android:layout_alignParentRight="true"
         android:background="@color/Blue"
         android:onClick="sendButtonClick"
-        android:text="filtruj i wyślij" />
+        android:text="@+string/sendPhoto" 
+        android:contentDescription="@+string/sendPhoto"/>
  
 </RelativeLayout>

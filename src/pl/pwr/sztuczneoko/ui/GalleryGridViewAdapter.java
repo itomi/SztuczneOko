@@ -16,6 +16,7 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Handler;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +36,8 @@ import android.widget.ViewSwitcher;
 public class GalleryGridViewAdapter extends ArrayAdapter implements ImageLoadListener{
     private Context context;
     private int layoutResourceId;
+    private int imgHeight;
+    private int imgWidth;
     private ArrayList data = new ArrayList();
     private ArrayList<String> fileNames = new ArrayList<String>();
     private HashSet imgSet;
@@ -47,7 +50,7 @@ public class GalleryGridViewAdapter extends ArrayAdapter implements ImageLoadLis
     private ViewHolder holder = null;
     private int selectedId;
     public GalleryGridViewAdapter(Context context, int layoutResourceId,
-            ArrayList data,String mPath) {
+            ArrayList data,String mPath,int imgHeight,int imgWidth) {
         super(context, layoutResourceId, data);
         this.layoutResourceId = layoutResourceId;
         this.context = context;
@@ -57,12 +60,14 @@ public class GalleryGridViewAdapter extends ArrayAdapter implements ImageLoadLis
 		mImageLoader = new ImageLoader(this);
 		mImageLoader.start();
 		mHandler = new Handler();
-        
+        this.imgHeight = imgHeight; 
+        this.imgWidth = imgWidth;
     }
     @Override
     public View getView(int position, final View convertView, ViewGroup parent) {
         row = convertView;
         holder = null;
+
         if(mDirectory.listFiles().length==0)Log.d("gallery", "empty gallery");
 		String lPath = (String)getItem(position);
 
@@ -75,10 +80,11 @@ public class GalleryGridViewAdapter extends ArrayAdapter implements ImageLoadLis
             row.setTag(holder);
             
 			ProgressBar lProgress = new ProgressBar(context);
-			lProgress.setLayoutParams(new ViewSwitcher.LayoutParams(80, 80));
+			lProgress.setLayoutParams(new ViewSwitcher.LayoutParams((int) (imgWidth/(3.6)), imgHeight/5));
 			holder.switcher.addView(lProgress);
-			ImageView lImage = new ImageView(context);;
-			lImage.setLayoutParams(new ViewSwitcher.LayoutParams(100, 100));
+			ImageView lImage = new ImageView(context);
+			//Log.d("res", "height: "+imgHeight+" widht: "+imgWidth);
+			lImage.setLayoutParams(new ViewSwitcher.LayoutParams((int) (imgWidth/(3.6)), imgHeight/5));
 
 			holder.switcher.addView(lImage);
 			

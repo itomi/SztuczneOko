@@ -24,6 +24,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -35,23 +37,28 @@ import android.widget.ImageButton;
 public class CameraActivity extends soActivity implements CameraCallback{
     private FrameLayout cameraholder = null;
     private CameraSurface camerasurface = null;
-
+    private MenuItem mItemRunCamProp;
+    private MenuItem mItemRunFilterProp;
+    private MenuItem mItemRunBTProp;
+    private ProgressDialog progressDialog;
     protected static final String MEDIA_TYPE_IMAGE = null;
 
     Button captureButton;
     Button filterButton;
     Button againPhotoButton;
-
+    
+    @Override
     public void onResume(){
         super.onResume();
         OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_3, this, mLoaderCallback);
+        
 	}
+    
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_camera);
         captureButton = (Button) findViewById(R.id.button_capture);
         filterButton = (Button) findViewById(R.id.button_filter_photo);
@@ -76,16 +83,16 @@ public class CameraActivity extends soActivity implements CameraCallback{
         captureButton.setEnabled(false);
 	}
 	public void filterPhotoClick(View view){		
-		core.sendPhoto(this);
+		core.sendPhoto(this,"/soAppDir/myImages/");
 	}
-	public Dialog onCreateDialog(int dialogId) {
-        ProgressDialog dialog = new ProgressDialog(this);
-        dialog.setTitle("przetwarznie i wysyłanie zdjęcia");
-        dialog.setMessage("Proszę czekać....");
-        dialog.setCancelable(true);
-        return dialog;
-    }
- 
+	public void showProgressDialog(String title,String message) {
+		progressDialog = ProgressDialog.show(this, title, message, true);
+		progressDialog.setCancelable(true);
+	}
+	public void hideProgressDialog(){
+		progressDialog.dismiss();
+	}
+ 	
 
 	private void setupPictureMode(){
 	    camerasurface = new CameraSurface(this,core);
@@ -128,7 +135,25 @@ public class CameraActivity extends soActivity implements CameraCallback{
             
             return filename;
     }
-    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        mItemRunCamProp = menu.add("ustawienia kamery");        
+        mItemRunFilterProp = menu.add("ustawienia filtracji");
+        mItemRunBTProp = menu.add("ustawienia bluetooth");
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item == mItemRunCamProp) {
+        	startActivity(core.getPropertiesMenuEvents().runCamPropertiesActivity(this));
+        } else if (item == mItemRunFilterProp) {
+        	startActivity(core.getPropertiesMenuEvents().runFilterPropertiesActivity(this));
+        } else if (item == mItemRunBTProp) {
+        	startActivity(core.getPropertiesMenuEvents().runBTPropertiesActivity(this));
+        }
+        return true;
+    }
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
 
         @Override
@@ -138,8 +163,6 @@ public class CameraActivity extends soActivity implements CameraCallback{
                 {
                     Log.i("openCV", "OpenCV loaded successfully");
 
-                    /* Now enable camera view to start receiving frames */
-                    
                 } break;
                 default:
                 {

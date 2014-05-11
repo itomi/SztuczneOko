@@ -101,7 +101,6 @@ public class EventCollector implements EventCollectorInterface{
 		camPropList.add(new Property("realTime", false));
 		filterPropList.add(new Property("autoFilter", true));
 		camPropList.add(new Property("flash",false));
-		
 		try {
 			comm = CommunicationProvider.provideCommunication(CommunicationType.BLUETOOTH);
 		} catch (InstantiationException e) {
@@ -141,14 +140,24 @@ public class EventCollector implements EventCollectorInterface{
     class send extends AsyncTask<Void, Void, Void> {
    	 
         Activity activity;
-     
-        public send(Activity activity) {
+        String location;
+        public send(Activity activity,String location) {
             this.activity = activity;
+            this.location = location;
         }
      
         @Override
         protected void onPreExecute() {
-           activity.showDialog(1);
+        	Object[] args = {"Proszę czekać....","filtracja i wysyłanie zdjęcia"}; 
+        	try {
+        		Log.d("class", activity.getClass().getName());
+        		Class[] args1 = new Class[2];
+                args1[0] = String.class;
+                args1[1] = String.class;
+				activity.getClass().getMethod("showProgressDialog",args1).invoke(activity, args);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
         }
      
         @Override
@@ -156,8 +165,8 @@ public class EventCollector implements EventCollectorInterface{
         	try {
         		String tmpFileName = imgName;
         		
-        		saveImg(img,imgName,"/soAppDir/myImages/");
-        		Log.d("send", "send image " + imgName);
+        		saveImg(img,imgName,location);
+        		Log.d("send", "send image " + imgName );
         		
         		ByteArrayOutputStream stream = new ByteArrayOutputStream();
         		BitmapFactory.Options options = new BitmapFactory.Options();             	
@@ -165,17 +174,17 @@ public class EventCollector implements EventCollectorInterface{
         		bitmap = Bitmap.createScaledBitmap(bitmap, 100, 100, false);
         		switch(getPreferences("currentFilter")){
 	        		case "gray":
-	        			new ImageFilter(bitmap).grayFilter(bitmap).compress(Bitmap.CompressFormat.JPEG, 100, stream);
+	        			new ImageFilter(bitmap).grayFilter().compress(Bitmap.CompressFormat.JPEG, 100, stream);
 	        			break;
 	        		case "canny":
-	        			new ImageFilter(bitmap).cannyFilter(bitmap).compress(Bitmap.CompressFormat.JPEG, 100, stream);
+	        			new ImageFilter(bitmap).cannyFilter().compress(Bitmap.CompressFormat.JPEG, 100, stream);
 	        			break;
 	        		case "treshold":
-	        			new ImageFilter(bitmap).thresholdFilter(bitmap).compress(Bitmap.CompressFormat.JPEG, 100, stream);
+	        			new ImageFilter(bitmap).thresholdFilter().compress(Bitmap.CompressFormat.JPEG, 100, stream);
 	        			break;
 	        		default:
 	        			break;
-        		}        		
+        		}  
         		Log.d("send", "filter img " + imgName + " done");
         		File f= new File(Environment.getExternalStorageDirectory()+"/soAppDir/myFilterImages/filtered-"+tmpFileName); 
         		while(f.exists()){
@@ -195,9 +204,13 @@ public class EventCollector implements EventCollectorInterface{
             return null;
         }
      
-        @Override
+		@Override
         protected void onPostExecute(Void result) {
-            activity.removeDialog(1);            
+			try {
+				activity.getClass().getMethod("hideProgressDialog",null).invoke(activity);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}          
         }
      
     }
@@ -316,7 +329,7 @@ public class EventCollector implements EventCollectorInterface{
 	 */
 	@Override
 	public ArrayList<String> getFilterProperiesWithDialog() {		
-		return new ArrayList<String>(Arrays.asList("wybór filtra"));
+		return new ArrayList<String>(Arrays.asList("chooseFilter"));
 	}
 	
 	/**
@@ -324,7 +337,7 @@ public class EventCollector implements EventCollectorInterface{
 	 */
 	@Override
 	public ArrayList<String> getCamProperiesWithDialog() {
-		return new ArrayList<String>(Arrays.asList("efekt kolorów","balans bieli"));
+		return new ArrayList<String>(Arrays.asList("whiteBalance","collorEfect"));
 	}	
 	
 	/**
@@ -371,9 +384,9 @@ public class EventCollector implements EventCollectorInterface{
 	 * @param a calling activity
 	 */
 	@Override
-	public void sendPhoto(Activity a) {		
+	public void sendPhoto(Activity a,String location) {		
 		if (img==null) return;
-		new send(a).execute();
+		new send(a,location).execute();
 	}
 	
 	/**
@@ -483,7 +496,5 @@ public class EventCollector implements EventCollectorInterface{
 		}catch(NullPointerException ex){
 			Log.e("bt exception", "null pointer when bt service is off when unregister receeiver");
 		}
-	}
-
-
+	}	
 }

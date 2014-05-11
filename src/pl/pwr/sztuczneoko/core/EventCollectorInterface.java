@@ -14,7 +14,7 @@ public interface EventCollectorInterface {
 	public void connectToDevice(ExternDevice ed);
 	public void setCurrentImg(byte[] data);
 	public void switchProp(Property property); 
-	public void sendPhoto(Activity a);
+	public void sendPhoto(Activity a, String location);
 	public void registerBTActivity(Activity btPropertiesActivity);
 	public void unregisterBTActivity(Activity btPropertiesActivity);
 	public ArrayList<String> getEnableFilters();
@@ -22,4 +22,5 @@ public interface EventCollectorInterface {
 	public void savePreferences(String name,String value);	
 	public String getPreferences(String name);
 	public ArrayList<String> getCamProperiesWithDialog();
+
 }

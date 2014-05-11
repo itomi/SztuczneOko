@@ -42,8 +42,19 @@ public class PropertiesListAdapter extends ArrayAdapter<Property>{
         viewHolder.name.setText(getContext().getResources().getIdentifier(
         		p.getName(), "string", getContext().getPackageName()));
         
-        if(p.isState())viewHolder.status.setText("włączone");
-        else viewHolder.status.setText("wyłączone");
+        viewHolder.name.setContentDescription(
+        		getContext().getText(
+        				getContext().getResources().getIdentifier(
+        						p.getName()+"Desc","string", getContext().getPackageName())));
+        
+        if(p.isState()){
+        	viewHolder.status.setText(R.string.onProp);
+        	viewHolder.status.setContentDescription(getContext().getText(R.string.onPropDesc));
+        }
+        else{
+        	viewHolder.status.setText(R.string.offProp);
+        	viewHolder.status.setContentDescription(getContext().getText(R.string.offPropDesc));
+        }        
            
         return rowView;
     }

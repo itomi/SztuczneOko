@@ -16,9 +16,7 @@ import android.util.Log;
 public class ImageFilter {
 	private Mat mRgba;
 	private Mat mGray;
-	private Mat mGaussian;
-	private Mat mThreshold;
-	private Mat mIntermediateMat;
+	private Mat mTmp;
 	private Mat mMat;
 	private Bitmap mPicture;
 	private Bitmap mBitmap;
@@ -32,15 +30,17 @@ public class ImageFilter {
 		mBitmap = bitmap;
 		mMat = new Mat();
 		mGray = new Mat();
+		mTmp = new Mat();
 		//mBitmap = new Bitmap();
 	}
 	
-	public void setImage(Bitmap image) {
-        this.mPicture = image;
+	//public void setImage(Bitmap image) {
+	public void setImage() {
+        this.mPicture = mBitmap;
     }
 	
-	public Mat convToMat(Bitmap bitmap) {
-	    Utils.bitmapToMat(bitmap, mMat);
+	public Mat convToMat() {
+	    Utils.bitmapToMat(mBitmap, mMat);
 	    return mMat;
 	}
 	
@@ -49,38 +49,38 @@ public class ImageFilter {
 	    return mBitmap;
 	}
 	
-    public Bitmap rgbFilter(Bitmap bitmap) {
+    public Bitmap rgbFilter() {
         // input frame has RGBA scale format
         //mRgba = convToMat(bitmap);
         return mRet;
     }
     
-    public Bitmap grayFilter(Bitmap bitmap) {
+    public Bitmap grayFilter() {
         // input frame has Gray forma
     	//cvtColor(*image, character, CV_BGR2GRAY);t
-    	mRgba = convToMat(bitmap);
+    	mRgba = convToMat();
         Imgproc.cvtColor(mRgba, mGray, Imgproc.COLOR_RGBA2GRAY, 4);
         mRet = convToBitmap(mGray);
         return mRet;
     }
             
-    public Bitmap cannyFilter(Bitmap bitmap) {
+    public Bitmap cannyFilter() {
         // input frame has gray scale format
-    	mRgba = convToMat(bitmap);
-        Imgproc.cvtColor(mRgba, mGray, Imgproc.COLOR_GRAY2RGBA, 4);
-        Imgproc.Canny(mGray, mIntermediateMat, 80, 100);
-        Imgproc.cvtColor(mIntermediateMat, mRgba, Imgproc.COLOR_GRAY2RGBA, 4);
+    	mRgba = convToMat();
+        Imgproc.cvtColor(mRgba, mGray, Imgproc.COLOR_RGBA2GRAY, 4);
+        Imgproc.Canny(mGray, mTmp, 80, 100);
+        Imgproc.cvtColor(mTmp, mRgba, Imgproc.COLOR_GRAY2RGBA, 4);
         mRet = convToBitmap(mRgba);
         return mRet;
     }
     
-    public Bitmap thresholdFilter(Bitmap bitmap) {
+    public Bitmap thresholdFilter() {
         // input frame has threshold format
-    	mRgba = convToMat(bitmap);
-        Imgproc.cvtColor(mRgba, mGray, Imgproc.COLOR_GRAY2RGBA, 4);
-        Imgproc.GaussianBlur(mGray, mGaussian, new org.opencv.core.Size(3, 3), 0, 0);
-        Imgproc.adaptiveThreshold(mGaussian, mThreshold, 255, Imgproc.ADAPTIVE_THRESH_MEAN_C, Imgproc.THRESH_BINARY_INV, 5, 4);
-        mRet = convToBitmap(mThreshold);
+    	mRgba = convToMat();
+        Imgproc.cvtColor(mRgba, mGray, Imgproc.COLOR_RGBA2GRAY, 4);
+        Imgproc.GaussianBlur(mGray, mTmp, new org.opencv.core.Size(3, 3), 0, 0);
+        Imgproc.adaptiveThreshold(mTmp, mRgba, 255, Imgproc.ADAPTIVE_THRESH_MEAN_C, Imgproc.THRESH_BINARY_INV, 5, 4);
+        mRet = convToBitmap(mRgba);
         return mRet;
     }
     
