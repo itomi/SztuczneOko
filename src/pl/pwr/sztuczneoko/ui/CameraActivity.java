@@ -154,6 +154,7 @@ public class CameraActivity extends soActivity implements CameraCallback{
         }
         return true;
     }
+
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
 
         @Override

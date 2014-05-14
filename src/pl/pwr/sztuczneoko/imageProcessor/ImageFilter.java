@@ -97,7 +97,7 @@ public class ImageFilter {
     	mRgba = convToMat();
     	Imgproc.cvtColor(mRgba, mGray, Imgproc.COLOR_RGBA2GRAY, 4);
         Imgproc.Sobel(mGray, mTmp, CvType.CV_8U, 1, 1);
-        Imgproc.cvtColor(mTmp, mRgba, Imgproc.COLOR_RGBA2GRAY, 4);
+        Imgproc.cvtColor(mTmp, mRgba, Imgproc.COLOR_GRAY2RGBA, 4);
 
         mRet = convToBitmap(mRgba);
         return mRet;
