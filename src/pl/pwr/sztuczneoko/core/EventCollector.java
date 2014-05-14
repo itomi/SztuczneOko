@@ -171,6 +171,12 @@ public class EventCollector implements EventCollectorInterface{
 	        		case "gray":
 	        			new ImageFilter(bitmap).grayFilter().compress(Bitmap.CompressFormat.JPEG, 100, stream);
 	        			break;
+	        		case "blur":
+	        			new ImageFilter(bitmap).blur().compress(Bitmap.CompressFormat.JPEG, 100, stream);
+	        			break;
+	        		case "sobel":
+	        			new ImageFilter(bitmap).sobel().compress(Bitmap.CompressFormat.JPEG, 100, stream);
+	        			break;
 	        		case "canny":
 	        			new ImageFilter(bitmap).cannyFilter().compress(Bitmap.CompressFormat.JPEG, 100, stream);
 	        			break;
@@ -339,7 +345,7 @@ public class EventCollector implements EventCollectorInterface{
 		/*
 		 * TODO implement in imgProc getter for list possible filters
 		 */
-		return new ArrayList<String>(Arrays.asList("gray","canny","treshold"));
+		return new ArrayList<String>(Arrays.asList("gray","canny","treshold","blur","sobel"));
 	}
 	
 	/**
