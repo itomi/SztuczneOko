@@ -13,6 +13,10 @@ bin/
 
 # generated javaDoc
 doc/
+opencv/javadoc/
+
+# android generated files 
+gen/*.*
 
 # Local configuration file (sdk path, etc)
 local.properties
