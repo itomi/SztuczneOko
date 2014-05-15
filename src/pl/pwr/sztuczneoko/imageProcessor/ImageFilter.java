@@ -8,6 +8,7 @@ import org.opencv.core.Size;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
+//import org.opencv.samples.imagemanipulations.ImageManipulationsActivity;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -79,7 +80,25 @@ public class ImageFilter {
     	mRgba = convToMat();
         Imgproc.cvtColor(mRgba, mGray, Imgproc.COLOR_RGBA2GRAY, 4);
         Imgproc.GaussianBlur(mGray, mTmp, new org.opencv.core.Size(3, 3), 0, 0);
-        Imgproc.adaptiveThreshold(mTmp, mRgba, 255, Imgproc.ADAPTIVE_THRESH_MEAN_C, Imgproc.THRESH_BINARY_INV, 5, 4);
+        Imgproc.adaptiveThreshold(mTmp, mRgba, 255, Imgproc.ADAPTIVE_THRESH_MEAN_C, Imgproc.THRESH_BINARY, 5, 4);
+        mRet = convToBitmap(mRgba);
+        return mRet;
+    }
+    
+    public Bitmap blur(){
+    	mRgba = convToMat();
+        Imgproc.blur(mRgba, mTmp, new Size(3.0, 3.0));
+        mRet = convToBitmap(mTmp);
+        return mRet;
+    }
+    
+    public Bitmap sobel(){
+    	
+    	mRgba = convToMat();
+    	Imgproc.cvtColor(mRgba, mGray, Imgproc.COLOR_RGBA2GRAY, 4);
+        Imgproc.Sobel(mGray, mTmp, CvType.CV_8U, 1, 1);
+        Imgproc.cvtColor(mTmp, mRgba, Imgproc.COLOR_GRAY2RGBA, 4);
+
         mRet = convToBitmap(mRgba);
         return mRet;
     }
