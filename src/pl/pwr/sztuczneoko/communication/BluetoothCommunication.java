@@ -129,7 +129,8 @@ public class BluetoothCommunication implements Communication{
 		
 		try {
 			session.establishConnection(Service.SP);
-		} catch (IOException e) {
+			SessionChecker.addNewSessionAndRegisterForActivityChecks(session, renewalPeriod);
+		} catch (Exception e) {
 			Log.d(this.getClass().toString(), "Could not establish connection to Device:" + device.getDescription(), e);
 			return null;
 		}
