@@ -15,10 +15,10 @@ public enum Service {
 	BNEP(new UUID(0x0, 0x000F),"Bluetooth Network Encapsulation Protocol"),
 	UPNP(new UUID(0x0, 0x0010),"Extended Service Discovery Profile (ESDP) [ deprecated ] "),
 	HIDP(new UUID(0x0, 0x0011), "Human Interface Device Profile (HID)"),
-	SP(new UUID(0x0, 0x1101), "Serial Port"),
+	SP(UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"), "Serial Port"),
 	PANP(new UUID(0x0,0x1117), "Personal Area Networking Profile"),
 	HSP(new UUID(0x0, 0x1131), "HeadSet Profile"),
-	AEYE(new UUID(0x6666,0x6666),"Sztuczne Oko"),
+	AEYE(UUID.fromString("00006666-0000-1000-8000-00805F9B34FB") ,"Sztuczne Oko"),
 	UNKNOWN(new UUID(0xFFFF, 0xFFFF), "Unknown Service");
 
 	private static final UUID[] allServices;

@@ -28,6 +28,13 @@ public class Session {
 	
 	public void establishConnection(final Service service) throws IOException {
 		socket = device.connect(service);
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} // StackOverflow hack xD, we all love developers
+		socket.connect();
 	}
 	
 	public void send(byte[] data) throws IOException {
