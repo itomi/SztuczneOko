@@ -183,6 +183,12 @@ public class EventCollector implements EventCollectorInterface{
 	        		case "treshold":
 	        			new ImageFilter(bitmap).thresholdFilter().compress(Bitmap.CompressFormat.JPEG, 100, stream);
 	        			break;
+	        		case "binary":
+	        			new ImageFilter(bitmap).binaryFilter().compress(Bitmap.CompressFormat.JPEG, 100, stream);
+	        			break;
+	        		case "cropp":
+	        			new ImageFilter(bitmap).cropp().compress(Bitmap.CompressFormat.JPEG, 100, stream);
+	        			break;
 	        		default:
 	        			break;
         		}  
@@ -345,7 +351,7 @@ public class EventCollector implements EventCollectorInterface{
 		/*
 		 * TODO implement in imgProc getter for list possible filters
 		 */
-		return new ArrayList<String>(Arrays.asList("gray","canny","treshold","blur","sobel"));
+		return new ArrayList<String>(Arrays.asList("gray","canny","treshold","blur","sobel", "binary", "cropp"));
 	}
 	
 	/**
