@@ -64,6 +64,10 @@
     <string name="autoFilterDesc">default filter</string>
     <string name="chooseFilter">wybór filtra</string>
     <string name="chooseFilterDesc">set filter</string>
+    <string name="setParamFilter">parametr filtra</string>
+    <string name="setParamFilterDesc">set filter parameters</string>
+    <string name="setSecondParamFilter">drugi parametr filtra</string>
+    <string name="setSecondParamFilterDesc">set second filter parameter (color)</string>
     <string name="onProp">włączone</string>
     <string name="onPropDesc">on</string>
     <string name="offProp">wyłączone</string>
