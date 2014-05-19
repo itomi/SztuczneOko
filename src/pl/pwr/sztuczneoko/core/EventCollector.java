@@ -181,13 +181,13 @@ public class EventCollector implements EventCollectorInterface{
 	        			//(min, max) (70,90),(30,50),(50,70),(90,110)
 	        			int min = Integer.parseInt(getPreferences("filterParam").split(",")[0]);
 	        			int max = Integer.parseInt(getPreferences("filterParam").split(",")[1]);
-	        			new ImageFilter(bitmap).cannyFilter().compress(Bitmap.CompressFormat.JPEG, 100, stream);
+	        			new ImageFilter(bitmap).cannyFilter(min,max).compress(Bitmap.CompressFormat.JPEG, 100, stream);
 	        			break;
 	        		case "treshold":
 	        			//blockSize 3,5,7; color 1 lub 0
 	        			int blockSize = Integer.parseInt(getPreferences("filterParam"));
 	        			int color = Integer.parseInt(getPreferences("secondFilterParam"));
-	        			new ImageFilter(bitmap).thresholdFilter().compress(Bitmap.CompressFormat.JPEG, 100, stream);
+	        			new ImageFilter(bitmap).thresholdFilter(blockSize,color).compress(Bitmap.CompressFormat.JPEG, 100, stream);
 	        			break;
 	        		case "binary":
 	        			new ImageFilter(bitmap).binaryFilter().compress(Bitmap.CompressFormat.JPEG, 100, stream);

@@ -76,22 +76,22 @@ public class ImageFilter {
         return mRet;
     }
             
-    public Bitmap cannyFilter(/*int min, int max*/) { //(min, max) (70,90),(30,50),(50,70),(90,110)
+    public Bitmap cannyFilter(int min, int max) { //(min, max) (70,90),(30,50),(50,70),(90,110)
         // input frame has gray scale format
     	mRgba = convToMat();
         Imgproc.cvtColor(mRgba, mGray, Imgproc.COLOR_RGBA2GRAY, 4);
-        Imgproc.Canny(mGray, mTmp, 90, 110/*min, max*/);
+        Imgproc.Canny(mGray, mTmp,min, max);
         Imgproc.cvtColor(mTmp, mRgba, Imgproc.COLOR_GRAY2RGBA, 4);
         mRet = convToBitmap(mRgba);
         return mRet;
     }
     
-    public Bitmap thresholdFilter(/*int blockSize, int color*/) { //blockSize 3,5,7; color 1 lub 0
+    public Bitmap thresholdFilter(int blockSize, int color) { //blockSize 3,5,7; color 1 lub 0
         // input frame has threshold format
     	mRgba = convToMat();
         Imgproc.cvtColor(mRgba, mGray, Imgproc.COLOR_RGBA2GRAY, 4);
         Imgproc.GaussianBlur(mGray, mTmp, new org.opencv.core.Size(3, 3), 0, 0);
-        Imgproc.adaptiveThreshold(mTmp, mRgba, 255, Imgproc.ADAPTIVE_THRESH_MEAN_C, Imgproc.THRESH_BINARY/*color*/, /*blockSize*/3, 4);
+        Imgproc.adaptiveThreshold(mTmp, mRgba, 255, Imgproc.ADAPTIVE_THRESH_MEAN_C, color, blockSize, 4);
         mRet = convToBitmap(mRgba);
         return mRet;
     }
