@@ -30,11 +30,14 @@ public class ImageFilter {
 	private Mat mGray;
 	private Mat mTmp;
 	private Mat mMat;
+	private Mat hierarchy;
 	private Bitmap mPicture;
 	private Bitmap mBitmap;
 	private Bitmap mRet;
+	          
+
 	
-	
+	ArrayList<MatOfPoint> contours;
 
 	public ImageFilter(Bitmap bitmap) {
 		super();			
@@ -80,7 +83,7 @@ public class ImageFilter {
         // input frame has gray scale format
     	mRgba = convToMat();
         Imgproc.cvtColor(mRgba, mGray, Imgproc.COLOR_RGBA2GRAY, 4);
-        Imgproc.Canny(mGray, mTmp,min, max);
+        Imgproc.Canny(mGray, mTmp, min, max);
         Imgproc.cvtColor(mTmp, mRgba, Imgproc.COLOR_GRAY2RGBA, 4);
         mRet = convToBitmap(mRgba);
         return mRet;
@@ -96,25 +99,27 @@ public class ImageFilter {
         return mRet;
     }
     
-    public Bitmap binaryFilter(/*int bin, int color*/) { //bin -1, 20, 120, 220; color 1 lub 0
+    public Bitmap binaryFilter(int bin, int color) { //bin -1, 20, 120, 220; color 1 lub 0
         // input frame has threshold format
     	mRgba = convToMat();
         Imgproc.cvtColor(mRgba, mGray, Imgproc.COLOR_RGBA2GRAY, 4);
         Imgproc.GaussianBlur(mGray, mTmp, new org.opencv.core.Size(3, 3), 0, 0);
-        Imgproc.threshold(mTmp, mRgba, 220, 255, Imgproc.THRESH_BINARY_INV);
+        if (bin == -1)
+        Imgproc.threshold(mTmp, mRgba, bin, 255, color | Imgproc.THRESH_OTSU);
+        else
+        Imgproc.threshold(mTmp, mRgba, bin, 255, color);
         mRet = convToBitmap(mRgba);
         return mRet;
     }
     
-    public Bitmap blur(/*int bl*/){ //bl 3,5,7
+    public Bitmap blur(int bl){ //bl 3,5,7
     	mRgba = convToMat();
-        Imgproc.blur(mRgba, mTmp, new Size(3, 3));
+        Imgproc.blur(mRgba, mTmp, new Size(bl, bl));
         mRet = convToBitmap(mTmp);
         return mRet;
     }
     
-    public Bitmap sobel(/*double minVal=-799, double maxVal=602*/){ //(minVal, maxVal) (-100, 100),(-200,200), (-400,400)
-    	double minVal=-100, maxVal=100;
+    public Bitmap sobel(double minVal, double maxVal){ //(minVal, maxVal) (-100, 100),(-200,200), (-400,400)
     	mRgba = convToMat();
     	Imgproc.cvtColor(mRgba, mGray, Imgproc.COLOR_RGBA2GRAY, 4);
         Imgproc.Sobel(mGray, mTmp, CvType.CV_32F, 1, 0);
@@ -123,8 +128,39 @@ public class ImageFilter {
         mRet = convToBitmap(mRgba);
         return mRet;
     }
+  /*  
+    public Bitmap something(){
+    	mRgba = convToMat();
+    	///mRgba = inputFrame.gray();
+        contours = new ArrayList<MatOfPoint>();
+        hierarchy = new Mat();
+
+	    Imgproc.Canny(mRgba, mTmp, 80, 100);
+	    Imgproc.findContours(mTmp, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE, new Point(0, 0));
+	    
+	    ArrayList<MatOfPoint> contours_poly = new ArrayList<MatOfPoint>();
+	    for( int i = 0; i < contours.size(); i++ )
+	    { 
+	    	approxPolyDP( Mat(contours.add(i,contours_poly)), contours_poly[i], 3, true );
+	        boundRect[i] = boundingRect( Mat(contours_poly[i]) );
+	        minEnclosingCircle( (Mat)contours_poly[i], center[i], radius[i] );
+	    }
+	    
+	    Mat drawing = Mat.zeros( mTmp.size(), CvType.CV_8UC3 );
+	    for( int i = 0; i< contours.size(); i++ )
+	    {
+	    	Scalar color =new Scalar(Math.random()*255, Math.random()*255, Math.random()*255);
+	    	Imgproc.drawContours( drawing, contours, i, color, 2, 8, hierarchy, 0, new Point() );
+	    }
+	    //hierarchy.release();
+	    //Imgproc.drawContours(mRgba, contours, -1, new Scalar(Math.random()*255, Math.random()*255, Math.random()*255));//, 2, 8, hierarchy, 0, new Point());
+	    Imgproc.cvtColor(mTmp, mRgba, Imgproc.COLOR_GRAY2RGBA, 4);
+	    //return mRgba;
+	    mRet = convToBitmap(mRgba);
+    	return mRet;
+    }
     
-    public Bitmap cropp(){ //To jeszcze nie jest skonczone
+    /*public Bitmap cropp(){ //To jeszcze nie jest skonczone
     	
     	mRgba = convToMat();
     	
@@ -136,7 +172,7 @@ public class ImageFilter {
         mTmp = mGray.clone();
         // thresholding the image to make a binary image
         //Imgproc.threshold(image, image, 100, 128, Imgproc.THRESH_BINARY_INV);
-    	Imgproc.threshold(mGray, mTmp, 100, 128, Imgproc.THRESH_BINARY_INV);
+    	Imgproc.threshold(mGray, mTmp, 100, 255, Imgproc.THRESH_BINARY_INV);
         // find the center of the image
         double[] centers = {(double)mTmp.width()/2, (double)mTmp.height()/2};
         Point image_center = new Point(centers);
@@ -151,6 +187,7 @@ public class ImageFilter {
         Rect rect_min = new Rect();
         for (MatOfPoint contour : contours) {
             Rect rec = Imgproc.boundingRect(contour);
+           // Imgproc.resize(mGray, mGray, mTmp.size());
             // find the best candidates
             if (rec.height > mTmp.height()/2 & rec.width > mTmp.width()/2)            
                 continue;
@@ -176,5 +213,5 @@ public class ImageFilter {
     	
     	mRet = convToBitmap(mGray);
         return mRet;
-    }
+    }*/
 }

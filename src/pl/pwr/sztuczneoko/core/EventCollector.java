@@ -172,10 +172,13 @@ public class EventCollector implements EventCollectorInterface{
 	        			new ImageFilter(bitmap).grayFilter().compress(Bitmap.CompressFormat.JPEG, 100, stream);
 	        			break;
 	        		case "blur":
-	        			new ImageFilter(bitmap).blur().compress(Bitmap.CompressFormat.JPEG, 100, stream);
+	        			int bl= Integer.parseInt(getPreferences("filterParam"));
+	        			new ImageFilter(bitmap).blur(bl).compress(Bitmap.CompressFormat.JPEG, 100, stream);
 	        			break;
 	        		case "sobel":
-	        			new ImageFilter(bitmap).sobel().compress(Bitmap.CompressFormat.JPEG, 100, stream);
+	        			double mini = Integer.parseInt(getPreferences("filterParam").split(",")[0]);
+	        			double maxi = Integer.parseInt(getPreferences("filterParam").split(",")[1]);
+	        			new ImageFilter(bitmap).sobel(mini,maxi).compress(Bitmap.CompressFormat.JPEG, 100, stream);
 	        			break;
 	        		case "canny":
 	        			//(min, max) (70,90),(30,50),(50,70),(90,110)
@@ -190,11 +193,13 @@ public class EventCollector implements EventCollectorInterface{
 	        			new ImageFilter(bitmap).thresholdFilter(blockSize,color).compress(Bitmap.CompressFormat.JPEG, 100, stream);
 	        			break;
 	        		case "binary":
-	        			new ImageFilter(bitmap).binaryFilter().compress(Bitmap.CompressFormat.JPEG, 100, stream);
+	        			int bin = Integer.parseInt(getPreferences("filterParam"));
+	        			int colory = Integer.parseInt(getPreferences("secondFilterParam"));
+	        			new ImageFilter(bitmap).binaryFilter(bin,colory).compress(Bitmap.CompressFormat.JPEG, 100, stream);
 	        			break;
-	        		case "cropp":
-	        			new ImageFilter(bitmap).cropp().compress(Bitmap.CompressFormat.JPEG, 100, stream);
-	        			break;
+	        		//case "cropp":
+	        			//new ImageFilter(bitmap).cropp().compress(Bitmap.CompressFormat.JPEG, 100, stream);
+	        			//break;
 	        		default:
 	        			break;
         		}  
@@ -411,8 +416,17 @@ public class EventCollector implements EventCollectorInterface{
 				//bin -1, 20, 120, 220; color 1 lub 0
 				result.add("-1");
 				result.add("20");
+				result.add("40");
+				result.add("60");
+				result.add("80");
+				result.add("100");
 				result.add("120");
+				result.add("140");
+				result.add("160");
+				result.add("180");
+				result.add("200");
 				result.add("220");
+				result.add("240");
 								
 				break;
 			case "cropp":
