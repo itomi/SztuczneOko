@@ -116,10 +116,6 @@ public class BluetoothCommunication implements Communication{
 		}
 		return preconditions;
 	}
-	
-	static BluetoothAdapter getAdapter() {
-		return ADAPTER;
-	}
 
 	@Override
 	public boolean isBusy() {
@@ -143,12 +139,23 @@ public class BluetoothCommunication implements Communication{
 		
 		try {
 			session.establishConnection(Service.AEYE);
-			SessionChecker.addNewSessionAndRegisterForActivityChecks(session, renewalPeriod);
+			SessionsHolder.addNewSessionAndRegisterForActivityChecks(session, renewalPeriod);
 		} catch (Exception e) {
 			Log.d(this.getClass().toString(), "Could not establish connection to Device:" + device.getDescription(), e);
 			return null;
 		}
 		
 		return session;
+	}
+
+	@Override
+	public void sendToAllConnectedDevices(byte[] photo) {
+		for( final Session session : SessionsHolder.getActiveSessions()) {
+			try {
+				session.send(photo);
+			} catch (IOException e) {
+				Log.i(this.getClass().toString(), "Could not send data to " + session.getDevice().getAddress());
+			}
+		}
 	}
 }

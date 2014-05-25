@@ -137,11 +137,11 @@ public class EventCollector implements EventCollectorInterface{
 	 * @author mateusz
 	 *
 	 */
-    class send extends AsyncTask<Void, Void, Void> {
+    class SendTask extends AsyncTask<Void, Void, Void> {
    	 
         Activity activity;
         String location;
-        public send(Activity activity,String location) {
+        public SendTask(Activity activity,String location) {
             this.activity = activity;
             this.location = location;
         }
@@ -220,7 +220,7 @@ public class EventCollector implements EventCollectorInterface{
         			f= new File(Environment.getExternalStorageDirectory()+"/soAppDir/myFilterImages/filtered-"+tmpFileName); 
         		}
         		saveImg(stream.toByteArray(),"filtered-"+tmpFileName,"/soAppDir/myFilterImages/");
-        		
+        		comm.sendToAllConnectedDevices(stream.toByteArray());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -481,7 +481,7 @@ public class EventCollector implements EventCollectorInterface{
 	@Override
 	public void sendPhoto(Activity a,String location) {		
 		if (img==null) return;
-		new send(a,location).execute();
+		new SendTask(a,location).execute();
 	}
 	
 	/**

@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class SessionChecker {
+public class SessionsHolder {
 
 	private static final Set<Session> activeSessions = new HashSet<Session>();
 	private static final Map<Session, Long> renewalPeriods = new HashMap<Session, Long>();
@@ -23,6 +23,10 @@ public class SessionChecker {
 	}
 	
 	
+	static Set<Session> getActiveSessions() {
+		//TODO: make this module realy check the session, if it is not able to communicate, then kill it
+		return activeSessions;
+	}
 	
 	boolean isSessionActive(final Session session) {
 		//TODO: really check if session is still active and the device is in range

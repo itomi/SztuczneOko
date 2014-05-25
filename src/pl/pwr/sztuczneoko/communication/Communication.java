@@ -47,6 +47,13 @@ public interface Communication {
 	boolean isBusy();
 	
 	
+	/**
+	 * Method that sends photo to external device.
+	 * 
+	 * @param photo
+	 * 			byte stream representation of photo to send
+	 */
+	void sendToAllConnectedDevices(byte[] photo);
 	
 	abstract void prepareCommunicationBundle() throws Exception;
 
