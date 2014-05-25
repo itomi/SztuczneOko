@@ -78,17 +78,17 @@ public final class R {
         public static final int row_with_desc=0x7f030009;
     }
     public static final class string {
-        public static final int action_settings=0x7f060030;
+        public static final int action_settings=0x7f070034;
         /** 	other    
          */
-        public static final int app_name=0x7f06002e;
-        public static final int app_nameDesc=0x7f06002f;
+        public static final int app_name=0x7f070032;
+        public static final int app_nameDesc=0x7f070033;
         public static final int autoFilter=0x7f06001c;
         public static final int autoFilterDesc=0x7f06001d;
         public static final int camResolution=0x7f060016;
         public static final int camResolutionDesc=0x7f060017;
-        public static final int capture=0x7f060028;
-        public static final int captureDesc=0x7f060029;
+        public static final int capture=0x7f07002c;
+        public static final int captureDesc=0x7f07002d;
         public static final int chooseFilter=0x7f06001e;
         public static final int chooseFilterDesc=0x7f06001f;
         public static final int collorEfect=0x7f060006;
@@ -101,18 +101,22 @@ public final class R {
         public static final int findDeviceDesc=0x7f060015;
         public static final int flash=0x7f06000e;
         public static final int flashDesc=0x7f06000f;
-        public static final int menu_start_new_game=0x7f060032;
-        public static final int menu_toggle_tile_numbers=0x7f060031;
-        public static final int nextPhoto=0x7f06002a;
-        public static final int nextPhotoDesc=0x7f06002b;
-        public static final int offProp=0x7f060022;
-        public static final int offPropDesc=0x7f060023;
-        public static final int onProp=0x7f060020;
-        public static final int onPropDesc=0x7f060021;
+        public static final int menu_start_new_game=0x7f070036;
+        public static final int menu_toggle_tile_numbers=0x7f070035;
+        public static final int nextPhoto=0x7f07002e;
+        public static final int nextPhotoDesc=0x7f07002f;
+        public static final int offProp=0x7f070026;
+        public static final int offPropDesc=0x7f070027;
+        public static final int onProp=0x7f070024;
+        public static final int onPropDesc=0x7f070025;
         public static final int realTime=0x7f06000c;
         public static final int realTimeDesc=0x7f06000d;
-        public static final int sendPhoto=0x7f06002c;
-        public static final int sendPhotoDesc=0x7f06002d;
+        public static final int sendPhoto=0x7f070030;
+        public static final int sendPhotoDesc=0x7f070031;
+        public static final int setParamFilter=0x7f070020;
+        public static final int setParamFilterDesc=0x7f070021;
+        public static final int setSecondParamFilter=0x7f070022;
+        public static final int setSecondParamFilterDesc=0x7f070023;
         /** 	strings for bt properties    
          */
         public static final int title_activity_btproperties=0x7f060010;
@@ -123,16 +127,16 @@ public final class R {
         public static final int title_activity_cam_propertiesDesc=0x7f060003;
         /** 	strings for camera activity    
          */
-        public static final int title_activity_camera=0x7f060026;
-        public static final int title_activity_cameraDesc=0x7f060027;
+        public static final int title_activity_camera=0x7f07002a;
+        public static final int title_activity_cameraDesc=0x7f07002b;
         /** 	strings for filter properties    
          */
         public static final int title_activity_filter_properties=0x7f060018;
         public static final int title_activity_filter_propertiesDesc=0x7f060019;
         /** 	strings for gallery    
          */
-        public static final int title_activity_gallery=0x7f060024;
-        public static final int title_activity_galleryDesc=0x7f060025;
+        public static final int title_activity_gallery=0x7f070028;
+        public static final int title_activity_galleryDesc=0x7f070029;
         /** 	strings for properties activity    
          */
         public static final int title_activity_properties=0x7f060000;

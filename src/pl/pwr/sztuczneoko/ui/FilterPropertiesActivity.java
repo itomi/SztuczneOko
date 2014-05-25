@@ -1,6 +1,7 @@
 package pl.pwr.sztuczneoko.ui;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import pl.pwr.sztuczneoko.core.EventCollector;
 import pl.pwr.sztuczneoko.core.Property;
@@ -20,6 +21,7 @@ import android.os.Build;
 public class FilterPropertiesActivity extends soActivity{
 
 	ListView listView,secListView;
+	MenuAdapter mAdapter;
 	ArrayList<Property> propList;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +48,9 @@ public class FilterPropertiesActivity extends soActivity{
 		for(String item : array)
 			contentDescArrayList.add(item+"Desc");			
 		String[] arrayContentDesc = contentDescArrayList.toArray(new String[contentDescArrayList.size()]);
-		
+		mAdapter = new MenuAdapter(this,array,arrayContentDesc,R.layout.row);
 		secListView = (ListView) findViewById(R.id.filterDialogPropList);
-		secListView.setAdapter(new MenuAdapter(this,array,arrayContentDesc,R.layout.row));	    
+		secListView.setAdapter(mAdapter);	    
 		secListView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
@@ -57,6 +59,12 @@ public class FilterPropertiesActivity extends soActivity{
 				case 0:
 						displayFilterChooseDialog(view);
 					break;
+				case 1:
+						filterParamChooseDialog(view,false);
+					break;
+				case 2:
+						filterParamChooseDialog(view,true);
+				break;
 				default:
 					break;
 				}
@@ -77,6 +85,38 @@ public class FilterPropertiesActivity extends soActivity{
 	                    @Override
 	                    public void onClick(DialogInterface dialog, int index) {	                            
 	                            core.savePreferences("currentFilter",filterArrayList.get(index));
+	                            	                           
+	                            dialog.dismiss();
+	                            finish();
+	                            startActivity(getIntent());
+	                    }
+	            });
+	    
+	    
+	    builder.show();
+    }
+	public void filterParamChooseDialog(View view,final boolean secondParam)
+    {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final ArrayList<String> filterArrayList;
+        String[] filterArray;
+        String tmp;
+	    builder.setTitle("parametry filtracji");
+	    if(!secondParam){
+		    filterArrayList = ((EventCollector)core).getParamFilter();
+		    filterArray = filterArrayList.toArray(new String[filterArrayList.size()]);;
+		    tmp = core.getPreferences("filterParam");
+	    }else{
+	    	filterArrayList = new ArrayList<>(Arrays.asList("0","1"));
+		    filterArray = filterArrayList.toArray(new String[filterArrayList.size()]);;
+		    tmp = core.getPreferences("secondFilterParam");
+	    }
+	    builder.setSingleChoiceItems(filterArray,(tmp=="")?0:filterArrayList.indexOf(tmp) , 
+	    		new DialogInterface.OnClickListener() {
+	                    @Override
+	                    public void onClick(DialogInterface dialog, int index) {	                            
+	                            if(!secondParam)core.savePreferences("filterParam",filterArrayList.get(index));	                            
+	                            else core.savePreferences("secondFilterParam",filterArrayList.get(index));
 	                            dialog.dismiss();
 	                    }
 	            });

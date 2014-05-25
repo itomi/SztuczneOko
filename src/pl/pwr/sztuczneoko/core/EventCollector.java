@@ -176,12 +176,35 @@ public class EventCollector implements EventCollectorInterface{
 	        		case "gray":
 	        			new ImageFilter(bitmap).grayFilter().compress(Bitmap.CompressFormat.JPEG, 100, stream);
 	        			break;
+	        		case "blur":
+	        			int bl= Integer.parseInt(getPreferences("filterParam"));
+	        			new ImageFilter(bitmap).blur(bl).compress(Bitmap.CompressFormat.JPEG, 100, stream);
+	        			break;
+	        		case "sobel":
+	        			double mini = Integer.parseInt(getPreferences("filterParam").split(",")[0]);
+	        			double maxi = Integer.parseInt(getPreferences("filterParam").split(",")[1]);
+	        			new ImageFilter(bitmap).sobel(mini,maxi).compress(Bitmap.CompressFormat.JPEG, 100, stream);
+	        			break;
 	        		case "canny":
-	        			new ImageFilter(bitmap).cannyFilter().compress(Bitmap.CompressFormat.JPEG, 100, stream);
+	        			//(min, max) (70,90),(30,50),(50,70),(90,110)
+	        			int min = Integer.parseInt(getPreferences("filterParam").split(",")[0]);
+	        			int max = Integer.parseInt(getPreferences("filterParam").split(",")[1]);
+	        			new ImageFilter(bitmap).cannyFilter(min,max).compress(Bitmap.CompressFormat.JPEG, 100, stream);
 	        			break;
 	        		case "treshold":
-	        			new ImageFilter(bitmap).thresholdFilter().compress(Bitmap.CompressFormat.JPEG, 100, stream);
+	        			//blockSize 3,5,7; color 1 lub 0
+	        			int blockSize = Integer.parseInt(getPreferences("filterParam"));
+	        			int color = Integer.parseInt(getPreferences("secondFilterParam"));
+	        			new ImageFilter(bitmap).thresholdFilter(blockSize,color).compress(Bitmap.CompressFormat.JPEG, 100, stream);
 	        			break;
+	        		case "binary":
+	        			int bin = Integer.parseInt(getPreferences("filterParam"));
+	        			int colory = Integer.parseInt(getPreferences("secondFilterParam"));
+	        			new ImageFilter(bitmap).binaryFilter(bin,colory).compress(Bitmap.CompressFormat.JPEG, 100, stream);
+	        			break;
+	        		//case "cropp":
+	        			//new ImageFilter(bitmap).cropp().compress(Bitmap.CompressFormat.JPEG, 100, stream);
+	        			//break;
 	        		default:
 	        			break;
         		}  
@@ -328,10 +351,27 @@ public class EventCollector implements EventCollectorInterface{
 	 * @return
 	 */
 	@Override
-	public ArrayList<String> getFilterProperiesWithDialog() {		
-		return new ArrayList<String>(Arrays.asList("chooseFilter"));
+	public ArrayList<String> getFilterProperiesWithDialog() {
+		ArrayList<String> array = new ArrayList<String>(Arrays.asList("chooseFilter","setParamFilter"));
+		if(filterParamsCount()>1)array.add("setSecondParamFilter");
+		return array;
 	}
 	
+	private int filterParamsCount(){
+		int result;
+		switch(getPreferences("currentFilter")){
+		case "treshold":
+			result = 2;			
+			break;
+		case "binary":
+			result = 2;
+			break;		
+		default:
+			result = 1;
+			break;
+		}
+		return result;
+	}
 	/**
 	 * @return
 	 */
@@ -349,9 +389,64 @@ public class EventCollector implements EventCollectorInterface{
 		/*
 		 * TODO implement in imgProc getter for list possible filters
 		 */
-		return new ArrayList<String>(Arrays.asList("gray","canny","treshold"));
+		return new ArrayList<String>(Arrays.asList("gray","canny","treshold","blur","sobel", "binary", "cropp"));
 	}
-	
+	public ArrayList<String> getParamFilter() {
+		ArrayList<String> result = new ArrayList<>();
+		switch(getPreferences("currentFilter")){
+			case "gray":
+				
+				break;
+			case "blur":
+				//bl 3,5,7
+				result.add("3");
+				result.add("5");
+				result.add("7");
+				break;
+			case "sobel":
+				//(minVal, maxVal) (-100, 100),(-200,200), (-400,400)
+				result.add("-100, 100");
+				result.add("-200,200");
+				result.add("-400,400");
+				break;
+			case "canny":
+				result.add("70,90");
+				result.add("30,50");
+				result.add("50,70");
+				result.add("90,110");
+				break;
+			case "treshold":
+				//blockSize 3,5,7; color 1 lub 0
+				result.add("3");
+				result.add("5");
+				result.add("7");
+								
+				break;
+			case "binary":
+				//bin -1, 20, 120, 220; color 1 lub 0
+				result.add("-1");
+				result.add("20");
+				result.add("40");
+				result.add("60");
+				result.add("80");
+				result.add("100");
+				result.add("120");
+				result.add("140");
+				result.add("160");
+				result.add("180");
+				result.add("200");
+				result.add("220");
+				result.add("240");
+								
+				break;
+			case "cropp":
+				
+				break;
+			default:
+				break;
+		}
+		return result;
+	}
 	/**
 	 * get arraylist of camera properties
 	 * @return ArrayList<Property> 

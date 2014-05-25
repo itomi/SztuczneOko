@@ -72,6 +72,8 @@ public class BTPropertiesActivity extends soActivity{
 		if (!BluetoothAdapter.getDefaultAdapter().isEnabled()) {
 		    Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
 		    startActivityForResult(enableBtIntent, 1);
+		}else  {
+			BluetoothAdapter.getDefaultAdapter().disable();
 		}
 	}
 	
