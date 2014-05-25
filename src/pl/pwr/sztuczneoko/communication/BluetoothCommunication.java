@@ -1,7 +1,9 @@
 package pl.pwr.sztuczneoko.communication;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
 
@@ -14,6 +16,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 
 import com.google.common.collect.ImmutableSet;
@@ -33,12 +36,23 @@ public class BluetoothCommunication implements Communication{
 			
 			if(BluetoothDevice.ACTION_FOUND.equals(action)) {
 				BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-				cachedDevices.add(new Device(device));
+				Device deviceWrapper = new Device(device);
+				cachedDevices.add(deviceWrapper);
+			} else if(BluetoothDevice.ACTION_UUID.equals(action)) {
+				BluetoothDevice d = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+				Parcelable[] uuidExtra = intent.getParcelableArrayExtra(BluetoothDevice.EXTRA_UUID);
+				for(final Parcelable data : uuidExtra) {
+					Log.d(this.getClass().toString(), "Service: " + data.toString() + " Device: " + d.getName());
+				}
 			}
 		}
 	};
 	
-	IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+	IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND) {
+		{
+			addAction(BluetoothDevice.ACTION_UUID);
+		}
+	};
 	
 	private BluetoothCommunication() {
 		super();
@@ -128,7 +142,7 @@ public class BluetoothCommunication implements Communication{
 		Session session = new Session(device, renewalPeriod);
 		
 		try {
-			session.establishConnection(Service.SP);
+			session.establishConnection(Service.AEYE);
 			SessionChecker.addNewSessionAndRegisterForActivityChecks(session, renewalPeriod);
 		} catch (Exception e) {
 			Log.d(this.getClass().toString(), "Could not establish connection to Device:" + device.getDescription(), e);

@@ -15,6 +15,8 @@ public class SessionChecker {
 		if( activeSessions.contains(session) ) {
 			throw new Exception("Session is already established and active.");
 		} else {
+			byte[] request = { (byte)0xaa, (byte)0xbb };
+			session.send(request);
 			activeSessions.add(session);
 			renewalPeriods.put(session, Long.valueOf(renewalPeriod) );
 		}

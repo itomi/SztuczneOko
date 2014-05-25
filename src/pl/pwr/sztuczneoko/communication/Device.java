@@ -40,7 +40,7 @@ public class Device {
 		return this.services.contains(service);
 	}
 	
-	Set<Service> getDeviceServices() {
+	public Set<Service> getDeviceServices() {
 		if(!servicesChecked){
 			ParcelUuid[] services = device.getUuids();
 			for( ParcelUuid parceledUuid : services ) {
@@ -59,5 +59,11 @@ public class Device {
 	
 	BluetoothSocket connect(final Service service) throws IOException {
 		return device.createInsecureRfcommSocketToServiceRecord(service.UUID());
+	}
+
+	public void fetchUUID() throws Exception {
+		if(!device.fetchUuidsWithSdp()){
+			throw new Exception("Could not start service search!");
+		}
 	}
 }

@@ -3,6 +3,7 @@ package pl.pwr.sztuczneoko.communication;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Set;
 
 import android.bluetooth.BluetoothSocket;
 
@@ -26,10 +27,17 @@ public class Session {
 		return renewPeriod;
 	}
 	
-	public void establishConnection(final Service service) throws IOException {
+	public void establishConnection(final Service service) throws Exception {
 		socket = device.connect(service);
+		
 		try {
-			Thread.sleep(1000);
+			device.fetchUUID();
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try {
+			Thread.sleep(5000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -42,6 +50,7 @@ public class Session {
 			OutputStream os = socket.getOutputStream();
 			//TODO: Marshalling into some sort of Protocol
 			os.write(data);
+			return;
 		}
 		throw new IllegalStateException("Session is not active");
 	}
@@ -55,6 +64,7 @@ public class Session {
 				data = new byte[is.available()];
 			//TODO: zmienic handlowanie wielkosci bufora
 			is.read(data);
+			return data;
 		}
 		throw new IllegalStateException("SEssion is not active");
 	}

@@ -19,6 +19,7 @@ public enum Service {
 	PANP(new UUID(0x0,0x1117), "Personal Area Networking Profile"),
 	HSP(new UUID(0x0, 0x1131), "HeadSet Profile"),
 	AEYE(UUID.fromString("00006666-0000-1000-8000-00805F9B34FB") ,"Sztuczne Oko"),
+	AEYE2(UUID.fromString("00006666-0000-1000-8000-00805f9b34fb"), "Sztuczne Oko 2"),
 	UNKNOWN(new UUID(0xFFFF, 0xFFFF), "Unknown Service");
 
 	private static final UUID[] allServices;
