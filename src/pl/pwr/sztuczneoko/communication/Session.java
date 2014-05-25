@@ -68,4 +68,9 @@ public class Session {
 		}
 		throw new IllegalStateException("SEssion is not active");
 	}
+	
+	public void close() throws IOException {
+		send(ProtocolWrapper.CLOSE_OPERATION);
+		socket.close();
+	}
 }
