@@ -65,6 +65,9 @@ public class FilterPropertiesActivity extends soActivity{
 				case 2:
 						filterParamChooseDialog(view,true);
 				break;
+				case 3:
+						setTargetImageResolutiuon(view);
+					break;
 				default:
 					break;
 				}
@@ -123,6 +126,28 @@ public class FilterPropertiesActivity extends soActivity{
 	    
 	    builder.show();
     }
+	public void setTargetImageResolutiuon(View view){
+		 final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	        final ArrayList<String> resArrayList;
+	        String[] resArray;
+	        String tmp;
+		    builder.setTitle("rozdzielczość");
+		   
+		    	resArrayList = new ArrayList<>(Arrays.asList("1024x860","800x600","250x250","128x64","100x100","32x32"));
+			    resArray = resArrayList.toArray(new String[resArrayList.size()]);;
+			    tmp = core.getPreferences("targetResolution");
+		    
+		    builder.setSingleChoiceItems(resArray,(tmp=="")?resArrayList.indexOf("100x100"):resArrayList.indexOf(tmp) , 
+		    		new DialogInterface.OnClickListener() {
+		                    @Override
+		                    public void onClick(DialogInterface dialog, int index) {	                            
+		                            core.savePreferences("targetResolution",resArrayList.get(index));	                            		                          
+		                            dialog.dismiss();
+		                    }
+		            });
+		    
+		    builder.show();
+	}
 	
 
 }

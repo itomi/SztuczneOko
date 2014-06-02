@@ -63,6 +63,8 @@
     <string name="autoFilter">dynamiczne wybieranie filtra</string>
     <string name="autoFilterDesc">default filter</string>
     <string name="chooseFilter">wybór filtra</string>
+    <string name="chooseResolution">docelowa rozdzielczość</string>
+    <string name="chooseResolutionDesc">target resolution</string>
     <string name="chooseFilterDesc">set filter</string>
     <string name="setParamFilter">parametr filtra</string>
     <string name="setParamFilterDesc">set filter parameters</string>

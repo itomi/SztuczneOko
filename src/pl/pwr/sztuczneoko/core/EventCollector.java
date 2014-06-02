@@ -164,14 +164,18 @@ public class EventCollector implements EventCollectorInterface{
         protected Void doInBackground(Void... arg0) {
         	try {
         		String tmpFileName = imgName;
-        		
+        		int resX,resY;
         		saveImg(img,imgName,location);
         		Log.d("send", "send image " + imgName );
         		
+        		String tmp = getPreferences("targetResolution");
+        		
+        		resX = Integer.parseInt(tmp.split("x")[0]);
+        		resY = Integer.parseInt(tmp.split("x")[1]);
         		ByteArrayOutputStream stream = new ByteArrayOutputStream();
         		BitmapFactory.Options options = new BitmapFactory.Options();             	
         		Bitmap bitmap = BitmapFactory.decodeByteArray(img, 0, img.length, options);
-        		bitmap = Bitmap.createScaledBitmap(bitmap, 100, 100, false);
+        		bitmap = Bitmap.createScaledBitmap(bitmap, resX, resY, false);
         		switch(getPreferences("currentFilter")){
 	        		case "gray":
 	        			new ImageFilter(bitmap).grayFilter().compress(Bitmap.CompressFormat.JPEG, 100, stream);
@@ -354,6 +358,7 @@ public class EventCollector implements EventCollectorInterface{
 	public ArrayList<String> getFilterProperiesWithDialog() {
 		ArrayList<String> array = new ArrayList<String>(Arrays.asList("chooseFilter","setParamFilter"));
 		if(filterParamsCount()>1)array.add("setSecondParamFilter");
+		array.add("chooseResolution");
 		return array;
 	}
 	
