@@ -197,9 +197,10 @@ public class EventCollector implements EventCollectorInterface{
 	        			int colory = Integer.parseInt(getPreferences("secondFilterParam"));
 	        			new ImageFilter(bitmap).binaryFilter(bin,colory).compress(Bitmap.CompressFormat.JPEG, 100, stream);
 	        			break;
-	        		//case "cropp":
-	        			//new ImageFilter(bitmap).cropp().compress(Bitmap.CompressFormat.JPEG, 100, stream);
-	        			//break;
+	        		case "zoom":
+	        			int zoom = Integer.parseInt(getPreferences("filterParam"));
+	        			new ImageFilter(bitmap).something(zoom).compress(Bitmap.CompressFormat.JPEG, 100, stream);
+	        			break;
 	        		default:
 	        			break;
         		}  
@@ -379,7 +380,7 @@ public class EventCollector implements EventCollectorInterface{
 		/*
 		 * TODO implement in imgProc getter for list possible filters
 		 */
-		return new ArrayList<String>(Arrays.asList("gray","canny","treshold","blur","sobel", "binary", "cropp"));
+		return new ArrayList<String>(Arrays.asList("gray","canny","treshold","blur","sobel", "binary", "zoom"));
 	}
 	public ArrayList<String> getParamFilter() {
 		ArrayList<String> result = new ArrayList<>();
@@ -429,8 +430,9 @@ public class EventCollector implements EventCollectorInterface{
 				result.add("240");
 								
 				break;
-			case "cropp":
-				
+			case "zoom":
+				result.add("0");
+				result.add("1");
 				break;
 			default:
 				break;
