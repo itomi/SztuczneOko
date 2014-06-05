@@ -68,16 +68,8 @@ public class ImageFilter {
 	    Utils.matToBitmap(mat, mBitmap);
 	    return mBitmap;
 	}
-	
-    public Bitmap rgbFilter() {
-        // input frame has RGBA scale format
-        //mRgba = convToMat(bitmap);
-        return mRet;
-    }
     
     public Bitmap grayFilter() {
-        // input frame has Gray forma
-    	//cvtColor(*image, character, CV_BGR2GRAY);t
     	mRgba = convToMat();
         Imgproc.cvtColor(mRgba, mGray, Imgproc.COLOR_RGBA2GRAY, 4);
         mRet = convToBitmap(mGray);
@@ -117,13 +109,6 @@ public class ImageFilter {
         return mRet;
     }
     
-    public Bitmap blur(int bl){ //bl 3,5,7
-    	mRgba = convToMat();
-        Imgproc.blur(mRgba, mTmp, new Size(bl, bl));
-        mRet = convToBitmap(mTmp);
-        return mRet;
-    }
-    
     public Bitmap sobel(double minVal, double maxVal){ //(minVal, maxVal) (-100, 100),(-200,200), (-400,400)
     	mRgba = convToMat();
     	Imgproc.cvtColor(mRgba, mGray, Imgproc.COLOR_RGBA2GRAY, 4);
@@ -134,7 +119,7 @@ public class ImageFilter {
         return mRet;
     }
     
-    public Bitmap something(int resize){
+    public Bitmap croppFilter(int resize){
     	double maxArea=0;
         MatOfPoint maxiArea=null;
     	mRgba = convToMat();
@@ -187,29 +172,4 @@ public class ImageFilter {
         mRet = convToBitmap(mGray);
     	return mRet;
     }
-
-    /*
-    public Bitmap cropp(){ 
-       
-     	mRgba = convToMat();
-		Imgproc.cvtColor( mRgba, mTmp, Imgproc.COLOR_RGB2HSV, 3 );
-		Scalar lowerThreshold = new Scalar ( 0, 0, 0 ); // Blue color  lower hsv values
-		Scalar upperThreshold = new Scalar ( 100, 100, 100 ); // Blue color  higher hsv values
-		Core.inRange ( mTmp, lowerThreshold , upperThreshold, mTmp );
-		Imgproc.dilate ( mTmp, mTmp, new Mat() );
-		Scalar coloreded = new Scalar ( 100, 255, 255 );
-		Imgproc.findContours ( mTmp, contours3, hierarchy2, Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE );
-		mTmp = mRgba;
-		 for ( int contourIdx=0; contourIdx < contours3.size(); contourIdx++ )	//pêtla do wywietlania
-		  {			
-		    // if( contours2.get(contourIdx).size()>100)  // Minimum size allowed for consideration
-		   //  { 
-			 //zamiast contourIdx mo¿na daæ -1 to bêdzie rysowa³o wszystkie kontury
-		         Imgproc.drawContours ( mTmp, contours3, contourIdx, coloreded, 1);	
-		    // }
-		  }
-		
-		mRet = convToBitmap(mTmp);
-		return mRet;
-    }*/
 }
