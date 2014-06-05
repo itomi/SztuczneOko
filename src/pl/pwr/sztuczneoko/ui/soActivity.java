@@ -20,7 +20,7 @@ public class soActivity extends Activity{
 		checkBT();
 	}
 	
-	private void checkBT(){
+	protected void checkBT(){
 		if(((EventCollector)core).checkBTconnection()==false)
 			actionBar.setSubtitle("status połączenie : brak");
 		else

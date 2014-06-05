@@ -74,6 +74,7 @@ public class BTPropertiesActivity extends soActivity{
     
 	public void findDevice(View v){		
 		new EnableDevice(this).execute();
+		
 	}
 	
 	public void turnOnOff(View view){
@@ -122,8 +123,10 @@ public class BTPropertiesActivity extends soActivity{
     			public void onItemClick(AdapterView<?> parent, View view,
     				     int position, long id) {					
     				    core.connectToDevice(devices.get(position));
+    				    ((soActivity)activity).checkBT();
     				    Log.d("conn", "polaczono z " + devices.get(position));
     				    ((DeviceListAdapter)listView.getAdapter()).notifyDataSetChanged(); 
+    				    
     			}
     		});
         }
