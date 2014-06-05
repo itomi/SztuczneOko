@@ -35,6 +35,7 @@ public class BluetoothCommunication implements Communication{
 			String action = intent.getAction();
 			
 			if(BluetoothDevice.ACTION_FOUND.equals(action)) {
+				cachedDevices.clear();
 				BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 				Device deviceWrapper = new Device(device);
 				cachedDevices.add(deviceWrapper);

@@ -343,7 +343,8 @@ public class EventCollector implements EventCollectorInterface{
 			e.setConnected(false);
 		}
 		
-		session = comm.establishConnectionToDevice(ed.getDeviceHandle(), RENEWAL_PERIOD);
+		while(session==null)
+			session = comm.establishConnectionToDevice(ed.getDeviceHandle(), RENEWAL_PERIOD);
 		
 		if(session != null ) {
 			ed.setConnected(true);

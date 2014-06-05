@@ -28,6 +28,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.os.Build;
@@ -40,8 +41,15 @@ public class BTPropertiesActivity extends soActivity{
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
 		super.onCreate(savedInstanceState);
+		
 		setContentView(R.layout.activity_btproperties);
+		if(BluetoothAdapter.getDefaultAdapter().isEnabled()){
+			((Button)findViewById(R.id.turnOnOff)).setText(getResources().getText(R.string.wylacz_bluetooth));
+			((Button)findViewById(R.id.turnOnOff)).setContentDescription(getResources().getText(R.string.wylacz_bluetoothDesc));
+		}
+		
 		//core.registerBTActivity(this);
 	}
 	
@@ -72,8 +80,12 @@ public class BTPropertiesActivity extends soActivity{
 		if (!BluetoothAdapter.getDefaultAdapter().isEnabled()) {
 		    Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
 		    startActivityForResult(enableBtIntent, 1);
+		    ((Button)findViewById(R.id.turnOnOff)).setText(getResources().getText(R.string.wylacz_bluetooth));
+			((Button)findViewById(R.id.turnOnOff)).setContentDescription(getResources().getText(R.string.wylacz_bluetoothDesc));
 		}else  {
 			BluetoothAdapter.getDefaultAdapter().disable();
+			((Button)findViewById(R.id.turnOnOff)).setText(getResources().getText(R.string.w_cz_bluetooth));
+			((Button)findViewById(R.id.turnOnOff)).setContentDescription(getResources().getText(R.string.w_cz_bluetoothDesc));
 		}
 	}
 	
@@ -88,6 +100,7 @@ public class BTPropertiesActivity extends soActivity{
         @Override
         protected void onPreExecute() {
            activity.showDialog(1);
+           if(devices!=null)devices.clear();
         }
      
         @Override
@@ -101,6 +114,7 @@ public class BTPropertiesActivity extends soActivity{
         protected void onPostExecute(Void result) {
             activity.removeDialog(1);
             listView = (ListView) findViewById(R.id.BTDeviceList);
+    		listView.setAdapter(null);
     		
     		listView.setAdapter(new DeviceListAdapter(activity,devices));	   
     		listView.setOnItemClickListener(new OnItemClickListener() {

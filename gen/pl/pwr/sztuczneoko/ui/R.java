@@ -107,47 +107,47 @@ containing a value of this type.
         public static final int row_with_desc=0x7f030009;
     }
     public static final class string {
-        public static final int action_settings=0x7f070036;
+        public static final int action_settings=0x7f070038;
         /** 	other    
          */
-        public static final int app_name=0x7f070034;
-        public static final int app_nameDesc=0x7f070035;
-        public static final int autoFilter=0x7f07001c;
-        public static final int autoFilterDesc=0x7f07001d;
-        public static final int camResolution=0x7f070016;
-        public static final int camResolutionDesc=0x7f070017;
-        public static final int capture=0x7f07002e;
-        public static final int captureDesc=0x7f07002f;
-        public static final int chooseFilter=0x7f07001e;
-        public static final int chooseFilterDesc=0x7f070021;
-        public static final int chooseResolution=0x7f07001f;
-        public static final int chooseResolutionDesc=0x7f070020;
+        public static final int app_name=0x7f070036;
+        public static final int app_nameDesc=0x7f070037;
+        public static final int autoFilter=0x7f07001e;
+        public static final int autoFilterDesc=0x7f07001f;
+        public static final int camResolution=0x7f070018;
+        public static final int camResolutionDesc=0x7f070019;
+        public static final int capture=0x7f070030;
+        public static final int captureDesc=0x7f070031;
+        public static final int chooseFilter=0x7f070020;
+        public static final int chooseFilterDesc=0x7f070023;
+        public static final int chooseResolution=0x7f070021;
+        public static final int chooseResolutionDesc=0x7f070022;
         public static final int collorEfect=0x7f070006;
         public static final int collorEfectDesc=0x7f070007;
         public static final int faceDetect=0x7f070008;
         public static final int faceDetectDesc=0x7f070009;
-        public static final int filterResolution=0x7f07001a;
-        public static final int filterResolutionDesc=0x7f07001b;
-        public static final int findDevice=0x7f070014;
-        public static final int findDeviceDesc=0x7f070015;
+        public static final int filterResolution=0x7f07001c;
+        public static final int filterResolutionDesc=0x7f07001d;
+        public static final int findDevice=0x7f070016;
+        public static final int findDeviceDesc=0x7f070017;
         public static final int flash=0x7f07000e;
         public static final int flashDesc=0x7f07000f;
-        public static final int menu_start_new_game=0x7f070038;
-        public static final int menu_toggle_tile_numbers=0x7f070037;
-        public static final int nextPhoto=0x7f070030;
-        public static final int nextPhotoDesc=0x7f070031;
-        public static final int offProp=0x7f070028;
-        public static final int offPropDesc=0x7f070029;
-        public static final int onProp=0x7f070026;
-        public static final int onPropDesc=0x7f070027;
+        public static final int menu_start_new_game=0x7f07003a;
+        public static final int menu_toggle_tile_numbers=0x7f070039;
+        public static final int nextPhoto=0x7f070032;
+        public static final int nextPhotoDesc=0x7f070033;
+        public static final int offProp=0x7f07002a;
+        public static final int offPropDesc=0x7f07002b;
+        public static final int onProp=0x7f070028;
+        public static final int onPropDesc=0x7f070029;
         public static final int realTime=0x7f07000c;
         public static final int realTimeDesc=0x7f07000d;
-        public static final int sendPhoto=0x7f070032;
-        public static final int sendPhotoDesc=0x7f070033;
-        public static final int setParamFilter=0x7f070022;
-        public static final int setParamFilterDesc=0x7f070023;
-        public static final int setSecondParamFilter=0x7f070024;
-        public static final int setSecondParamFilterDesc=0x7f070025;
+        public static final int sendPhoto=0x7f070034;
+        public static final int sendPhotoDesc=0x7f070035;
+        public static final int setParamFilter=0x7f070024;
+        public static final int setParamFilterDesc=0x7f070025;
+        public static final int setSecondParamFilter=0x7f070026;
+        public static final int setSecondParamFilterDesc=0x7f070027;
         /** 	strings for bt properties    
          */
         public static final int title_activity_btproperties=0x7f070010;
@@ -158,16 +158,16 @@ containing a value of this type.
         public static final int title_activity_cam_propertiesDesc=0x7f070003;
         /** 	strings for camera activity    
          */
-        public static final int title_activity_camera=0x7f07002c;
-        public static final int title_activity_cameraDesc=0x7f07002d;
+        public static final int title_activity_camera=0x7f07002e;
+        public static final int title_activity_cameraDesc=0x7f07002f;
         /** 	strings for filter properties    
          */
-        public static final int title_activity_filter_properties=0x7f070018;
-        public static final int title_activity_filter_propertiesDesc=0x7f070019;
+        public static final int title_activity_filter_properties=0x7f07001a;
+        public static final int title_activity_filter_propertiesDesc=0x7f07001b;
         /** 	strings for gallery    
          */
-        public static final int title_activity_gallery=0x7f07002a;
-        public static final int title_activity_galleryDesc=0x7f07002b;
+        public static final int title_activity_gallery=0x7f07002c;
+        public static final int title_activity_galleryDesc=0x7f07002d;
         /** 	strings for properties activity    
          */
         public static final int title_activity_properties=0x7f070000;
@@ -178,6 +178,8 @@ containing a value of this type.
         public static final int w_cz_bluetoothDesc=0x7f070013;
         public static final int whiteBalance=0x7f070004;
         public static final int whiteBalanceDesc=0x7f070005;
+        public static final int wylacz_bluetooth=0x7f070014;
+        public static final int wylacz_bluetoothDesc=0x7f070015;
     }
     public static final class style {
         /** 

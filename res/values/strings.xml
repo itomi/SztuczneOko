@@ -50,6 +50,8 @@
     <string name="title_activity_btpropertiesDesc">Bluetooth properties</string>
     <string name="w_cz_bluetooth">włącz bluetooth</string>
     <string name="w_cz_bluetoothDesc">turn on bluetooth</string>
+    <string name="wylacz_bluetooth">wyłącz bluetooth</string>
+    <string name="wylacz_bluetoothDesc">turn off bluetooth</string>
     <string name="findDevice">znajdź urządzenie</string>
     <string name="findDeviceDesc">find device</string>
     <string name="camResolution">rozdzielczosc</string>
