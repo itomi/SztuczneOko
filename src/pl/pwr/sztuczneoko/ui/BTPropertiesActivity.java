@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 import pl.pwr.sztuczneoko.core.ExternDevice;
 import pl.pwr.sztuczneoko.core.ImageItem;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -76,7 +77,6 @@ public class BTPropertiesActivity extends soActivity{
 	}
 	
 	public void turnOnOff(View view){
-		// TODO switch bt status
 		if (!BluetoothAdapter.getDefaultAdapter().isEnabled()) {
 		    Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
 		    startActivityForResult(enableBtIntent, 1);

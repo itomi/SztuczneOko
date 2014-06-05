@@ -42,6 +42,7 @@ public class Session {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} // StackOverflow hack xD, we all love developers
+		
 		socket.connect();
 	}
 	

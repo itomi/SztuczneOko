@@ -26,6 +26,7 @@ import pl.pwr.sztuczneoko.communication.Session;
 import pl.pwr.sztuczneoko.imageProcessor.ImageFilter;
 import pl.pwr.sztuczneoko.imageProcessor.ImageProcessor;
 import pl.pwr.sztuczneoko.ui.*;
+import android.R.bool;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -343,7 +344,8 @@ public class EventCollector implements EventCollectorInterface{
 			e.setConnected(false);
 		}
 		
-		while(session==null)
+		if(session==null)
+			
 			session = comm.establishConnectionToDevice(ed.getDeviceHandle(), RENEWAL_PERIOD);
 		
 		if(session != null ) {
@@ -598,4 +600,12 @@ public class EventCollector implements EventCollectorInterface{
 			Log.e("bt exception", "null pointer when bt service is off when unregister receeiver");
 		}
 	}	
+	
+	public boolean checkBTconnection(){
+		if(comm!=null)
+			return comm.isConnect();
+		else 
+			return false;
+	}
+	
 }

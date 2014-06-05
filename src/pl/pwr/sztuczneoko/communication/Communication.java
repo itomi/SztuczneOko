@@ -60,4 +60,6 @@ public interface Communication {
 	void registerBTReceiver(Activity btPropertiesActivity);
 
 	void unregisterBTReceiver(Activity btPropertiesActivity);
+	
+	boolean isConnect();
 }

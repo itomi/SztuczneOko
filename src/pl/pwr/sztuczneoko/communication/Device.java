@@ -66,4 +66,12 @@ public class Device {
 			throw new Exception("Could not start service search!");
 		}
 	}
+	@Override
+    public int hashCode() {
+        return this.getAddress().hashCode();
+    }
+	@Override
+	public boolean equals(Object o) {
+		return this.getAddress().equals(((Device)o).getAddress());
+	}
 }

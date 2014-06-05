@@ -35,9 +35,9 @@ public class BluetoothCommunication implements Communication{
 			String action = intent.getAction();
 			
 			if(BluetoothDevice.ACTION_FOUND.equals(action)) {
-				cachedDevices.clear();
+				
 				BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-				Device deviceWrapper = new Device(device);
+				Device deviceWrapper = new Device(device);				
 				cachedDevices.add(deviceWrapper);
 			} else if(BluetoothDevice.ACTION_UUID.equals(action)) {
 				BluetoothDevice d = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
@@ -158,5 +158,18 @@ public class BluetoothCommunication implements Communication{
 				Log.i(this.getClass().toString(), "Could not send data to " + session.getDevice().getAddress());
 			}
 		}
+	}
+	
+	public boolean isConnect(){
+		byte[] testByte = {(byte)0};
+		for( final Session session : SessionsHolder.getActiveSessions())			
+			try {			
+					session.send(testByte);
+			} catch (IOException e) {
+				Log.i(this.getClass().toString(), "Could not send data to " + session.getDevice().getAddress());
+				return false;
+			}
+		
+		return (SessionsHolder.getActiveSessions().size()!=0);
 	}
 }
