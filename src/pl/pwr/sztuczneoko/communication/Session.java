@@ -74,4 +74,12 @@ public class Session {
 		send(ProtocolWrapper.CLOSE_OPERATION);
 		socket.close();
 	}
+	@Override
+	public boolean equals(Object o) {
+		return this.device.equals(((Session)o).device);
+	}
+	@Override
+	public int hashCode() {
+		return device.hashCode();
+	}
 }

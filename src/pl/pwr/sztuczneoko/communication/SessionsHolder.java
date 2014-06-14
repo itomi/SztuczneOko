@@ -13,6 +13,11 @@ public class SessionsHolder {
 	
 	static void addNewSessionAndRegisterForActivityChecks(final Session session, final long renewalPeriod) throws Exception {
 		if( activeSessions.contains(session) ) {
+			
+			clear();
+			session.send(ProtocolWrapper.SESSION_START);
+			activeSessions.add(session);
+			renewalPeriods.put(session, Long.valueOf(renewalPeriod) );
 			throw new Exception("Session is already established and active.");
 		} else {
 			session.send(ProtocolWrapper.SESSION_START);
@@ -21,6 +26,9 @@ public class SessionsHolder {
 		}
 	}
 	
+	public static void clear() {
+		activeSessions.clear();
+	}
 	
 	static Set<Session> getActiveSessions() {
 		//TODO: make this module realy check the session, if it is not able to communicate, then kill it

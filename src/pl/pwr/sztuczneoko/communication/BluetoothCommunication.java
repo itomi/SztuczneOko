@@ -164,7 +164,7 @@ public class BluetoothCommunication implements Communication{
 		byte[] testByte = {(byte)0};
 		for( final Session session : SessionsHolder.getActiveSessions())			
 			try {			
-					session.send(testByte);
+					session.send(testByte);					
 			} catch (IOException e) {
 				Log.i(this.getClass().toString(), "Could not send data to " + session.getDevice().getAddress());
 				return false;
