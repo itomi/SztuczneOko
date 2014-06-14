@@ -102,24 +102,19 @@ public class EventCollector implements EventCollectorInterface{
 		camPropList.add(new Property("realTime", false));
 		filterPropList.add(new Property("autoFilter", true));
 		camPropList.add(new Property("flash",false));
-		try {
-			comm = CommunicationProvider.provideCommunication(CommunicationType.BLUETOOTH);
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		comm = getCommunication();
+	}
+
+	private Communication getCommunication() {
+		if(comm == null ) {
+			try {
+				comm = CommunicationProvider.provideCommunication(CommunicationType.BLUETOOTH);
+			} catch (Exception e) {
+				Log.d(this.getClass().toString(), e.getMessage());
+				e.printStackTrace();
+			}
 		}
+		return comm;
 	}
 	
 	/**
@@ -225,7 +220,7 @@ public class EventCollector implements EventCollectorInterface{
         			f= new File(Environment.getExternalStorageDirectory()+"/soAppDir/myFilterImages/filtered-"+tmpFileName); 
         		}
         		saveImg(stream.toByteArray(),"filtered-"+tmpFileName,"/soAppDir/myFilterImages/");
-        		comm.sendToAllConnectedDevices(stream.toByteArray());
+        		getCommunication().sendToAllConnectedDevices(stream.toByteArray());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -310,14 +305,14 @@ public class EventCollector implements EventCollectorInterface{
 		
 		Set<Device> devices = ImmutableSet.of();
 		try {
-			comm.getDevicesByInquiry();
+			getCommunication().getDevicesByInquiry();
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		if(comm == null) return edList;
 		
-		while(comm.isBusy()) {
+		while(getCommunication().isBusy()) {
 			try {
 				Thread.sleep(CHECK_TIME);
 			} catch (InterruptedException e) {
@@ -325,7 +320,7 @@ public class EventCollector implements EventCollectorInterface{
 			}
 		}
 		
-		devices = comm.getCachedDevices();
+		devices = getCommunication().getCachedDevices();
 		
 		for( final Device device : devices ) {
 			edList.add(new ExternDevice(device));
@@ -346,7 +341,7 @@ public class EventCollector implements EventCollectorInterface{
 		
 		if(session==null)
 			
-			session = comm.establishConnectionToDevice(ed.getDeviceHandle(), RENEWAL_PERIOD);
+			session = getCommunication().establishConnectionToDevice(ed.getDeviceHandle(), RENEWAL_PERIOD);
 		
 		if(session != null && checkBTconnection()) {			
 			ed.setConnected(true);
@@ -582,7 +577,7 @@ public class EventCollector implements EventCollectorInterface{
 	@Override
 	public void registerBTActivity(Activity btPropertiesActivity) {
 		try{
-			comm.registerBTReceiver(btPropertiesActivity);
+			getCommunication().registerBTReceiver(btPropertiesActivity);
 		}catch(NullPointerException ex){
 			Log.e("bt exception", "null pointer when bt service is off when unregister receeiver");
 		}
@@ -595,15 +590,15 @@ public class EventCollector implements EventCollectorInterface{
 	@Override
 	public void unregisterBTActivity(Activity btPropertiesActivity) {
 		try{
-			comm.unregisterBTReceiver(btPropertiesActivity);
+			getCommunication().unregisterBTReceiver(btPropertiesActivity);
 		}catch(NullPointerException ex){
 			Log.e("bt exception", "null pointer when bt service is off when unregister receeiver");
 		}
 	}	
 	
 	public boolean checkBTconnection(){
-		if(comm!=null)
-			return comm.isConnect();
+		if( getCommunication()!=null)
+			return getCommunication().isConnect();
 		else 
 			return false;
 	}
