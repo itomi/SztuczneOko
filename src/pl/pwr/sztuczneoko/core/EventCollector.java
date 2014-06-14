@@ -173,13 +173,6 @@ public class EventCollector implements EventCollectorInterface{
         		Bitmap bitmap = BitmapFactory.decodeByteArray(img, 0, img.length, options);
         		bitmap = Bitmap.createScaledBitmap(bitmap, resX, resY, false);
         		switch(getPreferences("currentFilter")){
-	        		case "gray":
-	        			new ImageFilter(bitmap).grayFilter().compress(Bitmap.CompressFormat.JPEG, 100, stream);
-	        			break;
-	        		case "blur":
-	        			int bl= Integer.parseInt(getPreferences("filterParam"));
-	        			new ImageFilter(bitmap).blur(bl).compress(Bitmap.CompressFormat.JPEG, 100, stream);
-	        			break;
 	        		case "sobel":
 	        			double mini = Integer.parseInt(getPreferences("filterParam").split(",")[0]);
 	        			double maxi = Integer.parseInt(getPreferences("filterParam").split(",")[1]);
@@ -202,9 +195,10 @@ public class EventCollector implements EventCollectorInterface{
 	        			int colory = Integer.parseInt(getPreferences("secondFilterParam"));
 	        			new ImageFilter(bitmap).binaryFilter(bin,colory).compress(Bitmap.CompressFormat.JPEG, 100, stream);
 	        			break;
-	        		//case "cropp":
-	        			//new ImageFilter(bitmap).cropp().compress(Bitmap.CompressFormat.JPEG, 100, stream);
-	        			//break;
+	        		case "zoom":
+	        			int zoom = Integer.parseInt(getPreferences("filterParam"));
+	        			new ImageFilter(bitmap).croppFilter(zoom).compress(Bitmap.CompressFormat.JPEG, 100, stream);
+	        			break;
 	        		default:
 	        			break;
         		}  
@@ -363,9 +357,6 @@ public class EventCollector implements EventCollectorInterface{
 	private int filterParamsCount(){
 		int result;
 		switch(getPreferences("currentFilter")){
-		case "treshold":
-			result = 2;			
-			break;
 		case "binary":
 			result = 2;
 			break;		
@@ -392,20 +383,11 @@ public class EventCollector implements EventCollectorInterface{
 		/*
 		 * TODO implement in imgProc getter for list possible filters
 		 */
-		return new ArrayList<String>(Arrays.asList("gray","canny","treshold","blur","sobel", "binary", "cropp"));
+		return new ArrayList<String>(Arrays.asList("canny","sobel", "binary", "zoom"));
 	}
 	public ArrayList<String> getParamFilter() {
 		ArrayList<String> result = new ArrayList<>();
 		switch(getPreferences("currentFilter")){
-			case "gray":
-				
-				break;
-			case "blur":
-				//bl 3,5,7
-				result.add("3");
-				result.add("5");
-				result.add("7");
-				break;
 			case "sobel":
 				//(minVal, maxVal) (-100, 100),(-200,200), (-400,400)
 				result.add("-100, 100");
@@ -422,12 +404,11 @@ public class EventCollector implements EventCollectorInterface{
 				//blockSize 3,5,7; color 1 lub 0
 				result.add("3");
 				result.add("5");
-				result.add("7");
-								
+				result.add("7");				
 				break;
 			case "binary":
 				//bin -1, 20, 120, 220; color 1 lub 0
-				result.add("-1");
+				//result.add("-1");
 				result.add("20");
 				result.add("40");
 				result.add("60");
@@ -439,11 +420,11 @@ public class EventCollector implements EventCollectorInterface{
 				result.add("180");
 				result.add("200");
 				result.add("220");
-				result.add("240");
-								
+				result.add("240");				
 				break;
-			case "cropp":
-				
+			case "zoom":
+				result.add("0");
+				result.add("1");
 				break;
 			default:
 				break;

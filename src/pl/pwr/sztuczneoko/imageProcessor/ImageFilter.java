@@ -3,12 +3,15 @@ package pl.pwr.sztuczneoko.imageProcessor;
 //package pl.pwr.sztuczneoko.imageProcessor;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
 import org.opencv.core.Core;
 import org.opencv.core.MatOfPoint;
+import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
@@ -18,6 +21,8 @@ import org.opencv.core.Mat;
 import org.opencv.highgui.Highgui;
 import org.opencv.imgproc.Imgproc;
 //import org.opencv.samples.imagemanipulations.ImageManipulationsActivity;
+
+
 
 
 import android.graphics.Bitmap;
@@ -35,9 +40,9 @@ public class ImageFilter {
 	private Bitmap mBitmap;
 	private Bitmap mRet;
 	          
-
-	
 	ArrayList<MatOfPoint> contours;
+	List<MatOfPoint> contours3 = new ArrayList<MatOfPoint>();
+	Mat hierarchy2 = new Mat();
 
 	public ImageFilter(Bitmap bitmap) {
 		super();			
@@ -63,16 +68,8 @@ public class ImageFilter {
 	    Utils.matToBitmap(mat, mBitmap);
 	    return mBitmap;
 	}
-	
-    public Bitmap rgbFilter() {
-        // input frame has RGBA scale format
-        //mRgba = convToMat(bitmap);
-        return mRet;
-    }
     
     public Bitmap grayFilter() {
-        // input frame has Gray forma
-    	//cvtColor(*image, character, CV_BGR2GRAY);t
     	mRgba = convToMat();
         Imgproc.cvtColor(mRgba, mGray, Imgproc.COLOR_RGBA2GRAY, 4);
         mRet = convToBitmap(mGray);
@@ -112,13 +109,6 @@ public class ImageFilter {
         return mRet;
     }
     
-    public Bitmap blur(int bl){ //bl 3,5,7
-    	mRgba = convToMat();
-        Imgproc.blur(mRgba, mTmp, new Size(bl, bl));
-        mRet = convToBitmap(mTmp);
-        return mRet;
-    }
-    
     public Bitmap sobel(double minVal, double maxVal){ //(minVal, maxVal) (-100, 100),(-200,200), (-400,400)
     	mRgba = convToMat();
     	Imgproc.cvtColor(mRgba, mGray, Imgproc.COLOR_RGBA2GRAY, 4);
@@ -128,90 +118,58 @@ public class ImageFilter {
         mRet = convToBitmap(mRgba);
         return mRet;
     }
-  /*  
-    public Bitmap something(){
+    
+    public Bitmap croppFilter(int resize){
+    	double maxArea=0;
+        MatOfPoint maxiArea=null;
     	mRgba = convToMat();
-    	///mRgba = inputFrame.gray();
-        contours = new ArrayList<MatOfPoint>();
-        hierarchy = new Mat();
+    	mGray = new Mat(mRgba.size(), Core.DEPTH_MASK_8U);
+        mTmp = new Mat(mRgba.size(), Core.DEPTH_MASK_8U);
+        mMat = new Mat(mRgba.size(), Core.DEPTH_MASK_ALL);
+        Imgproc.cvtColor(mRgba, mGray, Imgproc.COLOR_BGR2GRAY);
+        Imgproc.GaussianBlur(mGray, mTmp, new Size(5,5), 0);
+        Imgproc.adaptiveThreshold(mTmp, mMat, 255, Imgproc.ADAPTIVE_THRESH_MEAN_C, Imgproc.THRESH_BINARY_INV, 5, 4);
 
-	    Imgproc.Canny(mRgba, mTmp, 80, 100);
-	    Imgproc.findContours(mTmp, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE, new Point(0, 0));
-	    
-	    ArrayList<MatOfPoint> contours_poly = new ArrayList<MatOfPoint>();
-	    for( int i = 0; i < contours.size(); i++ )
-	    { 
-	    	approxPolyDP( Mat(contours.add(i,contours_poly)), contours_poly[i], 3, true );
-	        boundRect[i] = boundingRect( Mat(contours_poly[i]) );
-	        minEnclosingCircle( (Mat)contours_poly[i], center[i], radius[i] );
-	    }
-	    
-	    Mat drawing = Mat.zeros( mTmp.size(), CvType.CV_8UC3 );
-	    for( int i = 0; i< contours.size(); i++ )
-	    {
-	    	Scalar color =new Scalar(Math.random()*255, Math.random()*255, Math.random()*255);
-	    	Imgproc.drawContours( drawing, contours, i, color, 2, 8, hierarchy, 0, new Point() );
-	    }
-	    //hierarchy.release();
-	    //Imgproc.drawContours(mRgba, contours, -1, new Scalar(Math.random()*255, Math.random()*255, Math.random()*255));//, 2, 8, hierarchy, 0, new Point());
-	    Imgproc.cvtColor(mTmp, mRgba, Imgproc.COLOR_GRAY2RGBA, 4);
-	    //return mRgba;
-	    mRet = convToBitmap(mRgba);
+        List<MatOfPoint> contours = new ArrayList<MatOfPoint>();    
+        Imgproc.findContours(mMat, contours, new Mat(), Imgproc.RETR_LIST,Imgproc.CHAIN_APPROX_SIMPLE);
+        for(int i=0; i< contours.size();i++){
+        	if (Imgproc.contourArea(contours.get(i)) > maxArea )
+        	{
+        		maxArea = Imgproc.contourArea(contours.get(i));
+        		maxiArea = contours.get(i);
+        	}
+        }
+        Rect rect = Imgproc.boundingRect(maxiArea);
+      //Core.rectangle(mRgba, new Point(rect.x,rect.y), new Point(rect.x+rect.width,rect.y+rect.height),new Scalar(0,0,255));
+        int control = rect.height - rect.width;
+        Mat mZoomWindow;
+        if (resize == 1)
+        {
+        	int addsub = control / 2;
+	        if (control>=0)
+	        {
+	        	if (rect.x - addsub < 0)
+	        		mZoomWindow = mRgba.submat(rect.y , rect.y + rect.height, 0, rect.x + rect.width + addsub);
+	        	else if (rect.x + rect.width + addsub > mRgba.width())
+		        	mZoomWindow = mRgba.submat(rect.y , rect.y + rect.height, rect.x - addsub, mRgba.width());
+	        	else
+		        	mZoomWindow = mRgba.submat(rect.y , rect.y + rect.height, rect.x - addsub, rect.x + rect.width + addsub);
+	        }
+	        else
+	        {
+	        	if (rect.y - addsub < 0)
+	        		mZoomWindow = mRgba.submat(0 , rect.y + rect.height, rect.x, rect.x + rect.width + addsub);
+	        	else if (rect.x + rect.width + addsub > mRgba.cols())
+		        	mZoomWindow = mRgba.submat(rect.y , mRgba.cols(), rect.x - addsub, mRgba.width());
+	        	else
+		        	mZoomWindow = mRgba.submat(rect.y , rect.y + rect.height, rect.x - addsub, rect.x + rect.width + addsub);
+	        }
+        }
+        else 
+        	mZoomWindow = mRgba.submat(rect.y , rect.y + rect.height, rect.x, rect.x + rect.width);
+        Imgproc.resize(mZoomWindow, mTmp, mRgba.size());
+        Imgproc.Canny(mTmp, mGray, 70, 90);
+        mRet = convToBitmap(mGray);
     	return mRet;
     }
-    
-    /*public Bitmap cropp(){ //To jeszcze nie jest skonczone
-    	
-    	mRgba = convToMat();
-    	
-    	Imgproc.cvtColor(mRgba, mGray, Imgproc.COLOR_RGBA2GRAY, 4);
-    	//System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-        // reading image 
-        //Mat image = Highgui.imread(".\\testing2.jpg", Highgui.CV_LOAD_IMAGE_GRAYSCALE);
-        // clone the image 
-        mTmp = mGray.clone();
-        // thresholding the image to make a binary image
-        //Imgproc.threshold(image, image, 100, 128, Imgproc.THRESH_BINARY_INV);
-    	Imgproc.threshold(mGray, mTmp, 100, 255, Imgproc.THRESH_BINARY_INV);
-        // find the center of the image
-        double[] centers = {(double)mTmp.width()/2, (double)mTmp.height()/2};
-        Point image_center = new Point(centers);
-
-        // finding the contours
-        ArrayList<MatOfPoint> contours = new ArrayList<MatOfPoint>();
-        Mat hierarchy = new Mat();
-        Imgproc.findContours(mTmp, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
-
-        // finding best bounding rectangle for a contour whose distance is closer to the image center that other ones
-        double d_min = Double.MAX_VALUE;
-        Rect rect_min = new Rect();
-        for (MatOfPoint contour : contours) {
-            Rect rec = Imgproc.boundingRect(contour);
-           // Imgproc.resize(mGray, mGray, mTmp.size());
-            // find the best candidates
-            if (rec.height > mTmp.height()/2 & rec.width > mTmp.width()/2)            
-                continue;
-            Point pt1 = new Point((double)rec.x, (double)rec.y);
-            //Point center = new Point(rec.x+(double)(rec.width)/2, rec.y + (double)(rec.height)/2);
-            double d = Math.sqrt(Math.pow((double)(pt1.x-image_center.x),2) + Math.pow((double)(pt1.y -image_center.y), 2));            
-            if (d < d_min)
-            {
-                d_min = d;
-                rect_min = rec;
-            }                   
-        }
-        // slicing the image for result region
-        int pad = 5;        
-        rect_min.x = rect_min.x - pad;
-        rect_min.y = rect_min.y - pad;
-
-        rect_min.width = rect_min.width + 2*pad;
-        rect_min.height = rect_min.height + 2*pad;
-
-        mGray = mTmp.submat(rect_min);     
-        //Highgui.imwrite("result.png", result);
-    	
-    	mRet = convToBitmap(mGray);
-        return mRet;
-    }*/
 }
