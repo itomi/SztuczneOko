@@ -88,6 +88,18 @@ public class GalleryActivity extends soActivity {
 	public void sendButtonClick(View view){		
 		core.sendPhoto(this,directory);
 	}
+	
+	public void changeDirectory(View view){		
+    	if(directory.matches(".*myImages.*"))
+    		directory = Environment.getExternalStorageDirectory().getAbsolutePath()+"/soAppDir/myFilterImages/";
+    	else
+    		directory = Environment.getExternalStorageDirectory().getAbsolutePath()+"/soAppDir/myImages/";
+    	gridAdapter.clear();
+    	gridAdapter = new GalleryGridViewAdapter(this, R.layout.row_grid, imageItems,directory,height,width);
+        gridView.setAdapter(gridAdapter);   
+    	gridAdapter.notifyDataSetChanged();
+	}
+	
 	public void setSelectedImg(ImageItem selectedImg,View v,int index) {
 		if(selectedImg.getImage()== null)return;
 		if(lastView!=null)lastView.setSelected(false);
