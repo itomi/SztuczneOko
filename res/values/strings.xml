@@ -4,7 +4,7 @@
     	<!--	strings for entry activity    -->
     <string-array name="entryListMenuArray">
         <item>zrób zdjęcie</item>
-        <item>ustawiena</item>
+        <item>ustawienia</item>
         <item>przeglądaj zdjęcia</item>
     </string-array>
     <string-array name="entryListMenuContentDesc">
