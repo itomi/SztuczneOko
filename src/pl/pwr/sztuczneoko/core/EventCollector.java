@@ -343,7 +343,7 @@ public class EventCollector implements EventCollectorInterface{
 			
 			session = getCommunication().establishConnectionToDevice(ed.getDeviceHandle(), RENEWAL_PERIOD);
 		
-		if(session != null && checkBTconnection()) {			
+		if(checkBTconnection()) {			
 			ed.setConnected(true);
 		}
 	}
